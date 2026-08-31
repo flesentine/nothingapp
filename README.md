@@ -19,6 +19,9 @@ It started learning interaction habits: rapid clicking, patience, hovering, repe
 ### Build 2
 It dreams when ignored. Idle time can create thoughts, mutations, whispers, mood changes, and memories without the user doing anything.
 
+### Build 3
+It can develop an echo: a smaller second presence that copies actions late, wanders on its own, keeps separate touch history, and sometimes refuses to imitate the original.
+
 ## Run it
 
 Open `index.html` in a modern browser.
