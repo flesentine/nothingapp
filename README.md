@@ -23,13 +23,16 @@ It dreams when ignored. Idle time can create thoughts, mutations, whispers, mood
 It can develop an echo: a smaller second presence that copies actions late, wanders on its own, keeps separate touch history, and sometimes refuses to imitate the original.
 
 ### Build 4
-The original and its echo now have a relationship that evolves without a script. They can bond, become uneasy, feud, reconcile, approach or avoid one another, influence each other's moods, and occasionally share dreams. Their relationship persists with the rest of the app's memory.
+The original and echo developed a relationship. Copying, defiance, encounters, fights, reconciliations, and shared dreams can pull them toward attachment or rivalry.
+
+### Build 5
+The environment started remembering them. Encounters can leave persistent warm spots, scars, dream residue, and other named places in the room. The accumulated history changes the room's mood and can trigger weather. You can also interact with old places and discover what the room remembers.
 
 ## Run it
 
 Open `index.html` in a modern browser.
 
-State is stored locally in the browser with `localStorage`.
+State is stored locally in the browser with `localStorage`. New builds migrate forward from older saved state when possible.
 
 ## Roadmap
 
