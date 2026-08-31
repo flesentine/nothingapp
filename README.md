@@ -22,6 +22,9 @@ It dreams when ignored. Idle time can create thoughts, mutations, whispers, mood
 ### Build 3
 It can develop an echo: a smaller second presence that copies actions late, wanders on its own, keeps separate touch history, and sometimes refuses to imitate the original.
 
+### Build 4
+The original and its echo now have a relationship that evolves without a script. They can bond, become uneasy, feud, reconcile, approach or avoid one another, influence each other's moods, and occasionally share dreams. Their relationship persists with the rest of the app's memory.
+
 ## Run it
 
 Open `index.html` in a modern browser.
