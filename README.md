@@ -58,6 +58,9 @@ Precedent became executable law. Binding rulings can now be codified into persis
 ### Build 15
 Enforcement entered the room. Repeated violations can now escalate from citations into persistent warrants aimed at the original, the echo, or eventually the archive itself. Enough violations, active warrants, or constitutional instability dispatches an archive bailiff into the current reality. The bailiff can serve warrants, reinforce the legally recognized identity, enforce relationship bounds, impound remembered places, accelerate court-favored futures, and accumulate its own enforcement history. Warrants can be contested, mercy can be requested, and contradictory laws can put the bailiff into self-contempt until it issues paperwork against the office that created it. Build 15 also split the growing single-file implementation into `index.html`, `style.css`, `core.js`, and `app.js`.
 
+### Build 16
+Reality was summoned for jury duty. Warrants can now be stayed for persistent trials before enforcement. Each hearing assembles evidence from the actual simulation state: memories, remembered places, correspondence, prophecies, dead letters, statutes, and records from the other reality. A five-member jury is made from those same categories of unstable evidence. You can submit a memory, submit a letter, object to evidence, or request an early verdict. Conviction authorizes the bailiff to serve the warrant; acquittal dismisses it; mistrial returns the unresolved warrant to circulation; and rare jury nullification suspends the law itself. Unsigned correspondence can contaminate the jury room, and warrants against the archive can now put the institution that created the court on trial.
+
 ## Run it
 
 Open `index.html` in a modern browser.
