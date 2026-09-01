@@ -55,6 +55,9 @@ The Dead Letter Room claimed jurisdiction. Its archive can now issue persistent 
 ### Build 14
 Precedent became executable law. Binding rulings can now be codified into persistent statutes that directly alter interaction rules across both realities. The Origin Registration Act continuously biases identity evidence; relationship codes impose mandatory truce or separation; the Evidence Preservation Act can deny memory revisions and preserve old versions; predictive-compliance law boosts prophecy probability and deadlines; and admissibility law can keep rejected correspondence legally operative. Violations create citations. Laws can be challenged, suspended, repealed, or become more deeply entrenched after a failed challenge. Contradictory active laws trigger constitutional crises that damage both timelines because the app is attempting to obey mutually impossible rules.
 
+### Build 15
+Enforcement entered the room. Repeated violations can now escalate from citations into persistent warrants aimed at the original, the echo, or eventually the archive itself. Enough violations, active warrants, or constitutional instability dispatches an archive bailiff into the current reality. The bailiff can serve warrants, reinforce the legally recognized identity, enforce relationship bounds, impound remembered places, accelerate court-favored futures, and accumulate its own enforcement history. Warrants can be contested, mercy can be requested, and contradictory laws can put the bailiff into self-contempt until it issues paperwork against the office that created it. Build 15 also split the growing single-file implementation into `index.html`, `style.css`, `core.js`, and `app.js`.
+
 ## Run it
 
 Open `index.html` in a modern browser.
