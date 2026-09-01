@@ -31,6 +31,9 @@ The environment started remembering them. Encounters can leave persistent warm s
 ### Build 6
 Some remembered places can become portals. Old warm spots, scars, and dream residue may mature into memory interiors that can be entered. Interacting inside changes the memory, and things can leak back into the main room afterward.
 
+### Build 7
+The past became negotiable. Memory interiors can now be revised into different versions of the same event. Warm memories can become scars, scars can become warm memories, dreams can overwrite either, and those retcons feed back into the present relationship. The app tracks disputed memories, timeline drift, revision history, and an increasingly questionable history-confidence score.
+
 ## Run it
 
 Open `index.html` in a modern browser.
