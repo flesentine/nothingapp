@@ -43,6 +43,9 @@ Identity became evidence-based. The original and echo now accumulate competing c
 ### Build 10
 Reality split. The app now maintains two persistent versions of the room, A and B. Each branch can keep a different relationship, identity verdict, memories, scars, portals, retcons, and possible futures. The unseen branch continues changing while you are elsewhere. A visible rift lets you cross between them, memory interiors can lead into alternate versions, and future predictions can force crossings. As the two realities diverge, they can bleed into one another: places, relationship states, origin evidence, and prophecies may arrive from the other room and become part of the current history.
 
+### Build 11
+The realities began corresponding. Notes can travel through the rift from A to B and back again, carrying claims about identity, relationships, lost memories, futures, and the rift itself. You can keep, reject, or answer them, and those choices can alter the room. Some letters arrive signed by nobody with no matching send event in either reality; accepting those unsigned messages can create dream residue and further damage timeline confidence.
+
 ## Run it
 
 Open `index.html` in a modern browser.
