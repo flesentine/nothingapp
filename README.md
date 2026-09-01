@@ -34,6 +34,9 @@ Some remembered places can become portals. Old warm spots, scars, and dream resi
 ### Build 7
 The past became negotiable. Memory interiors can now be revised into different versions of the same event. Warm memories can become scars, scars can become warm memories, dreams can overwrite either, and those retcons feed back into the present relationship. The app tracks disputed memories, timeline drift, revision history, and an increasingly questionable history-confidence score.
 
+### Build 8
+The future started making demands. Possible futures appear in the room with probabilities and deadlines. Clicking one means believing it, which raises its probability and lets it nudge the present toward its own fulfillment. Predictions can create reconciliations, fights, shared dreams, portals, distance, or eerie similarity. Failed predictions damage timeline confidence, and sufficiently believed futures can refuse to die and schedule themselves again.
+
 ## Run it
 
 Open `index.html` in a modern browser.
