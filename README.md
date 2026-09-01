@@ -46,6 +46,9 @@ Reality split. The app now maintains two persistent versions of the room, A and 
 ### Build 11
 The realities began corresponding. Notes can travel through the rift from A to B and back again, carrying claims about identity, relationships, lost memories, futures, and the rift itself. You can keep, reject, or answer them, and those choices can alter the room. Some letters arrive signed by nobody with no matching send event in either reality; accepting those unsigned messages can create dream residue and further damage timeline confidence.
 
+### Build 12
+Rejected and impossible correspondence stopped disappearing. Dead letters accumulate in a persistent space that belongs to neither Reality A nor Reality B. Once enough undelivered mail exists, the Dead Letter Room becomes enterable. Inside, rejected messages remain as physical records and the archive can begin making decisions of its own: re-delivering old sentences into A or B, filing one letter as evidence in both realities, or turning an undelivered address into a remembered place on both sides. As the archive grows it develops a mood, edits unresolved mail, and can become an active third influence without becoming a third reality.
+
 ## Run it
 
 Open `index.html` in a modern browser.
