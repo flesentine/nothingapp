@@ -49,6 +49,9 @@ The realities began corresponding. Notes can travel through the rift from A to B
 ### Build 12
 Rejected and impossible correspondence stopped disappearing. Dead letters accumulate in a persistent space that belongs to neither Reality A nor Reality B. Once enough undelivered mail exists, the Dead Letter Room becomes enterable. Inside, rejected messages remain as physical records and the archive can begin making decisions of its own: re-delivering old sentences into A or B, filing one letter as evidence in both realities, or turning an undelivered address into a remembered place on both sides. As the archive grows it develops a mood, edits unresolved mail, and can become an active third influence without becoming a third reality.
 
+### Build 13
+The Dead Letter Room claimed jurisdiction. Its archive can now issue persistent binding rulings over both Reality A and Reality B. Rulings can decide which being counts as the original, mandate truce or separation, admit rejected sentences into the official historical record, order futures to become nearly inevitable, or declare rejected correspondence admissible evidence anyway. Each ruling accumulates precedent and enforcement history. Rulings can be appealed from the archive or from stamped orders visible in the room, but appeals may be granted, denied, or backfire by strengthening the precedent. Vacating a ruling stops future enforcement without erasing changes it already caused.
+
 ## Run it
 
 Open `index.html` in a modern browser.
