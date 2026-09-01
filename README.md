@@ -52,6 +52,9 @@ Rejected and impossible correspondence stopped disappearing. Dead letters accumu
 ### Build 13
 The Dead Letter Room claimed jurisdiction. Its archive can now issue persistent binding rulings over both Reality A and Reality B. Rulings can decide which being counts as the original, mandate truce or separation, admit rejected sentences into the official historical record, order futures to become nearly inevitable, or declare rejected correspondence admissible evidence anyway. Each ruling accumulates precedent and enforcement history. Rulings can be appealed from the archive or from stamped orders visible in the room, but appeals may be granted, denied, or backfire by strengthening the precedent. Vacating a ruling stops future enforcement without erasing changes it already caused.
 
+### Build 14
+Precedent became executable law. Binding rulings can now be codified into persistent statutes that directly alter interaction rules across both realities. The Origin Registration Act continuously biases identity evidence; relationship codes impose mandatory truce or separation; the Evidence Preservation Act can deny memory revisions and preserve old versions; predictive-compliance law boosts prophecy probability and deadlines; and admissibility law can keep rejected correspondence legally operative. Violations create citations. Laws can be challenged, suspended, repealed, or become more deeply entrenched after a failed challenge. Contradictory active laws trigger constitutional crises that damage both timelines because the app is attempting to obey mutually impossible rules.
+
 ## Run it
 
 Open `index.html` in a modern browser.
