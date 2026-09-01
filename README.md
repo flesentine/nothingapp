@@ -28,6 +28,9 @@ The original and echo developed a relationship. Copying, defiance, encounters, f
 ### Build 5
 The environment started remembering them. Encounters can leave persistent warm spots, scars, dream residue, and other named places in the room. The accumulated history changes the room's mood and can trigger weather. You can also interact with old places and discover what the room remembers.
 
+### Build 6
+Some remembered places can become portals. Old warm spots, scars, and dream residue may mature into memory interiors that can be entered. Interacting inside changes the memory, and things can leak back into the main room afterward.
+
 ## Run it
 
 Open `index.html` in a modern browser.
