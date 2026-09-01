@@ -61,6 +61,9 @@ Enforcement entered the room. Repeated violations can now escalate from citation
 ### Build 16
 Reality was summoned for jury duty. Warrants can now be stayed for persistent trials before enforcement. Each hearing assembles evidence from the actual simulation state: memories, remembered places, correspondence, prophecies, dead letters, statutes, and records from the other reality. A five-member jury is made from those same categories of unstable evidence. You can submit a memory, submit a letter, object to evidence, or request an early verdict. Conviction authorizes the bailiff to serve the warrant; acquittal dismisses it; mistrial returns the unresolved warrant to circulation; and rare jury nullification suspends the law itself. Unsigned correspondence can contaminate the jury room, and warrants against the archive can now put the institution that created the court on trial.
 
+### Build 17
+The evidence started testifying. Evidence already admitted into an active hearing can now become a persistent witness with its own credibility, side, examination history, and statement. Memories, letters, places, futures, dead letters, and records from the other reality can take the stand. Cross-examination can strengthen testimony, expose contradictions, cause recantation, or reveal perjury that changes which side the evidence supports and damages timeline confidence. A witness can be confronted with the other reality, placed into witness protection at an address that officially does not exist, or quietly change its wording while nobody is questioning it. Because witnesses mutate the same evidence objects the jury later weighs, testimony can materially change verdicts rather than simply decorating the courtroom.
+
 ## Run it
 
 Open `index.html` in a modern browser.
