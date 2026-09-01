@@ -37,6 +37,9 @@ The past became negotiable. Memory interiors can now be revised into different v
 ### Build 8
 The future started making demands. Possible futures appear in the room with probabilities and deadlines. Clicking one means believing it, which raises its probability and lets it nudge the present toward its own fulfillment. Predictions can create reconciliations, fights, shared dreams, portals, distance, or eerie similarity. Failed predictions damage timeline confidence, and sufficiently believed futures can refuse to die and schedule themselves again.
 
+### Build 9
+Identity became evidence-based. The original and echo now accumulate competing claims about which one existed first. Touches, dreams, encounters, revised memories, claimed portals, and prophecies can all become origin evidence. If the balance shifts far enough, the app rewrites which entity it treats as the original: their labels, visual prominence, and future predictions change with it. Identity flips themselves damage timeline confidence, so the question of who was first can become permanently unstable.
+
 ## Run it
 
 Open `index.html` in a modern browser.
