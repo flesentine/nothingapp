@@ -40,6 +40,9 @@ The future started making demands. Possible futures appear in the room with prob
 ### Build 9
 Identity became evidence-based. The original and echo now accumulate competing claims about which one existed first. Touches, dreams, encounters, revised memories, claimed portals, and prophecies can all become origin evidence. If the balance shifts far enough, the app rewrites which entity it treats as the original: their labels, visual prominence, and future predictions change with it. Identity flips themselves damage timeline confidence, so the question of who was first can become permanently unstable.
 
+### Build 10
+Reality split. The app now maintains two persistent versions of the room, A and B. Each branch can keep a different relationship, identity verdict, memories, scars, portals, retcons, and possible futures. The unseen branch continues changing while you are elsewhere. A visible rift lets you cross between them, memory interiors can lead into alternate versions, and future predictions can force crossings. As the two realities diverge, they can bleed into one another: places, relationship states, origin evidence, and prophecies may arrive from the other room and become part of the current history.
+
 ## Run it
 
 Open `index.html` in a modern browser.
