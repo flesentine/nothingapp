@@ -1,0 +1,9 @@
+#dependencyLayer{position:fixed;inset:0;pointer-events:none;z-index:9}
+.packageNode,.advisoryNode{position:absolute;display:block;pointer-events:auto;cursor:pointer;transform:translate(-50%,-50%);font-style:normal}
+.packageNode{width:31px;height:18px;border:1px solid rgba(210,223,235,.55);background:rgba(18,26,34,.88);box-shadow:0 0 10px rgba(135,180,210,.12)}
+.packageNode:after,.advisoryNode:after{content:attr(data-label);position:absolute;inset:0;display:grid;place-items:center;font:8px/1 monospace;letter-spacing:.06em;color:rgba(230,239,246,.78)}
+.packageNode.yanked{opacity:.35;border-style:dashed}
+.packageNode.compromised-release,.packageNode.foreign{transform:translate(-50%,-50%) rotate(4deg);border-color:rgba(233,154,126,.8)}
+.advisoryNode{width:27px;height:27px;border:1px solid rgba(240,184,102,.8);border-radius:50%;background:rgba(59,34,20,.85);box-shadow:0 0 14px rgba(236,154,78,.18)}
+.advisoryNode.high{border-width:2px}.advisoryNode.critical{border:2px solid rgba(245,117,105,.9);box-shadow:0 0 18px rgba(245,117,105,.28)}
+#dependencyline{opacity:.82}
