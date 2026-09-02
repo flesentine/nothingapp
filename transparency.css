@@ -1,0 +1,12 @@
+#transparencyLayer{position:fixed;inset:0;pointer-events:none;z-index:29}
+.transparencyEntry,.transparencyFork{position:absolute;display:block;pointer-events:auto;cursor:pointer;transform:translate(-50%,-50%);font-style:normal}
+.transparencyEntry{width:16px;height:11px;border:1px solid rgba(212,238,255,.5);background:rgba(12,25,35,.82);box-shadow:0 0 12px rgba(142,212,255,.12);border-radius:2px}
+.transparencyEntry:after,.transparencyFork:after{content:attr(data-label);position:absolute;left:50%;top:14px;transform:translateX(-50%);white-space:nowrap;font:8px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;color:rgba(205,232,248,.6)}
+.transparencyEntry.certificate{clip-path:polygon(0 0,82% 0,100% 28%,100% 100%,0 100%)}
+.transparencyEntry.root{border-radius:50%;width:13px;height:13px;border-width:2px}
+.transparencyEntry.cross-sign{transform:translate(-50%,-50%) rotate(45deg);width:11px;height:11px}
+.transparencyEntry.concealed{border-style:dashed;opacity:.38;filter:grayscale(.7)}
+.transparencyEntry.concealed:before{content:'?';position:absolute;inset:0;display:grid;place-items:center;font:9px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:rgba(255,205,205,.8)}
+.transparencyFork{width:26px;height:18px;border-left:2px solid rgba(255,130,130,.8);border-right:2px solid rgba(130,198,255,.8)}
+.transparencyFork:before{content:'';position:absolute;left:50%;top:-3px;width:1px;height:24px;background:rgba(235,235,245,.35);transform:rotate(28deg);transform-origin:50% 50%;box-shadow:0 0 16px rgba(255,126,126,.28)}
+body:has(.transparencyFork) #rift{filter:drop-shadow(0 0 13px rgba(255,126,126,.22)) drop-shadow(0 0 9px rgba(126,196,255,.2))}
