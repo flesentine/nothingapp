@@ -125,6 +125,7 @@ The current head after Build 71 should leave these facts true:
 - A collectible claim is capped by public make-good, later recovery, and live Build 55 facility principal.
 - Collection takes actual Build 63 fund cash and retires actual Build 55 facility principal, monetary base, and outstanding credit.
 - Already-repaid public facilities make the claim moot rather than collectible.
+- Missing fund, facility, or monetary-authority records block collection before cash moves.
 - Waiver is an explicit policy choice and leaves public credit outstanding.
 - `public_recoupment.js` is the final loaded module for Build 71.
 
