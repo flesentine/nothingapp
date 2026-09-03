@@ -145,6 +145,39 @@ Consensus-final history acquired execution. The five Build 42 consensus witnesse
 ### Build 44
 Executed reality acquired software-supply-chain provenance. Every traveler, bailiff, archive, court, and administration replica now has a concrete runtime artifact associated with the Build 36 production version and any Build 43 local patch it is actually running. Reality A and Reality B each maintain persistent primary and independent verifier builders, build recipes, dependency locks, artifact hashes, provenance attestations, replica-to-artifact assignments, and reproducibility checks. Normal artifacts are attested by a currently accepted Build 40 trust root; those provenance attestations are also emitted as trust-audit records, so Build 41 can append them to the transparency log, Build 42 can quorum-finalize them, and Build 43 can eventually execute a history that includes statements about which binaries were trusted to execute history. The user can open provenance, independently rebuild active artifacts, inspect builders and binaries, drift dependencies without changing the declared source ref, quarantine a binary, rotate a builder, or deliberately compromise a build environment. Reproducible builds strengthen builder confidence when independent builders produce the same artifact hash from the same declared source, toolchain, and dependency lock. A compromised or nondeterministic builder can instead produce a different binary while still generating a formally valid provenance statement; if both incompatible artifacts are signed by roots the reality currently accepts, the app records a signed provenance mismatch and can trigger a supply-chain crisis with places such as `two signed binaries one source commit` and `attestation proving the wrong thing faithfully`. Dependency drift can change binary hashes beneath an unchanged runtime/source label, while Build 43 one-replica hotfixes become explicit unprovenanced local artifacts that cannot be reproduced from the clean recipe. Build 44 audits completed state-machine execution rounds and correlates divergent state hashes with the artifacts each replica claims to have executed: different state plus different artifact hashes points toward artifact/runtime divergence, while different state from the same artifact hash is classified as nondeterministic execution. Executing quorum-final history with an artifact whose signing root has since been distrusted also opens a provenance incident without erasing the execution that already occurred. Compromised builders can later substitute a live replica artifact under an unchanged runtime label, proving that source identity, binary identity, signature validity, and actual execution are now four separate facts. Build 44 tracks builders, toolchains, dependency locks, build artifacts, replica assignments, provenance attestations, reproducible and unreproducible builds, dependency drift, local unprovenanced binaries, artifact quarantine and substitution, builder rotation and compromise, signed mismatches, execution/provenance correlation, supply-chain incidents, and provenance crises, leaving the bailiff asking whether a signed binary is the same thing as the source.
 
+## Builds 45–70
+
+The detailed record for each late build lives in its matching `BUILDxx.md`. This ledger keeps the top-level README current without duplicating those documents.
+
+| Build | Consequence |
+| ---: | --- |
+| 45 | Provenance acquired a dependency ecosystem. |
+| 46 | The dependency ecosystem acquired governance. |
+| 47 | Package governance acquired an economy. |
+| 48 | Package economics acquired procurement. |
+| 49 | Procurement acquired oversight. |
+| 50 | Oversight acquired rulemaking. |
+| 51 | Standards acquired liability. |
+| 52 | Software liability acquired credit. |
+| 53 | Software credit acquired derivatives. |
+| 54 | Software derivatives acquired clearing and settlement. |
+| 55 | Clearing acquired money. |
+| 56 | Settlement money acquired foreign exchange. |
+| 57 | Foreign exchange acquired a balance of payments. |
+| 58 | Balance-of-payments crises acquired a stabilization institution. |
+| 59 | The stabilization institution acquired governance. |
+| 60 | The stabilization board acquired treaty law. |
+| 61 | Treaty judgments acquired remedies. |
+| 62 | Debt became negotiable by vote. |
+| 63 | Creditor identity acquired a market price. |
+| 64 | Market price became collateral value, and collateral value became leverage. |
+| 65 | Collateral acquired more than one owner. |
+| 66 | Ownership risk became insurable, but insurance did not make ownership clean. |
+| 67 | Recovery itself became a security. |
+| 68 | The insurance recovery acquired insurance. |
+| 69 | Recovery protection acquired a clearinghouse. |
+| 70 | Clearing shortfalls became monetary policy. |
+
 ## Run it
 
 Open `index.html` in a modern browser.
