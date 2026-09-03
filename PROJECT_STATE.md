@@ -1,7 +1,7 @@
 # Nothing — Project State
 
-**Document revision:** 71.0  
-**Current build:** 71  
+**Document revision:** 72.0  
+**Current build:** 72  
 **Updated:** September 3, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -18,7 +18,7 @@ Each build adds whatever seems interesting at the time. Old behavior may become 
 - Browser state is persistent and local to the browser profile/device through `localStorage`.
 - Later modules load after earlier modules and may wrap the existing global `save` and `renderAll` functions.
 - The newest build module must load last unless a later compatibility fix intentionally follows it.
-- Each persistent build owns a versioned state key such as `nothing-state-v71`.
+- Each persistent build owns a versioned state key such as `nothing-state-v72`.
 - Forward migration is additive: later builds may read and update older objects, but should not silently discard historical state just because a newer representation exists.
 - `make it forget` clears the accumulated versioned local state through the current build.
 - Historical records are usually preserved even when their economic effect changes later. A recurring design pattern is that procedural history and current economic state can both remain true.
@@ -35,7 +35,7 @@ Later financial layers also intentionally reuse older state rather than shadowin
 - Build 53 dealers remain actual derivatives counterparties;
 - Build 54 clearinghouses and members remain the actual CCP resources;
 - Build 55 monetary authorities, facilities, reserve accounts, monetary base, and credit remain the public-money balance sheet;
-- Build 63 funds remain the investment-fund cash holders used by Builds 64–71.
+- Build 63 funds remain the investment-fund cash holders used by Builds 64–72.
 
 ## Current causal chain
 
@@ -58,8 +58,9 @@ The late system is not a set of independent features. It is one long chain:
 15. Build 69 moves that protection into the old Build 54 CCP through sponsored clearing.
 16. Build 70 lets the old Build 55 monetary authority make a Build 69 shortfall economically whole with public settlement reserves.
 17. Build 71 creates a public recoupment claim when the rescued investor later receives the private recovery anyway.
+18. Build 72 turns unpaid public recoupment into junior statutory liens on the fund’s distressed assets while preserving older repo and title priority.
 
-## Builds 61–71: current financial stack
+## Builds 61–72: current financial stack
 
 | Build | Layer | Key consequence |
 | ---: | --- | --- |
@@ -74,6 +75,7 @@ The late system is not a set of independent features. It is one long chain:
 | 69 | Recovery clearing | Fund-native protection enters Build 54 central clearing and can consume mutualized resources. |
 | 70 | Recovery monetary backstop | Build 69 shortfalls can be paid with real Build 55 public settlement reserves. |
 | 71 | Public recoupment | Later private recovery can be clawed back to retire the public rescue facility and money created by Build 70. |
+| 72 | Public liens | Unpaid clawbacks can attach to fund assets, force-sell clean paper, and collect only after older repo/title interests. |
 
 ## Money and finality invariants
 
@@ -86,6 +88,8 @@ These distinctions are intentional and should not be collapsed accidentally:
 - A Build 69 settlement can remain `final-with-shortfall` after Build 70 makes the arrears economically whole.
 - A Build 70 public make-good remains historical after Build 71 recoups the cash and retires the linked public credit.
 - Build 71 must never collect more than the still-outstanding public facility principal.
+- Build 72 public liens are junior to Build 64 repo and Build 65 rehypothecation/title interests; a public levy cannot bypass a live senior private claim.
+- Build 72 can retire public credit from levy or residual proceeds without erasing the Build 70 rescue, Build 71 claim, or older private-collateral history.
 
 ## Persistence discipline
 
@@ -119,14 +123,14 @@ Validation claims should say exactly what happened.
 
 ## Current handoff
 
-The current head after Build 71 should leave these facts true:
+The current head after Build 72 should leave these facts true:
 
-- Build 70 public-double-recovery events automatically produce at most one Build 71 recoupment claim each.
-- A collectible claim is capped by public make-good, later recovery, and live Build 55 facility principal.
-- Collection takes actual Build 63 fund cash and retires actual Build 55 facility principal, monetary base, and outstanding credit.
-- Already-repaid public facilities make the claim moot rather than collectible.
-- Missing fund, facility, or monetary-authority records block collection before cash moves.
-- Waiver is an explicit policy choice and leaves public credit outstanding.
-- `public_recoupment.js` is the final loaded module for Build 71.
+- Build 70 public-double-recovery events can produce Build 71 recoupment claims, and unpaid portions can support Build 72 liens.
+- Build 72 liens secure only the cash gap not already covered by current fund cash.
+- Clean fund paper can be publicly levied; existing Build 64 repo, Build 65 rehypothecation, and Build 65 title disputes remain senior.
+- Repo liquidation surplus can be swept only after the Build 64 waterfall; a surviving Build 65 title dispute blocks that public surplus collection.
+- Public lien proceeds retire the actual linked Build 55 facility principal, monetary base, and outstanding credit and also create a Build 71 payment record.
+- A Build 72 fund-insolvency flag is only a distress classification; no bankruptcy estate or voting waterfall exists yet.
+- `public_liens.js` is the final loaded module for Build 72.
 
 Future builds should start from these facts rather than reconstructing the financial stack from scratch.
