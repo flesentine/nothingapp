@@ -1,7 +1,7 @@
 # Nothing — Project State
 
-**Document revision:** 75.0  
-**Current build:** 75  
+**Document revision:** 76.0  
+**Current build:** 76  
 **Updated:** September 4, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -18,7 +18,7 @@ Each build adds whatever seems interesting at the time. Old behavior may become 
 - Browser state is persistent and local to the browser profile/device through `localStorage`.
 - Later modules load after earlier modules and may wrap the existing global `save` and `renderAll` functions.
 - The newest build module must load last unless a later compatibility fix intentionally follows it.
-- Each persistent build owns a versioned state key such as `nothing-state-v75`.
+- Each persistent build owns a versioned state key such as `nothing-state-v76`.
 - Forward migration is additive: later builds may read and update older objects, but should not silently discard historical state just because a newer representation exists.
 - `make it forget` clears the accumulated versioned local state through the current build.
 - Historical records are usually preserved even when their economic effect changes later. A recurring design pattern is that procedural history and current economic state can both remain true.
@@ -35,7 +35,7 @@ Later financial layers also intentionally reuse older state rather than shadowin
 - Build 53 dealers remain actual derivatives counterparties;
 - Build 54 clearinghouses and members remain the actual CCP resources;
 - Build 55 monetary authorities, facilities, reserve accounts, monetary base, and credit remain the public-money balance sheet;
-- Build 63 funds remain the investment-fund cash holders used by Builds 64–75.
+- Build 63 funds remain the investment-fund cash holders used by Builds 64–76.
 
 ## Current causal chain
 
@@ -62,8 +62,9 @@ The late system is not a set of independent features. It is one long chain:
 19. Build 73 turns the Build 72 insolvency flag into fund receivership, stays the public collector, preserves repo/title safe harbor, liquidates clean estate assets, and can leave a public deficiency behind.
 20. Build 74 sends that surviving public deficiency to the old Build 59 stabilization board, where pooled Build 58 reserves can recapitalize the monetary loss after a recused-member vote or systemic override.
 21. Build 75 converts each realized Build 74 reserve loss into one-for-one Build 58 quota for the member whose reserves were consumed, so bailout losses can become Build 59 voting control.
+22. Build 76 lets a current loss-born 60% creditor majority impose a compulsory reserve replenishment assessment on the bailout target; payment restores fund capital but also grants quota and can reverse the majority.
 
-## Builds 61–75: current financial stack
+## Builds 61–76: current financial stack
 
 | Build | Layer | Key consequence |
 | ---: | --- | --- |
@@ -82,6 +83,7 @@ The late system is not a set of independent features. It is one long chain:
 | 73 | Fund resolution | Publicly insolvent funds enter receivership; public collection is stayed while repo/title safe harbor survives and clean assets are liquidated through an estate. |
 | 74 | Multilateral recapitalization | A surviving fund-resolution deficiency can be absorbed by Build 58 pooled reserves after a Build 59 vote in which the bailout target is recused. |
 | 75 | Loss quota | Each Build 74 reserve loss becomes quota for the member that bore it, allowing repeated bailout losses to shift Build 59 voting power. |
+| 76 | Replenishment assessments | A current loss-born majority can compel the bailout target to transfer real foreign reserves into the stabilization fund, receiving quota in return and potentially reversing control. |
 
 ## Money and finality invariants
 
@@ -102,6 +104,9 @@ These distinctions are intentional and should not be collapsed accidentally:
 - Build 74 recapitalization motions are real Build 59 motion records but use Build 74-specific statuses so legacy Build 59 vote logic cannot accidentally vote an unknown motion type.
 - Build 75 loss-quota credits increase only the existing Build 58 `quota`; they do not refill the depleted reserve pool or pretend new reserve contributions occurred.
 - Build 75 updates actual Build 58/59 vote weights using the existing Build 59 score formula, so those votes directly affect later Build 74 recap motions.
+- Build 76 assessments use real Build 56 foreign reserves and update real Build 58 pool, contribution, quota, and Build 59 director-vote state; they do not mint replacement reserves.
+- Build 76 replenishes the currency the assessed member actually holds, so a bailout that depleted `poolRA` can be followed by an assessment that increases `poolRB`, creating a real stabilization-fund currency mismatch.
+- A Build 76 payment can destroy the creditor majority that authorized it; later Build 74 recap votes must use the new director weights rather than the historical Build 75 majority event.
 
 ## Persistence discipline
 
@@ -135,15 +140,16 @@ Validation claims should say exactly what happened.
 
 ## Current handoff
 
-The current head after Build 75 should leave these facts true:
+The current head after Build 76 should leave these facts true:
 
-- Every completed Build 74 `MRT#` reserve transfer can generate exactly one Build 75 `LQC#` loss-quota credit for the transfer's `burdenReality`.
-- Loss quota is one-for-one with the reserve amount consumed and increases the existing Build 58 member `quota`; it does not increase `poolRA`/`poolRB` or historical contributed-reserve fields.
-- Build 75 recomputes actual Build 58 quota votes and Build 59 director votes with the same score formula used by Build 59.
-- A Build 75 credit records the before/after vote shift and whether the absorbed loss itself crossed the old 60% board-majority threshold.
-- Transfer markers make quota booking idempotent and allow the v75 ledger to reconstruct without applying quota twice if only the newest state key is missing.
-- A loss-born 60% director can satisfy a later Build 74 recap vote alone while the bailout target is recused; no new voting rule or special Build 75 override is needed.
-- Historical Build 74 reserve transfers remain final, Build 58 pools remain depleted by the actual amount transferred, and Build 73/74 public-loss history is not rewritten.
-- `loss_quota.js` is the final loaded module for Build 75.
+- A Build 75 loss-quota credit is assessable only while its `burdenReality` currently holds at least the Build 59 board threshold after a fresh quota-score recalculation.
+- Each Build 76 assessment creates a real Build 59 `MOT#` record of type `reserve-replenishment76`; the assessed target is recused and Build 76-specific statuses prevent legacy Build 59 vote logic from executing it incorrectly.
+- Assessment amount equals the underlying Build 75 loss-quota amount.
+- Payment takes real Build 56 foreign reserves from the assessed reality, adds those reserves to the matching Build 58 pool, increases the assessed member's historical contribution field and quota one-for-one, and recalculates real Build 58/59 vote weights.
+- The assessment does not recreate the currency consumed by Build 74 unless the assessed member happens to hold that currency; A bailout losses in RA can therefore be followed by A payments in RB.
+- Insufficient reserves create assessment arrears and can exhaust the target's foreign-reserve stock.
+- A full or partial assessment can reduce the creditor below 60%; Build 76 records that majority reversal and subsequent Build 74 votes use the lower current weight.
+- Durable markers on the Build 75 credit make assessment reconstruction additive without recollecting reserves or granting quota twice.
+- `replenishment.js` is the final loaded module for Build 76.
 
 Future builds should start from these facts rather than reconstructing the financial stack from scratch.
