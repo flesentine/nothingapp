@@ -1,7 +1,7 @@
 # Nothing — Project State
 
-**Document revision:** 79.0  
-**Current build:** 79  
+**Document revision:** 80.0  
+**Current build:** 80  
 **Updated:** September 4, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -18,7 +18,7 @@ Each build adds whatever seems interesting at the time. Old behavior may become 
 - Browser state is persistent and local to the browser profile/device through `localStorage`.
 - Later modules load after earlier modules and may wrap the existing global `save` and `renderAll` functions.
 - The newest build module must load last unless a later compatibility fix intentionally follows it.
-- Each persistent build owns a versioned state key such as `nothing-state-v79`.
+- Each persistent build owns a versioned state key such as `nothing-state-v80`.
 - Forward migration is additive: later builds may read and update older objects, but should not silently discard historical state just because a newer representation exists.
 - `make it forget` clears the accumulated versioned local state through the current build.
 - Historical records are usually preserved even when their economic effect changes later. A recurring design pattern is that procedural history and current economic state can both remain true.
@@ -35,7 +35,7 @@ Later financial layers also intentionally reuse older state rather than shadowin
 - Build 53 dealers remain actual derivatives counterparties;
 - Build 54 clearinghouses and members remain the actual CCP resources;
 - Build 55 monetary authorities, facilities, reserve accounts, monetary base, and credit remain the public-money balance sheet;
-- Build 63 funds remain the investment-fund cash holders used by Builds 64–79.
+- Build 63 funds remain the investment-fund cash holders used by Builds 64–80.
 
 ## Current causal chain
 
@@ -66,8 +66,9 @@ The late system is not a set of independent features. It is one long chain:
 23. Build 77 lets the stabilization fund rebalance a wrong-currency Build 76 replenishment through the real Build 56 FX market, retiring issuer monetary base and draining the issuer's foreign reserves.
 24. Build 78 lets the issuing Build 55 monetary authority sterilize most of that contraction with temporary, fully collateralized credit while preserving the Build 77 reserve transfer.
 25. Build 79 lets the borrower deploy up to 90% of that temporary sterilization liquidity into the same Build 56 FX direction, creating carry P/L and possible Build 55 rollover risk.
+26. Build 80 imposes carry-specific macroprudential margin: borrower cash is segregated, insufficient cash forces partial FX unwind, and a failed call escalates into a real Build 55 monetary collateral call.
 
-## Builds 61–79: current financial stack
+## Builds 61–80: current financial stack
 
 | Build | Layer | Key consequence |
 | ---: | --- | --- |
@@ -90,6 +91,7 @@ The late system is not a set of independent features. It is one long chain:
 | 77 | Reserve FX rebalancing | The stabilization fund can exchange an overweight reserve currency through the existing FX market, returning it to its issuer for the currency the fund actually lacks. |
 | 78 | Monetary sterilization | The issuer can recreate most Build 77 monetary-base contraction through ordinary Build 55-compatible collateralized facilities without restoring the foreign reserves lost in the FX trade. |
 | 79 | Sterilization carry | Borrowers can deploy temporary Build 78 settlement liquidity into the same FX direction, amplifying the market move and potentially consuming cash needed to repay the Build 55 facility. |
+| 80 | Carry margin | The monetary authority can segregate margin against a Build 79 carry, force FX unwind when cash is insufficient, and escalate a failed call into the real Build 55 collateral-call regime. |
 
 ## Money and finality invariants
 
@@ -124,6 +126,10 @@ These distinctions are intentional and should not be collapsed accidentally:
 - Build 79 opening and closing trades update the real Build 56 FX market in opposite directions, while facility repayment remains entirely under old Build 55 rules.
 - An open Build 79 carry can cause a real Build 55 evergreen if borrower cash falls below the old 75% maturity threshold, and a later Build 55 monetization can leave the FX carry funded by permanent money.
 - Durable carry markers live on the Build 55 facility so isolated v79 recovery cannot spend borrower cash or move FX twice.
+- Build 80 margin is segregated and is not ordinary borrower cash, so satisfying the new safety rule can itself reduce the cash available for Build 55 repayment.
+- Build 80 forced unwinds reduce the live Build 79 carry and push the real Build 56 FX market opposite the original carry direction.
+- A failed Build 80 margin call creates a real Build 55 `CBMC#` record; old Build 55 payment/forbearance/crisis rules remain authoritative.
+- Build 80 mirrors margin snapshots and the reduced post-unwind carry onto the Build 55 facility so v79/v80 recovery cannot recreate the pre-unwind trade.
 
 ## Persistence discipline
 
@@ -157,17 +163,17 @@ Validation claims should say exactly what happened.
 
 ## Current handoff
 
-The current head after Build 79 should leave these facts true:
+The current head after Build 80 should leave these facts true:
 
-- Build 78 sterilization facilities remain real active Build 55 loans and can be used as the funding source for one Build 79 carry position each.
-- Build 79 can deploy up to 90% of current/original sterilization principal, capped at 4.5 and by the borrower's actual domestic cash.
-- A Reality B facility spends RB for RA; a Reality A facility spends RA for RB. The foreign asset is marked against the live Build 56 `RA/RB` rate.
-- Opening a carry subtracts actual borrower cash and pushes the real Build 56 market further in the source policy direction; closing returns current domestic value and pushes FX the other way.
-- Build 79 never repays the Build 55 facility directly. The old Build 55 maturity, accrual, repayment, evergreen, and monetization logic remains authoritative.
-- A carry losing at least 15% records a loss event.
-- If borrower cash is below 75% of facility principal inside the final 15 seconds before maturity, Build 79 records `rollover-risk`; exact old Build 55 code can then actually evergreen the facility.
-- If Build 55 monetizes a facility while its carry remains open, Build 79 records `open-permanent-money`; if the facility is repaid from other cash, the carry becomes `open-unlevered`.
-- Build 55 facility markers carry enough v79 data to reconstruct positions, FX-impulse totals, and risk flags without moving cash or FX a second time.
-- `sterilization_carry.js` is the final loaded module for Build 79.
+- Open Build 79 carry positions can receive one current Build 80 macroprudential margin call at a time.
+- Base margin is 20% of remaining domestic carry basis; `rollover-risk` adds 15 points, `open-permanent-money` adds 20 points, and FX losses add up to another 20 points, capped at 55%.
+- Cash posted to Build 80 margin is removed from the actual Build 55 borrower and held as segregated margin, so it cannot simultaneously satisfy Build 55 repayment.
+- If cash is insufficient, Build 80 sells part or all of the foreign carry asset, reduces the live Build 79 position, and moves the actual Build 56 market opposite the opening direction.
+- If cash plus the whole remaining carry cannot satisfy the call, Build 80 creates a real Build 55 `CBMC#` collateral call on the sterilization facility.
+- Exact old Build 55 `meetMonetaryCall()` can service that escalation by reducing borrower cash, facility principal, and monetary base.
+- Paying Build 80 margin can itself push a near-maturity Build 79 position below the old 75% cash threshold and create `rollover-risk`.
+- Segregated margin is released when the carry closes, becomes unlevered, or the linked Build 55 facility is repaid.
+- Build 80 writes margin-call snapshots, current posted margin, and reduced carry markers onto the Build 55 facility; simultaneous v79/v80 loss can reconstruct without replaying cash seizure or FX unwind.
+- `carry_margin.js` is the final loaded module for Build 80.
 
 Future builds should start from these facts rather than reconstructing the financial stack from scratch.
