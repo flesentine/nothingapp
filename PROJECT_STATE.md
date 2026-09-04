@@ -1,7 +1,7 @@
 # Nothing — Project State
 
-**Document revision:** 76.0  
-**Current build:** 76  
+**Document revision:** 77.0  
+**Current build:** 77  
 **Updated:** September 4, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -18,7 +18,7 @@ Each build adds whatever seems interesting at the time. Old behavior may become 
 - Browser state is persistent and local to the browser profile/device through `localStorage`.
 - Later modules load after earlier modules and may wrap the existing global `save` and `renderAll` functions.
 - The newest build module must load last unless a later compatibility fix intentionally follows it.
-- Each persistent build owns a versioned state key such as `nothing-state-v76`.
+- Each persistent build owns a versioned state key such as `nothing-state-v77`.
 - Forward migration is additive: later builds may read and update older objects, but should not silently discard historical state just because a newer representation exists.
 - `make it forget` clears the accumulated versioned local state through the current build.
 - Historical records are usually preserved even when their economic effect changes later. A recurring design pattern is that procedural history and current economic state can both remain true.
@@ -35,7 +35,7 @@ Later financial layers also intentionally reuse older state rather than shadowin
 - Build 53 dealers remain actual derivatives counterparties;
 - Build 54 clearinghouses and members remain the actual CCP resources;
 - Build 55 monetary authorities, facilities, reserve accounts, monetary base, and credit remain the public-money balance sheet;
-- Build 63 funds remain the investment-fund cash holders used by Builds 64–76.
+- Build 63 funds remain the investment-fund cash holders used by Builds 64–77.
 
 ## Current causal chain
 
@@ -63,8 +63,9 @@ The late system is not a set of independent features. It is one long chain:
 20. Build 74 sends that surviving public deficiency to the old Build 59 stabilization board, where pooled Build 58 reserves can recapitalize the monetary loss after a recused-member vote or systemic override.
 21. Build 75 converts each realized Build 74 reserve loss into one-for-one Build 58 quota for the member whose reserves were consumed, so bailout losses can become Build 59 voting control.
 22. Build 76 lets a current loss-born 60% creditor majority impose a compulsory reserve replenishment assessment on the bailout target; payment restores fund capital but also grants quota and can reverse the majority.
+23. Build 77 lets the stabilization fund rebalance a wrong-currency Build 76 replenishment through the real Build 56 FX market, retiring issuer monetary base and draining the issuer's foreign reserves.
 
-## Builds 61–76: current financial stack
+## Builds 61–77: current financial stack
 
 | Build | Layer | Key consequence |
 | ---: | --- | --- |
@@ -84,6 +85,7 @@ The late system is not a set of independent features. It is one long chain:
 | 74 | Multilateral recapitalization | A surviving fund-resolution deficiency can be absorbed by Build 58 pooled reserves after a Build 59 vote in which the bailout target is recused. |
 | 75 | Loss quota | Each Build 74 reserve loss becomes quota for the member that bore it, allowing repeated bailout losses to shift Build 59 voting power. |
 | 76 | Replenishment assessments | A current loss-born majority can compel the bailout target to transfer real foreign reserves into the stabilization fund, receiving quota in return and potentially reversing control. |
+| 77 | Reserve FX rebalancing | The stabilization fund can exchange an overweight reserve currency through the existing FX market, returning it to its issuer for the currency the fund actually lacks. |
 
 ## Money and finality invariants
 
@@ -107,6 +109,9 @@ These distinctions are intentional and should not be collapsed accidentally:
 - Build 76 assessments use real Build 56 foreign reserves and update real Build 58 pool, contribution, quota, and Build 59 director-vote state; they do not mint replacement reserves.
 - Build 76 replenishes the currency the assessed member actually holds, so a bailout that depleted `poolRA` can be followed by an assessment that increases `poolRB`, creating a real stabilization-fund currency mismatch.
 - A Build 76 payment can destroy the creditor majority that authorized it; later Build 74 recap votes must use the new director weights rather than the historical Build 75 majority event.
+- Build 77 reserve rebalancing is balance-sheet constrained: the fund cannot acquire more of the missing currency than the issuing reality actually holds as foreign reserves or retire more settlement reserves than the issuing monetary authority has in monetary base.
+- Build 77 updates the real Build 56 market and flow history rather than shadowing FX; returning RA/RB to its issuer reduces the corresponding Build 55 monetary base and increments existing reserves-extinguished history.
+- Build 77 can rebalance total fund value while moving the exchange rate, stressing pegs, changing the reserve-currency designation, and leaving a smaller residual mismatch after the price move.
 
 ## Persistence discipline
 
@@ -140,16 +145,16 @@ Validation claims should say exactly what happened.
 
 ## Current handoff
 
-The current head after Build 76 should leave these facts true:
+The current head after Build 77 should leave these facts true:
 
-- A Build 75 loss-quota credit is assessable only while its `burdenReality` currently holds at least the Build 59 board threshold after a fresh quota-score recalculation.
-- Each Build 76 assessment creates a real Build 59 `MOT#` record of type `reserve-replenishment76`; the assessed target is recused and Build 76-specific statuses prevent legacy Build 59 vote logic from executing it incorrectly.
-- Assessment amount equals the underlying Build 75 loss-quota amount.
-- Payment takes real Build 56 foreign reserves from the assessed reality, adds those reserves to the matching Build 58 pool, increases the assessed member's historical contribution field and quota one-for-one, and recalculates real Build 58/59 vote weights.
-- The assessment does not recreate the currency consumed by Build 74 unless the assessed member happens to hold that currency; A bailout losses in RA can therefore be followed by A payments in RB.
-- Insufficient reserves create assessment arrears and can exhaust the target's foreign-reserve stock.
-- A full or partial assessment can reduce the creditor below 60%; Build 76 records that majority reversal and subsequent Build 74 votes use the lower current weight.
-- Durable markers on the Build 75 credit make assessment reconstruction additive without recollecting reserves or granting quota twice.
-- `replenishment.js` is the final loaded module for Build 76.
+- Build 76 can create a stabilization-fund currency mismatch because assessed members pay with the foreign reserve currency they actually hold rather than necessarily replacing the currency Build 74 consumed.
+- Build 77 marks `poolRA` in RB using the live Build 56 `RA/RB` rate and treats the reserve mix as balanced inside an 8% value-mismatch band.
+- A Build 77 trade closes half the marked gap, capped at 6 RB-value, the overweight pool, the issuing reality's foreign reserves, and the issuing monetary authority's monetary base.
+- Selling RB means returning RB to Reality B's monetary authority and taking RA from Reality B's foreign reserves; selling RA mirrors through Reality A.
+- Returned settlement reserves reduce the actual Build 55 monetary base and increment existing reserves-extinguished history; no reserve asset or replacement money is created.
+- Each trade updates the actual Build 56 rate, pressure, turnover, flow history, reserve shares, and reserve-currency designation.
+- Build 77 records peg stress but leaves old Build 56 peg defense/break mechanics authoritative.
+- Durable Build 56 `FLOW#` markers allow an isolated missing v77 ledger to reconstruct without rerunning the trade or touching pools/reserves/base twice.
+- `reserve_rebalance.js` is the final loaded module for Build 77.
 
 Future builds should start from these facts rather than reconstructing the financial stack from scratch.
