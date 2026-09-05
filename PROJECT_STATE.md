@@ -1,7 +1,7 @@
 # Nothing — Project State
 
-**Document revision:** 86.0  
-**Current build:** 86  
+**Document revision:** 87.0  
+**Current build:** 87  
 **Updated:** September 4, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -18,7 +18,7 @@ Each build adds whatever seems interesting at the time. Old behavior may become 
 - Browser state is persistent and local to the browser profile/device through `localStorage`.
 - Later modules load after earlier modules and may wrap the existing global `save` and `renderAll` functions.
 - The newest build module must load last unless a later compatibility fix intentionally follows it.
-- Each persistent build owns a versioned state key such as `nothing-state-v86`.
+- Each persistent build owns a versioned state key such as `nothing-state-v87`.
 - Forward migration is additive: later builds may read and update older objects, but should not silently discard historical state just because a newer representation exists.
 - `make it forget` clears the accumulated versioned local state through the current build.
 - Historical records are usually preserved even when their economic effect changes later. A recurring design pattern is that procedural history and current economic state can both remain true.
@@ -35,7 +35,7 @@ Later financial layers also intentionally reuse older state rather than shadowin
 - Build 53 dealers remain actual derivatives counterparties;
 - Build 54 clearinghouses and members remain the actual CCP resources;
 - Build 55 monetary authorities, facilities, reserve accounts, monetary base, and credit remain the public-money balance sheet;
-- Build 63 funds remain the investment-fund cash holders used by Builds 64–86.
+- Build 63 funds remain the investment-fund cash holders used by Builds 64–87.
 
 ## Current causal chain
 
@@ -73,8 +73,9 @@ The late system is not a set of independent features. It is one long chain:
 30. Build 84 nets every active public facility tied to that carry against the borrower collateral pool counted once, exposing aggregate overextension that old per-facility Build 55 revaluation can miss.
 31. Build 85 turns a failed or forborne Build 84 collateral call into a funding-chain cross-default that freezes refinancing, sequesters carry margin, liquidates the FX carry, and applies the estate against the real Build 55 facilities.
 32. Build 86 gives any surviving Build 85 public deficiency a floating cash sweep over later borrower liquidity above a fixed operating floor, paying the actual Build 55 facilities until they are cured.
+33. Build 87 detaches unpaid accrued interest from principal-zero post-default facilities into separate residual-interest claims, letting monetary credit close while preserving the fee obligation.
 
-## Builds 61–86: current financial stack
+## Builds 61–87: current financial stack
 
 | Build | Layer | Key consequence |
 | ---: | --- | --- |
@@ -104,6 +105,7 @@ The late system is not a set of independent features. It is one long chain:
 | 84 | Cross-facility collateral netting | Active facilities funding one carry share one current borrowing base; aggregate shortfall creates real Build 55 collateral calls even when each facility looks individually covered. |
 | 85 | Funding-chain cross-default | A failed or forborne Build 84 netting call freezes the carry/refinancing loop and liquidates segregated margin plus the FX carry against the real public funding chain. |
 | 86 | Post-default cash sweep | Later borrower cash above a fixed operating floor is swept into the real Build 55 facilities left by a Build 85 liquidated deficiency, without reopening the dead carry. |
+| 87 | Residual interest claims | Principal-zero post-default facilities close as monetary credit while their unpaid accrued interest survives as separate claims on later borrower cash. |
 
 ## Money and finality invariants
 
@@ -205,20 +207,19 @@ Validation claims should say exactly what happened.
 
 ## Current handoff
 
-The current head after Build 86 should leave these facts true:
+The current head after Build 87 should leave these facts true:
 
-- Build 86 applies only to historical Build 85 cases that remain `liquidated-deficiency` and still have real linked Build 55 principal or interest outstanding.
-- The protected borrower operating floor is fixed on first evaluation at 10% of the original Build 85 deficiency, bounded to 0.10–0.50. It does not shrink as principal is repaid.
-- Borrower cash at or below that floor is untouched. Cash above the floor is swept up to the surviving public debt.
-- Principal is paid before interest and allocated pro rata across surviving linked facilities.
-- Principal retirement directly reduces the real Build 55 facility principal, monetary base, reserve-account balance, and reserves-extinguished history.
-- Outstanding credit is reduced for active facilities only; already-monetized facilities can be redeemed without subtracting outstanding credit a second time.
-- Accrued interest is paid only after principal and increases monetary-authority capital without extinguishing monetary base.
-- Open/failed/forborne Build 55 calls on paid facilities can be cured through `paidCashSweep86`; cured calls become `met` with their previous status preserved.
-- A fully cured workout marks the facilities `repaid` and sets `cashSweepCured86=true` on the historical Build 85 case, but the Build 85 case itself remains `liquidated-deficiency`.
-- Exact old Build 55 can still evergreen a partially swept residual facility if borrower cash remains below the old 75% maturity threshold; Build 86 waits for genuinely new cash above the frozen floor before sweeping again.
-- Missing facility or authority records block the whole sweep before cash moves.
-- Durable `CSW#` markers on the Build 85 case and paid facilities make isolated v86 reconstruction idempotent without replaying cash movement or public-balance-sheet retirement.
-- `post_default_cash_sweep.js` is the final loaded module for Build 86.
+- Exact old Build 55 can strand an `active` facility with principal 0 and accrued interest >0 because the 75%-of-principal maturity threshold becomes trivially satisfied while repayment still fails when borrower cash is zero.
+- Build 87 applies only to principal-zero, interest-positive active/monetized facilities tied to a historical Build 85 `liquidated-deficiency` case.
+- Crystallization creates one `RIC#` for the exact unpaid interest and changes the source monetary facility to `repaid` with principal/interest zero.
+- Crystallization moves no borrower cash, monetary base, outstanding credit, reserve-account balance, reserves-extinguished history, or authority capital.
+- When all linked Build 55 facility balances are zero/detached, Build 86's current `cashSweepOutstanding86` becomes 0 and `cashSweepCured86=true`; Build 87 separately owns the current residual-interest obligation.
+- Later `RIP#` payments use the existing frozen Build 86 operating floor and allocate cash pro rata across due residual-interest claims.
+- Residual-interest payments reduce borrower cash and increase monetary-authority capital only. They never recreate or extinguish settlement money.
+- A fully paid residual-interest case sets `residualInterestCured87=true` while the historical Build 85 case remains `liquidated-deficiency`.
+- Principal-zero facilities already monetized by old Build 55 can still crystallize residual interest without changing base or credit.
+- Missing authority records block crystallization/payment before source state or borrower cash moves.
+- Durable `RIC#` snapshots plus `RIP#` receipts reconstruct both current claim balances and payment history without replaying economics.
+- `residual_interest.js` is the final loaded module for Build 87.
 
 Future builds should start from these facts rather than reconstructing the financial stack from scratch.
