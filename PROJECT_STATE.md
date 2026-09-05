@@ -1,7 +1,7 @@
 # Nothing — Project State
 
-**Document revision:** 84.0  
-**Current build:** 84  
+**Document revision:** 85.0  
+**Current build:** 85  
 **Updated:** September 4, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -18,7 +18,7 @@ Each build adds whatever seems interesting at the time. Old behavior may become 
 - Browser state is persistent and local to the browser profile/device through `localStorage`.
 - Later modules load after earlier modules and may wrap the existing global `save` and `renderAll` functions.
 - The newest build module must load last unless a later compatibility fix intentionally follows it.
-- Each persistent build owns a versioned state key such as `nothing-state-v84`.
+- Each persistent build owns a versioned state key such as `nothing-state-v85`.
 - Forward migration is additive: later builds may read and update older objects, but should not silently discard historical state just because a newer representation exists.
 - `make it forget` clears the accumulated versioned local state through the current build.
 - Historical records are usually preserved even when their economic effect changes later. A recurring design pattern is that procedural history and current economic state can both remain true.
@@ -35,7 +35,7 @@ Later financial layers also intentionally reuse older state rather than shadowin
 - Build 53 dealers remain actual derivatives counterparties;
 - Build 54 clearinghouses and members remain the actual CCP resources;
 - Build 55 monetary authorities, facilities, reserve accounts, monetary base, and credit remain the public-money balance sheet;
-- Build 63 funds remain the investment-fund cash holders used by Builds 64–84.
+- Build 63 funds remain the investment-fund cash holders used by Builds 64–85.
 
 ## Current causal chain
 
@@ -71,8 +71,9 @@ The late system is not a set of independent features. It is one long chain:
 28. Build 82 lets the monetary authority refinance that replacement margin against collateral capacity reopened by the Build 81 setoff, recreating public credit directly inside segregated margin.
 29. Build 83 lets the live Build 79 carry novate its funding anchor from a repaid facility into the oldest surviving Build 82 refinancing descendant, preserving margin/leverage continuity after the original loan dies.
 30. Build 84 nets every active public facility tied to that carry against the borrower collateral pool counted once, exposing aggregate overextension that old per-facility Build 55 revaluation can miss.
+31. Build 85 turns a failed or forborne Build 84 collateral call into a funding-chain cross-default that freezes refinancing, sequesters carry margin, liquidates the FX carry, and applies the estate against the real Build 55 facilities.
 
-## Builds 61–84: current financial stack
+## Builds 61–85: current financial stack
 
 | Build | Layer | Key consequence |
 | ---: | --- | --- |
@@ -100,6 +101,7 @@ The late system is not a set of independent features. It is one long chain:
 | 82 | Margin refinancing | A fresh Build 80 margin deficit created by Build 81 setoff can be funded with a new real Build 55 facility against newly reopened collateral capacity, with proceeds posted directly to segregated margin. |
 | 83 | Funding novation | A live carry whose linked public facility is repaid can move its legal funding anchor and Build 79 recovery marker into the oldest surviving Build 82 refinancing facility. |
 | 84 | Cross-facility collateral netting | Active facilities funding one carry share one current borrowing base; aggregate shortfall creates real Build 55 collateral calls even when each facility looks individually covered. |
+| 85 | Funding-chain cross-default | A failed or forborne Build 84 netting call freezes the carry/refinancing loop and liquidates segregated margin plus the FX carry against the real public funding chain. |
 
 ## Money and finality invariants
 
@@ -157,6 +159,11 @@ These distinctions are intentional and should not be collapsed accidentally:
 - New Build 84 `CBMC#` demands are capped by aggregate shortfall minus aggregate unresolved Build 55 call coverage, preventing over-collection after partial repayment.
 - Segregated Build 80 margin is not automatically counted as collateral; it remains available to public repayment only through explicit Build 81 setoff.
 - Exact old Build 55 collateral-call payment can reduce a fragmented refinancing chain back to the one current borrowing base, after which the next Build 84 audit becomes safe.
+- Build 85 triggers only from failed/forborne Build 84-created collateral calls tied to the carry; unrelated Build 55 failures do not cross-default the chain.
+- Triggering Build 85 moves current Build 80 posted margin into a default estate, freezes open Build 80 margin calls, and changes the carry to `cross-default85`, which blocks Build 82 refinancing and Build 83 novation.
+- Build 85 liquidation sells the remaining FX carry through the real Build 56 market and applies margin plus proceeds directly to the real Build 55 facilities, reducing monetary base/outstanding credit/reserve accounts without routing through borrower cash first.
+- Residual Build 55 debt survives a deficient liquidation as real active facilities with immediate maturity; exact old Build 55 can still evergreen those supposedly accelerated loans if borrower cash is below its historical 75% repayment threshold.
+- Build 85 durable `XDF#` markers are upserted so recovery sees the final case state rather than an obsolete trigger snapshot.
 
 ## Persistence discipline
 
@@ -190,18 +197,18 @@ Validation claims should say exactly what happened.
 
 ## Current handoff
 
-The current head after Build 84 should leave these facts true:
+The current head after Build 85 should leave these facts true:
 
-- A live Build 79 carry with two or more active public funding facilities is audited against one current borrower collateral pool using the same Build 82 borrower/rating/haircut formulas.
-- Active-chain exposure includes the current anchor, any still-active original/novated carry facility, and active Build 82 refinancing facilities for the same position. Repaid and monetized facilities are excluded from active credit.
-- Build 84 does not overwrite old Build 55 per-facility collateral values. It adds a stack-wide borrowing-base view on top.
-- Current lendable collateral is allocated pro rata by principal for diagnostics; aggregate exposure above that one borrowing base creates a real aggregate shortfall.
-- Existing unresolved Build 55 calls across the entire chain count against that aggregate shortfall. Build 84 issues only the uncovered residual, preventing duplicate/over-collection after one facility repays.
-- New Build 84 calls are ordinary real `CBMC#` records. Exact old Build 55 `meetMonetaryCall()` reduces borrower cash, facility principal, monetary base, outstanding credit, reserve-account balance, and reserves-issued/extinguished history normally.
-- In the canonical hidden-overextension case, two individually safe 1.26 facilities share only 1.64 current lendable collateral: aggregate exposure 2.52, shortfall 0.88, and Build 84 creates two 0.44 calls.
-- Paying one 0.44 call leaves aggregate exposure 2.08 and shortfall 0.44; the other still-open 0.44 call fully covers that remaining deficit, so Build 84 issues zero additional calls.
-- Paying the second 0.44 call leaves exposure exactly 1.64 against 1.64 lendable collateral, and the next Build 84 audit is safe.
-- Durable `CFN#` snapshots on chain facilities plus the carry audit signature make v84 reconstruction idempotent without recreating calls or changing principal.
-- `cross_facility_netting.js` is the final loaded module for Build 84.
+- A live carry enters Build 85 only when a `crossFacilityNetting84` Build 55 collateral call for that position becomes `failed` or `forborne`.
+- Triggering `XDF#` preserves the old call status/history, changes the carry to `cross-default85`, sequesters current Build 80 margin into the default estate, zeros current posted margin, and freezes open/partial Build 80 calls as `frozen-cross-default85`.
+- While `cross-default85` is active, exact Build 82 replacement-margin refinancing is ineligible and exact Build 83 does not novate the funding anchor.
+- Resolving the case liquidates the full remaining foreign carry through the real Build 56 FX market and combines those domestic proceeds with the sequestered margin.
+- Estate principal payments are pro rata across the active carry-funding facilities and directly reduce the real Build 55 facility principal, monetary base, outstanding credit, reserve-account balance, and existing reserves-extinguished history.
+- Principal retirement can cure open/failed/forborne Build 55 calls on the paid facility through `paidCrossDefault85`; fully covered calls become normal `met` records with their prior status preserved.
+- A fully funded estate closes the carry and repays the facilities. Any excess estate value returns to actual borrower cash as equity residual.
+- A deficient estate still closes the carry but leaves the actual Build 55 facilities active with residual principal, `crossDefaultDeficiency85`, and immediate maturity.
+- Exact old Build 55 may evergreen those accelerated residual facilities if borrower cash is below the old 75% threshold, preserving the historical lender-of-last-resort rule collision.
+- Durable `XDF#` snapshots are upserted on the position and chain facilities; isolated v85 recovery restores final history/counters without replaying margin seizure, FX liquidation, call cure, or principal retirement.
+- `funding_cross_default.js` is the final loaded module for Build 85.
 
 Future builds should start from these facts rather than reconstructing the financial stack from scratch.
