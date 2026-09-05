@@ -1,7 +1,7 @@
 # Nothing — Project State
 
-**Document revision:** 91.0  
-**Current build:** 91  
+**Document revision:** 92.0  
+**Current build:** 92  
 **Updated:** September 5, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -18,7 +18,7 @@ Each build adds whatever seems interesting at the time. Old behavior may become 
 - Browser state is persistent and local to the browser profile/device through `localStorage`.
 - Later modules load after earlier modules and may wrap the existing global `save` and `renderAll` functions.
 - The newest build module must load last unless a later compatibility fix intentionally follows it.
-- Each persistent build owns a versioned state key such as `nothing-state-v91`.
+- Each persistent build owns a versioned state key such as `nothing-state-v92`.
 - Forward migration is additive: later builds may read and update older objects, but should not silently discard historical state just because a newer representation exists.
 - `make it forget` clears the accumulated versioned local state through the current build.
 - Historical records are usually preserved even when their economic effect changes later. A recurring design pattern is that procedural history and current economic state can both remain true.
@@ -35,7 +35,7 @@ Later financial layers also intentionally reuse older state rather than shadowin
 - Build 53 dealers remain actual derivatives counterparties;
 - Build 54 clearinghouses and members remain the actual CCP resources;
 - Build 55 monetary authorities, facilities, reserve accounts, monetary base, and credit remain the public-money balance sheet;
-- Build 63 funds remain the investment-fund cash holders used by Builds 64–91.
+- Build 63 funds remain the investment-fund cash holders used by Builds 64–92.
 
 ## Current causal chain
 
@@ -78,8 +78,9 @@ The late system is not a set of independent features. It is one long chain:
 35. Build 89 aggregates those individually final write-offs by case and authority, turning repeated de minimis forgiveness into reportable materiality and recurring governance penalties without reopening the write-offs.
 36. Build 90 converts sufficiently repeated Build 89 authority materiality into binding supervision over the real Build 55 discount rate and collateral floor, making governance damage operational.
 37. Build 91 registers every post-supervision emergency lending exception and ratchets future real Build 55 policy after repeated exceptions without cancelling the old emergency loans.
+38. Build 92 starts one-for-one capital conservation after the Build 91 rate/collateral ratchet is already saturated, ring-fencing real Build 55 authority capital against each later exception while preserving the emergency loan.
 
-## Builds 61–91: current financial stack
+## Builds 61–92: current financial stack
 
 | Build | Layer | Key consequence |
 | ---: | --- | --- |
@@ -114,6 +115,7 @@ The late system is not a set of independent features. It is one long chain:
 | 89 | Interest materiality aggregation | Build 88 write-offs are aggregated by Build 85 case and Build 55 authority; 0.05 case totals become reportable and each 0.10 authority tranche reduces independence/credibility. |
 | 90 | Monetary supervisory remediation | Repeated Build 89 authority tranches tighten the real Build 55 discount rate and collateral floor in staged supervision, while old emergency override lending still survives. |
 | 91 | Supervisory exception register | Post-supervision Build 55/70/78/82 override facilities are registered; the first remains a true exception, while each later exception adds 2 points to the future minimum rate and tightens collateral one grade toward AAA. |
+| 92 | Supervisory capital conservation | Once Build 91 is already at 20% / AAA, each later exception must be backed one-for-one by the issuing Build 55 authority's own capital until principal is repaid; monetized exposure keeps the hold locked. |
 
 ## Money and finality invariants
 
@@ -215,19 +217,18 @@ Validation claims should say exactly what happened.
 
 ## Current handoff
 
-The current head after Build 91 should leave these facts true:
+The current head after Build 92 should leave these facts true:
 
-- Build 90 still governs the base supervisory stage from durable Build 89 authority-materiality tranches.
-- Build 91 begins only after a real Build 90 `supervisedSince90` timestamp exists and ignores emergency facilities issued before that timestamp.
-- Generic Build 55 override facilities, Build 70 recovery-window overrides, Build 78 sterilization overrides, and Build 82 margin-refinance overrides can all become Build 91 supervisory exceptions.
-- The first post-supervision exception is registered but does not tighten policy beyond the current Build 90 stage minimum.
-- Each exception after the first adds 0.02 to the current Build 90 minimum discount rate, capped at 0.20, and tightens the collateral floor one grade until AAA. Capped exceptions remain registered while the ratchet cursor advances without inventing a new tightening record.
-- At Build 90 stage 1, the sequence is exception #1 = 7.5% / A, #2 = 9.5% / AA, #3 = 11.5% / AAA, #4 = 13.5% / AAA.
-- Build 91 changes the actual Build 55 `discountRate` and `collateralFloor`, so future old lending windows inherit the exception ratchet automatically.
-- Existing override-facility rates are never rewritten after issuance; later policy affects only future lending and later old-policy calculations.
-- Old override governance effects remain historical and are not duplicated by Build 91.
-- Build 91 can reimpose a stricter exception-derived policy even when Build 90 considers the current rate/floor acceptable relative to its lower stage minimum.
-- Durable `SER#` snapshots live on both the real Build 55 facilities and monetary authority, making isolated v91 reconstruction idempotent.
-- `supervisory_exceptions.js` is the final loaded module for Build 91.
+- Build 91 remains authoritative for determining which emergency facilities are supervisory exceptions and what stage/exception number existed when each was registered.
+- Build 92 begins only when the prior Build 91 policy for that historical stage/exception count was already saturated at 20% / AAA before the new exception was issued.
+- Boundary exceptions are stage 1 #9, stage 2 #8, and stage 3 #6; the immediately preceding exception is the one that reaches the cap and is not charged by Build 92.
+- Every qualifying post-cap exception receives one `SCR#` whose required amount equals 100% of the real Build 55 facility's current principal.
+- Funding the `SCR#` reduces the real authority `capital` and increases supervisory held capital by the same amount. Build 92 never changes monetary base, outstanding credit, reserve accounts, borrower cash, or facility contractual rates.
+- If free authority capital is insufficient, the requirement remains `capital-shortfall`; later authority capital is automatically top-upped into the hold.
+- Exact Build 55 principal repayment reduces the required hold; Build 92 returns the released amount to authority capital.
+- A Build 55 facility that becomes `monetized` continues to require capital backing for its remaining principal even though old outstanding credit falls.
+- Positive principal below 0.01 remains capital-backed; the hold releases only when principal reaches zero and the facility closes.
+- Durable `SCR#` snapshots and `SCA#` top-up/release markers live on the real Build 55 facility and authority, making isolated v92 reconstruction idempotent.
+- `supervisory_capital.js` is the final loaded module for Build 92.
 
 Future builds should start from these facts rather than reconstructing the financial stack from scratch.
