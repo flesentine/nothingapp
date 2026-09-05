@@ -1,7 +1,7 @@
 # Nothing — Project State
 
-**Document revision:** 89.0  
-**Current build:** 89  
+**Document revision:** 90.0  
+**Current build:** 90  
 **Updated:** September 4, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -18,7 +18,7 @@ Each build adds whatever seems interesting at the time. Old behavior may become 
 - Browser state is persistent and local to the browser profile/device through `localStorage`.
 - Later modules load after earlier modules and may wrap the existing global `save` and `renderAll` functions.
 - The newest build module must load last unless a later compatibility fix intentionally follows it.
-- Each persistent build owns a versioned state key such as `nothing-state-v89`.
+- Each persistent build owns a versioned state key such as `nothing-state-v90`.
 - Forward migration is additive: later builds may read and update older objects, but should not silently discard historical state just because a newer representation exists.
 - `make it forget` clears the accumulated versioned local state through the current build.
 - Historical records are usually preserved even when their economic effect changes later. A recurring design pattern is that procedural history and current economic state can both remain true.
@@ -35,7 +35,7 @@ Later financial layers also intentionally reuse older state rather than shadowin
 - Build 53 dealers remain actual derivatives counterparties;
 - Build 54 clearinghouses and members remain the actual CCP resources;
 - Build 55 monetary authorities, facilities, reserve accounts, monetary base, and credit remain the public-money balance sheet;
-- Build 63 funds remain the investment-fund cash holders used by Builds 64–89.
+- Build 63 funds remain the investment-fund cash holders used by Builds 64–90.
 
 ## Current causal chain
 
@@ -76,8 +76,9 @@ The late system is not a set of independent features. It is one long chain:
 33. Build 87 detaches unpaid accrued interest from principal-zero post-default facilities into separate residual-interest claims, letting monetary credit close while preserving the fee obligation.
 34. Build 88 makes the inherited 0.01 finality tolerance explicit by writing off sub-cent facility or claim interest as durable de minimis finality instead of leaving zombies or silently unpaid dust.
 35. Build 89 aggregates those individually final write-offs by case and authority, turning repeated de minimis forgiveness into reportable materiality and recurring governance penalties without reopening the write-offs.
+36. Build 90 converts sufficiently repeated Build 89 authority materiality into binding supervision over the real Build 55 discount rate and collateral floor, making governance damage operational.
 
-## Builds 61–89: current financial stack
+## Builds 61–90: current financial stack
 
 | Build | Layer | Key consequence |
 | ---: | --- | --- |
@@ -110,6 +111,7 @@ The late system is not a set of independent features. It is one long chain:
 | 87 | Residual interest claims | Principal-zero post-default facilities close as monetary credit while their unpaid accrued interest survives as separate claims on later borrower cash. |
 | 88 | De minimis interest finality | Residual interest at or below 0.01 is explicitly written off, distinguishing collected interest from foregone dust while closing sub-cent monetary zombies. |
 | 89 | Interest materiality aggregation | Build 88 write-offs are aggregated by Build 85 case and Build 55 authority; 0.05 case totals become reportable and each 0.10 authority tranche reduces independence/credibility. |
+| 90 | Monetary supervisory remediation | Repeated Build 89 authority tranches tighten the real Build 55 discount rate and collateral floor in staged supervision, while old emergency override lending still survives. |
 
 ## Money and finality invariants
 
@@ -211,19 +213,20 @@ Validation claims should say exactly what happened.
 
 ## Current handoff
 
-The current head after Build 89 should leave these facts true:
+The current head after Build 90 should leave these facts true:
 
-- Build 88 `RIW#` write-offs remain individually final; Build 89 never recreates borrower debt or reverses de minimis finality.
-- Build 89 sums actual Build 88 `amount88` values rather than counting records alone.
-- A historical Build 85 `liquidated-deficiency` case receives current `interestDustAggregate89`; reaching 0.05 once creates one case-materiality `IMR#` and marks the case `interestMaterial89=true`.
-- Case materiality is disclosure/escalation only and does not itself alter monetary-authority governance.
-- Build 55 authorities aggregate Build 88 write-offs across all cases, so splitting the same pattern among several cases cannot evade authority materiality.
-- Every complete 0.10 of cumulative authority foregone interest creates one authority-materiality `IMR#` tranche.
-- Each authority tranche reduces the real Build 55 authority's independence by 0.01, credibility by 0.015, and increments the existing emergency mandate by one.
-- Authority materiality does not move cash, monetary base, outstanding credit, reserve accounts, reserves-extinguished history, or authority capital.
-- Later growth from 0.10 to 0.20 creates only the missing second tranche; earlier tranches remain historical and are not replayed.
-- Durable case-materiality snapshots live on the Build 85 case. Durable authority-materiality snapshots plus `interestMaterialityTranches89` live on the real Build 55 authority.
-- Isolated v89 reconstruction restores event history/counters without applying governance penalties again.
-- `interest_materiality.js` is the final loaded module for Build 89.
+- Build 90 takes its trigger only from the real Build 55 authority's durable `interestMaterialityTranches89` created by Build 89.
+- Build 89 tranche 1 leaves Build 90 stage 0 and does not change the authority's existing lending policy.
+- Tranche 2 creates stage 1 with minimum discount rate 7.5% and collateral floor A.
+- Tranche 3 creates stage 2 with minimum discount rate 9.5% and collateral floor AA.
+- Tranche 4 or higher creates stage 3 with minimum discount rate 12% and collateral floor AAA; later tranches do not tighten beyond AAA / 12%.
+- Build 90 never loosens a pre-existing policy already stricter than its current supervisory minimum.
+- The supervised values are the actual old Build 55 `discountRate` and `collateralFloor`, so ordinary Build 55 lending eligibility and facility pricing change directly.
+- In the exact stage-1 test, a BBB dealer that old Build 55 accepted before supervision is rejected under ordinary rules after the floor becomes A.
+- Old Build 55 explicit override lending still survives and can fund that same BBB dealer at the old emergency/ineligible-collateral surcharge.
+- If old Build 55 lowers the rate or loosens the collateral floor below the supervisory minimum, Build 90 restores the minimum and writes a `policy-reimposition` `MSR#`; any governance damage caused by the old attempted policy change remains historical.
+- Build 90 orders themselves do not further reduce independence/credibility or move monetary base, outstanding credit, reserve accounts, borrower cash, or authority capital.
+- Durable `MSR#` snapshots and authority supervisory fields make isolated v90 reconstruction idempotent without applying policy changes twice.
+- `monetary_remediation.js` is the final loaded module for Build 90.
 
 Future builds should start from these facts rather than reconstructing the financial stack from scratch.
