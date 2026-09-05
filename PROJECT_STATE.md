@@ -221,7 +221,7 @@ The current head after Build 91 should leave these facts true:
 - Build 91 begins only after a real Build 90 `supervisedSince90` timestamp exists and ignores emergency facilities issued before that timestamp.
 - Generic Build 55 override facilities, Build 70 recovery-window overrides, Build 78 sterilization overrides, and Build 82 margin-refinance overrides can all become Build 91 supervisory exceptions.
 - The first post-supervision exception is registered but does not tighten policy beyond the current Build 90 stage minimum.
-- Each exception after the first adds 0.02 to the current Build 90 minimum discount rate, capped at 0.20, and tightens the collateral floor one grade until AAA.
+- Each exception after the first adds 0.02 to the current Build 90 minimum discount rate, capped at 0.20, and tightens the collateral floor one grade until AAA. Capped exceptions remain registered while the ratchet cursor advances without inventing a new tightening record.
 - At Build 90 stage 1, the sequence is exception #1 = 7.5% / A, #2 = 9.5% / AA, #3 = 11.5% / AAA, #4 = 13.5% / AAA.
 - Build 91 changes the actual Build 55 `discountRate` and `collateralFloor`, so future old lending windows inherit the exception ratchet automatically.
 - Existing override-facility rates are never rewritten after issuance; later policy affects only future lending and later old-policy calculations.
