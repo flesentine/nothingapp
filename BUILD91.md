@@ -65,6 +65,8 @@ The rate rule is:
 
 with a hard cap of 20%.
 
+Once the 20% / AAA legal minimum has been reached, later exceptions are still registered but do not create fake no-op ratchet events. The authority's durable ratchet-count cursor advances so reconciliation does not repeatedly reconsider the same capped exception.
+
 The collateral rule tightens one grade per additional exception until AAA.
 
 The actual Build 55 `discountRate` and `collateralFloor` are updated, so all old lending windows that read those fields inherit the ratchet.
@@ -80,7 +82,7 @@ Exception sequence:
 - #2 → 9.5% / AA;
 - #3 → 11.5% / AAA;
 - #4 → 13.5% / AAA;
-- later exceptions keep adding 2 percentage points until the 20% cap.
+- later exceptions keep adding 2 percentage points until the 20% cap. Exceptions after the cap remain visible registrations, but no new ratchet record is created unless the required rate/floor actually changes.
 
 ### Later Build 90 stages
 
@@ -297,4 +299,4 @@ New places include `an emergency exception becoming the new ordinary rule one lo
 
 Build 91 persists through `nothing-state-v91`, wraps the existing save/render chain, loads after `monetary_remediation.js`, and extends forget-through-v91.
 
-`supervisory_exceptions.js` passes V8 syntax validation. Exact committed-function tests cover the three-loan old Build 55 override chain, non-retroactive facility pricing, pre-supervision exclusion, Build 70/78/82 override-tag recognition, Build 91-only policy reimposition, and idempotent isolated-v91 recovery.
+`supervisory_exceptions.js` passes V8 syntax validation. Exact committed-function tests cover the three-loan old Build 55 override chain, non-retroactive facility pricing, pre-supervision exclusion, Build 70/78/82 override-tag recognition, Build 91-only policy reimposition, rate-cap behavior without no-op ratchet records, and idempotent isolated-v91 recovery.
