@@ -1,7 +1,7 @@
 # Nothing — Project State
 
-**Document revision:** 82.0  
-**Current build:** 82  
+**Document revision:** 83.0  
+**Current build:** 83  
 **Updated:** September 4, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -18,7 +18,7 @@ Each build adds whatever seems interesting at the time. Old behavior may become 
 - Browser state is persistent and local to the browser profile/device through `localStorage`.
 - Later modules load after earlier modules and may wrap the existing global `save` and `renderAll` functions.
 - The newest build module must load last unless a later compatibility fix intentionally follows it.
-- Each persistent build owns a versioned state key such as `nothing-state-v82`.
+- Each persistent build owns a versioned state key such as `nothing-state-v83`.
 - Forward migration is additive: later builds may read and update older objects, but should not silently discard historical state just because a newer representation exists.
 - `make it forget` clears the accumulated versioned local state through the current build.
 - Historical records are usually preserved even when their economic effect changes later. A recurring design pattern is that procedural history and current economic state can both remain true.
@@ -35,7 +35,7 @@ Later financial layers also intentionally reuse older state rather than shadowin
 - Build 53 dealers remain actual derivatives counterparties;
 - Build 54 clearinghouses and members remain the actual CCP resources;
 - Build 55 monetary authorities, facilities, reserve accounts, monetary base, and credit remain the public-money balance sheet;
-- Build 63 funds remain the investment-fund cash holders used by Builds 64–82.
+- Build 63 funds remain the investment-fund cash holders used by Builds 64–83.
 
 ## Current causal chain
 
@@ -69,8 +69,9 @@ The late system is not a set of independent features. It is one long chain:
 26. Build 80 imposes carry-specific macroprudential margin: borrower cash is segregated, insufficient cash forces partial FX unwind, and a failed call escalates into a real Build 55 monetary collateral call.
 27. Build 81 gives the public lender a setoff right over stressed segregated carry margin, allowing that buffer to retire Build 55 credit while making the still-open carry under-margined again.
 28. Build 82 lets the monetary authority refinance that replacement margin against collateral capacity reopened by the Build 81 setoff, recreating public credit directly inside segregated margin.
+29. Build 83 lets the live Build 79 carry novate its funding anchor from a repaid facility into the oldest surviving Build 82 refinancing descendant, preserving margin/leverage continuity after the original loan dies.
 
-## Builds 61–82: current financial stack
+## Builds 61–83: current financial stack
 
 | Build | Layer | Key consequence |
 | ---: | --- | --- |
@@ -96,6 +97,7 @@ The late system is not a set of independent features. It is one long chain:
 | 80 | Carry margin | The monetary authority can segregate margin against a Build 79 carry, force FX unwind when cash is insufficient, and escalate a failed call into the real Build 55 collateral-call regime. |
 | 81 | Margin setoff | Stressed segregated carry margin can be seized to retire the linked Build 55 sterilization facility and reduce any associated Build 55 collateral call. |
 | 82 | Margin refinancing | A fresh Build 80 margin deficit created by Build 81 setoff can be funded with a new real Build 55 facility against newly reopened collateral capacity, with proceeds posted directly to segregated margin. |
+| 83 | Funding novation | A live carry whose linked public facility is repaid can move its legal funding anchor and Build 79 recovery marker into the oldest surviving Build 82 refinancing facility. |
 
 ## Money and finality invariants
 
@@ -143,6 +145,11 @@ These distinctions are intentional and should not be collapsed accidentally:
 - A partially refinanced Build 80 call is reduced to the true remaining amount, allowing old Build 80 cash/forced-unwind mechanics to collect only the unfunded remainder.
 - Build 82 facilities remain ordinary active Build 55 loans after issuance and can be repaid, evergreened, revalued, called, or monetized by old Build 55 logic.
 - Build 81→80→82 can recycle the same 1.26 units repeatedly: setoff retires original credit, remargin demands 1.26 again, and refinancing recreates equivalent public credit without changing borrower cash.
+- Build 83 prevents repayment of the original Build 78 facility from falsely ending leverage when active Build 82 refinancing descendants still fund the same carry.
+- Build 83 moves the unique live Build 79 `carryPosition79` recovery marker with the funding anchor, preserving older facilities as historical novated markers and preventing duplicate v79 reconstruction.
+- Build 83 reconciles before invoking the older render chain so a Build 81 repayment can novate the carry before Build 80 releases margin.
+- If Build 80 already released margin before Build 83 existed, Build 83 recalls as much as is still required and available from borrower cash, preserving the historical release while leaving any unrecalled amount as a real new margin deficit.
+- Once novated, exact Build 81/80/82 mechanics can continue against the refinancing descendants instead of the dead original sterilization facility.
 
 ## Persistence discipline
 
@@ -176,17 +183,17 @@ Validation claims should say exactly what happened.
 
 ## Current handoff
 
-The current head after Build 82 should leave these facts true:
+The current head after Build 83 should leave these facts true:
 
-- A Build 82 refinancing candidate must be a fresh open Build 80 call on a live Build 79 carry, with no ordinary Build 80 cash/unwind payment, following a Build 81 setoff on the same position.
-- Build 82 lends only to the same borrower and against current Build 55-style collateral after subtracting all active Build 55 principal already using that borrower.
-- New refinancing proceeds never increase borrower cash. They increase the borrower's real Build 55 reserve-account balance, authority monetary base/outstanding credit, old reserves-issued total, and the live Build 80 segregated margin balance.
-- Full refinancing marks the Build 80 call met with `metByRefinance82`; partial refinancing reduces the call to its true remaining amount so exact Build 80 can collect only the residual.
-- Negative-equity authorities block ordinary Build 82 refinancing; emergency override preserves the collateral rule but costs independence/credibility.
-- Build 81 setoff followed by Build 80 remargin and Build 82 refinancing can restore total public credit/base to the pre-setoff level while borrower cash remains unchanged.
-- Repeated loops progressively replace the original Build 78 sterilization facility with a stack of Build 82 margin-refinance facilities.
-- Build 82 facilities are genuine Build 55 loans: exact old Build 55 maturity/accrual/repayment logic can later extinguish them.
-- Durable `MRF#` snapshots live on the new Build 55 facilities, and recovery repairs Build 80's historical posted-margin aggregate without recreating current margin or public credit.
-- `margin_refinance.js` is the final loaded module for Build 82.
+- A live Build 79 carry whose current funding facility is repaid or missing can automatically novate to the oldest surviving active Build 82 refinancing facility for the same position; a monetized descendant is used only if no active one survives.
+- The Build 79 `facilityId55` changes to the successor while `fundingOriginFacility83` and immutable `FNV#` history preserve the original funding chain.
+- The unique live `carryPosition79` recovery marker moves to the current funding anchor. Historical facilities keep `carryPosition79Novated83` rather than remaining competing v79 recovery sources.
+- Build 83 reconciles before the older render chain, preventing exact Build 80 from releasing margin during the same interaction in which Build 81 repays the current anchor.
+- Exact Build 80 leaves posted margin intact after novation because the carry now points to a live funding facility.
+- Exact Build 81 can consume the novated anchor's margin, after which Build 83 can move the carry to the next surviving refinancing descendant.
+- Exact Build 80 can issue the next margin call against that new anchor and exact Build 82 can refinance it again, so the recycling loop survives beyond the original Build 78 facility.
+- Existing browser profiles where Build 80 already released margin are repaired by recalling up to the current requirement from still-available borrower cash; any remaining gap stays as a real remargin deficit.
+- Durable `FNV#` snapshots make v83 reconstruction idempotent, and the moved Build 79 marker lets isolated v79 recovery rebuild exactly one carry from the current anchor without replaying cash or FX.
+- `funding_novation.js` is the final loaded module for Build 83.
 
 Future builds should start from these facts rather than reconstructing the financial stack from scratch.
