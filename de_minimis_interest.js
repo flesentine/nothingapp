@@ -1,6 +1,6 @@
 (()=>{
 const B88=save,R88=renderAll,O=JSON.parse(localStorage.getItem('nothing-state-v88')||'null')||{},RECOVER88=!Array.isArray(O.interestDustWriteoffs88),K=['deMinimisInterestOffice88','interestDustWriteoffs88','interestDustSerial88','interestDustFacilityWriteoffs88','interestDustClaimWriteoffs88','interestDustAmount88','interestDustCasesFinalized88','interestDustBlocked88','interestDustCrises88','interestDustKeys88','lastInterestDustTick88'];
-for(const k of K)S[k]=O[k]??(/Serial|Writeoffs|Amount|Finalized|Blocked|Crises|Tick/.test(k)?0:/Keys/.test(k)?{}:/Office/.test(k)?null:[]);
+for(const k of K)S[k]=O[k]??(k==='interestDustWriteoffs88'?[]:/Serial|FacilityWriteoffs|ClaimWriteoffs|Amount|Finalized|Blocked|Crises|Tick/.test(k)?0:/Keys/.test(k)?{}:/Office/.test(k)?null:[]);
 function save88(){B88();let o={};for(const k of K)o[k]=S[k];localStorage.setItem('nothing-state-v88',JSON.stringify(o))}save=save88;
 const q=s=>$(s),realm=id=>S.real[id],facility=id=>(S.liquidityFacilities55||[]).find(x=>x.id===id),authority=id=>(S.monetaryAuthorities55||[]).find(x=>x.id===id),claim=id=>(S.residualInterestClaims87||[]).find(x=>x.id===id);
 function trust(id,status,note){S.trustAudits=S.trustAudits||[];S.trustAuditSerial=S.trustAuditSerial||0;S.trustAudits.push({id:'TA'+(++S.trustAuditSerial),reality:id,status,created:Date.now(),note,x:10+Math.random()*80,y:12+Math.random()*68})}
