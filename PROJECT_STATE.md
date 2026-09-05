@@ -1,7 +1,7 @@
 # Nothing — Project State
 
-**Document revision:** 80.0  
-**Current build:** 80  
+**Document revision:** 81.0  
+**Current build:** 81  
 **Updated:** September 4, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -18,7 +18,7 @@ Each build adds whatever seems interesting at the time. Old behavior may become 
 - Browser state is persistent and local to the browser profile/device through `localStorage`.
 - Later modules load after earlier modules and may wrap the existing global `save` and `renderAll` functions.
 - The newest build module must load last unless a later compatibility fix intentionally follows it.
-- Each persistent build owns a versioned state key such as `nothing-state-v80`.
+- Each persistent build owns a versioned state key such as `nothing-state-v81`.
 - Forward migration is additive: later builds may read and update older objects, but should not silently discard historical state just because a newer representation exists.
 - `make it forget` clears the accumulated versioned local state through the current build.
 - Historical records are usually preserved even when their economic effect changes later. A recurring design pattern is that procedural history and current economic state can both remain true.
@@ -35,7 +35,7 @@ Later financial layers also intentionally reuse older state rather than shadowin
 - Build 53 dealers remain actual derivatives counterparties;
 - Build 54 clearinghouses and members remain the actual CCP resources;
 - Build 55 monetary authorities, facilities, reserve accounts, monetary base, and credit remain the public-money balance sheet;
-- Build 63 funds remain the investment-fund cash holders used by Builds 64–80.
+- Build 63 funds remain the investment-fund cash holders used by Builds 64–81.
 
 ## Current causal chain
 
@@ -67,8 +67,9 @@ The late system is not a set of independent features. It is one long chain:
 24. Build 78 lets the issuing Build 55 monetary authority sterilize most of that contraction with temporary, fully collateralized credit while preserving the Build 77 reserve transfer.
 25. Build 79 lets the borrower deploy up to 90% of that temporary sterilization liquidity into the same Build 56 FX direction, creating carry P/L and possible Build 55 rollover risk.
 26. Build 80 imposes carry-specific macroprudential margin: borrower cash is segregated, insufficient cash forces partial FX unwind, and a failed call escalates into a real Build 55 monetary collateral call.
+27. Build 81 gives the public lender a setoff right over stressed segregated carry margin, allowing that buffer to retire Build 55 credit while making the still-open carry under-margined again.
 
-## Builds 61–80: current financial stack
+## Builds 61–81: current financial stack
 
 | Build | Layer | Key consequence |
 | ---: | --- | --- |
@@ -92,6 +93,7 @@ The late system is not a set of independent features. It is one long chain:
 | 78 | Monetary sterilization | The issuer can recreate most Build 77 monetary-base contraction through ordinary Build 55-compatible collateralized facilities without restoring the foreign reserves lost in the FX trade. |
 | 79 | Sterilization carry | Borrowers can deploy temporary Build 78 settlement liquidity into the same FX direction, amplifying the market move and potentially consuming cash needed to repay the Build 55 facility. |
 | 80 | Carry margin | The monetary authority can segregate margin against a Build 79 carry, force FX unwind when cash is insufficient, and escalate a failed call into the real Build 55 collateral-call regime. |
+| 81 | Margin setoff | Stressed segregated carry margin can be seized to retire the linked Build 55 sterilization facility and reduce any associated Build 55 collateral call. |
 
 ## Money and finality invariants
 
@@ -130,6 +132,10 @@ These distinctions are intentional and should not be collapsed accidentally:
 - Build 80 forced unwinds reduce the live Build 79 carry and push the real Build 56 FX market opposite the original carry direction.
 - A failed Build 80 margin call creates a real Build 55 `CBMC#` record; old Build 55 payment/forbearance/crisis rules remain authoritative.
 - Build 80 mirrors margin snapshots and the reduced post-unwind carry onto the Build 55 facility so v79/v80 recovery cannot recreate the pre-unwind trade.
+- Build 81 setoff acts directly on already-segregated margin; it never credits borrower cash before reducing the real Build 55 facility, monetary base, outstanding credit, and reserve-account balance.
+- Build 81 can reduce or cure a Build 80-originated `CBMC#`; partial setoff leaves the true remaining amount open so exact old Build 55 collection can continue without double counting.
+- Consuming Build 80 margin through Build 81 can immediately create a new Build 80 margin deficit on the same live carry.
+- Build 81 facility markers make setoff recovery idempotent without retiring public credit twice.
 
 ## Persistence discipline
 
@@ -163,17 +169,15 @@ Validation claims should say exactly what happened.
 
 ## Current handoff
 
-The current head after Build 80 should leave these facts true:
+The current head after Build 81 should leave these facts true:
 
-- Open Build 79 carry positions can receive one current Build 80 macroprudential margin call at a time.
-- Base margin is 20% of remaining domestic carry basis; `rollover-risk` adds 15 points, `open-permanent-money` adds 20 points, and FX losses add up to another 20 points, capped at 55%.
-- Cash posted to Build 80 margin is removed from the actual Build 55 borrower and held as segregated margin, so it cannot simultaneously satisfy Build 55 repayment.
-- If cash is insufficient, Build 80 sells part or all of the foreign carry asset, reduces the live Build 79 position, and moves the actual Build 56 market opposite the opening direction.
-- If cash plus the whole remaining carry cannot satisfy the call, Build 80 creates a real Build 55 `CBMC#` collateral call on the sterilization facility.
-- Exact old Build 55 `meetMonetaryCall()` can service that escalation by reducing borrower cash, facility principal, and monetary base.
-- Paying Build 80 margin can itself push a near-maturity Build 79 position below the old 75% cash threshold and create `rollover-risk`.
-- Segregated margin is released when the carry closes, becomes unlevered, or the linked Build 55 facility is repaid.
-- Build 80 writes margin-call snapshots, current posted margin, and reduced carry markers onto the Build 55 facility; simultaneous v79/v80 loss can reconstruct without replaying cash seizure or FX unwind.
-- `carry_margin.js` is the final loaded module for Build 80.
+- Build 81 setoff is available only against posted Build 80 margin on an active sterilization facility when the carry is rollover-risk/permanent-money, the facility is near maturity, or a live Build 80-originated Build 55 collateral call exists.
+- Setoff uses already-segregated margin directly; borrower cash is not credited first.
+- Principal setoff reduces the real Build 55 facility principal, monetary base, outstanding credit, reserve-account balance, and increments existing reserves-extinguished history; interest setoff increases authority capital.
+- A linked Build 55 `CBMC#` is reduced by the same setoff. Full coverage marks it met; partial coverage leaves or reopens only the true remaining amount for old Build 55 collection.
+- Seizing posted margin can leave the same live Build 79 carry under-margined, allowing exact Build 80 to issue a replacement call immediately.
+- If setoff fully repays the facility, exact Build 80 releases any residual segregated margin back to borrower cash.
+- Build 81 stores immutable `MSX#` markers on the Build 55 facility and Build 79 position so missing v81 state can reconstruct without repeating balance-sheet retirement.
+- `margin_setoff.js` is the final loaded module for Build 81.
 
 Future builds should start from these facts rather than reconstructing the financial stack from scratch.
