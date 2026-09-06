@@ -1,7 +1,7 @@
 # Nothing — Project State
 
-**Document revision:** 93.0  
-**Current build:** 93  
+**Document revision:** 94.0  
+**Current build:** 94  
 **Updated:** September 5, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -18,7 +18,7 @@ Each build adds whatever seems interesting at the time. Old behavior may become 
 - Browser state is persistent and local to the browser profile/device through `localStorage`.
 - Later modules load after earlier modules and may wrap the existing global `save` and `renderAll` functions.
 - The newest build module must load last unless a later compatibility fix intentionally follows it.
-- Each persistent build owns a versioned state key such as `nothing-state-v93`.
+- Each persistent build owns a versioned state key such as `nothing-state-v94`.
 - Forward migration is additive: later builds may read and update older objects, but should not silently discard historical state just because a newer representation exists.
 - `make it forget` clears the accumulated versioned local state through the current build.
 - Historical records are usually preserved even when their economic effect changes later. A recurring design pattern is that procedural history and current economic state can both remain true.
@@ -35,7 +35,7 @@ Later financial layers also intentionally reuse older state rather than shadowin
 - Build 53 dealers remain actual derivatives counterparties;
 - Build 54 clearinghouses and members remain the actual CCP resources;
 - Build 55 monetary authorities, facilities, reserve accounts, monetary base, and credit remain the public-money balance sheet;
-- Build 63 funds remain the investment-fund cash holders used by Builds 64–93.
+- Build 63 funds remain the investment-fund cash holders used by Builds 64–94.
 
 ## Current causal chain
 
@@ -78,9 +78,11 @@ The late system is not a set of independent features. It is one long chain:
 35. Build 89 aggregates those individually final write-offs by case and authority, turning repeated de minimis forgiveness into reportable materiality and recurring governance penalties without reopening the write-offs.
 36. Build 90 converts sufficiently repeated Build 89 authority materiality into binding supervision over the real Build 55 discount rate and collateral floor, making governance damage operational.
 37. Build 91 registers every post-supervision emergency lending exception and ratchets future real Build 55 policy after repeated exceptions without cancelling the old emergency loans.
-38. Build 92 starts one-for-one capital conservation after the Build 91 rate/collateral ratchet is already saturated, ring-fencing real Build 55 authority capital against each later exception while preserving the emergency loan.\n39. Build 93 turns any actual Build 92 supervisory-capital shortfall into a durable restoration order whose buffer target equals 50% of peak uncovered capital, is funded only after Build 92 is current, deploys into later shortfalls, and releases only when the underlying post-cap exposure closes.
+38. Build 92 starts one-for-one capital conservation after the Build 91 rate/collateral ratchet is already saturated, ring-fencing real Build 55 authority capital against each later exception while preserving the emergency loan.
+39. Build 93 turns any actual Build 92 supervisory-capital shortfall into a durable restoration order whose buffer target equals 50% of peak uncovered capital, is funded only after Build 92 is current, deploys into later shortfalls, and releases only when the underlying post-cap exposure closes.
+40. Build 94 charges each later post-cap exception issued during a still-live Build 93 restoration episode an additional 50% of current principal in real Build 55 authority capital, with its own shortfall, repayment release, monetization retention, and recovery ledger.
 
-## Builds 61–93: current financial stack
+## Builds 61–94: current financial stack
 
 | Build | Layer | Key consequence |
 | ---: | --- | --- |
@@ -115,7 +117,9 @@ The late system is not a set of independent features. It is one long chain:
 | 89 | Interest materiality aggregation | Build 88 write-offs are aggregated by Build 85 case and Build 55 authority; 0.05 case totals become reportable and each 0.10 authority tranche reduces independence/credibility. |
 | 90 | Monetary supervisory remediation | Repeated Build 89 authority tranches tighten the real Build 55 discount rate and collateral floor in staged supervision, while old emergency override lending still survives. |
 | 91 | Supervisory exception register | Post-supervision Build 55/70/78/82 override facilities are registered; the first remains a true exception, while each later exception adds 2 points to the future minimum rate and tightens collateral one grade toward AAA. |
-| 92 | Supervisory capital conservation | Once Build 91 is already at 20% / AAA, each later exception must be backed one-for-one by the issuing Build 55 authority's own capital until principal is repaid; monetized exposure keeps the hold locked. |\n| 93 | Supervisory capital restoration | A real Build 92 shortfall creates an authority-level restoration order; after the Build 92 requirement is cured, 50% of peak shortfall must be rebuilt as a separate buffer that can absorb later shortfalls and stays locked until post-cap exposure closes. |
+| 92 | Supervisory capital conservation | Once Build 91 is already at 20% / AAA, each later exception must be backed one-for-one by the issuing Build 55 authority's own capital until principal is repaid; monetized exposure keeps the hold locked. |
+| 93 | Supervisory capital restoration | A real Build 92 shortfall creates an authority-level restoration order; after the Build 92 requirement is cured, 50% of peak shortfall must be rebuilt as a separate buffer that can absorb later shortfalls and stays locked until post-cap exposure closes. |
+| 94 | Restoration exception surcharge | A later post-cap exception issued while an earlier Build 93 restoration episode is still live receives a separate 50% capital surcharge, funded from real Build 55 authority capital after older supervisory layers reconcile. |
 
 ## Money and finality invariants
 
@@ -185,7 +189,24 @@ These distinctions are intentional and should not be collapsed accidentally:
 - Missing facility or authority records block the entire cash sweep before borrower cash moves.
 - Exact old Build 55 can continue to evergreen partially swept residual facilities, and later genuinely new borrower cash can trigger another Build 86 sweep.
 
-- Build 93 triggers only from an actual aggregate Build 92 shortfall, never from a fully funded supervisory-capital requirement.\n- Build 92 retains first claim on free authority capital while any shortfall is open; Build 93 begins building its separate restoration buffer only after aggregate Build 92 shortfall is zero.\n- The Build 93 restoration-buffer target is 50% of the restoration episode's peak Build 92 shortfall and never ratchets downward within that episode.\n- Build 93 buffer funding moves real Build 55 authority capital into a separate held amount without changing monetary base, outstanding credit, reserve accounts, borrower cash, facility principal, interest, or contractual rates.\n- A later Build 92 shortfall deploys Build 93 buffer capital back into the real authority capital field so Build 92 can consume it through its own normal SCA top-up path; Build 93 does not silently edit the older requirement.\n- Curing the Build 92 shortfall does not release the Build 93 buffer. The buffer releases only when the authority has no remaining positive Build 92 required post-cap exposure.\n- Durable SRO/CRA snapshots live on the real Build 55 authority, so isolated v93 reconstruction restores records and counters without moving capital a second time.\n\n## Persistence discipline
+- Build 93 triggers only from an actual aggregate Build 92 shortfall, never from a fully funded supervisory-capital requirement.
+- Build 92 retains first claim on free authority capital while any shortfall is open; Build 93 begins building its separate restoration buffer only after aggregate Build 92 shortfall is zero.
+- The Build 93 restoration-buffer target is 50% of the restoration episode's peak Build 92 shortfall and never ratchets downward within that episode.
+- Build 93 buffer funding moves real Build 55 authority capital into a separate held amount without changing monetary base, outstanding credit, reserve accounts, borrower cash, facility principal, interest, or contractual rates.
+- A later Build 92 shortfall deploys Build 93 buffer capital back into the real authority capital field so Build 92 can consume it through its own normal SCA top-up path; Build 93 does not silently edit the older requirement.
+- Curing the Build 92 shortfall does not release the Build 93 buffer. The buffer releases only when the authority has no remaining positive Build 92 required post-cap exposure.
+- Durable SRO/CRA snapshots live on the real Build 55 authority, so isolated v93 reconstruction restores records and counters without moving capital a second time.
+
+- Build 94 is forward-only: exception registrations created before the Build 94 office activation are never retroactively surcharged.
+- A Build 94 surcharge requires both a real Build 92 SCR for the new exception and a Build 93 restoration order that was already live when the later exception was registered.
+- The Build 94 surcharge target is 50% of the linked facility's current principal and is distinct from the Build 92 one-for-one requirement and Build 93 restoration buffer.
+- Build 92 and Build 93 reconcile before Build 94, so the surcharge can consume only real free Build 55 authority capital left after older supervisory obligations.
+- Partial principal repayment reduces the Build 94 surcharge at the same 50% rate and releases excess held surcharge capital back to the real authority.
+- Monetization does not release the Build 94 surcharge while positive principal remains; zero-principal closure releases it.
+- Build 94 itself never changes monetary base, outstanding credit, reserve accounts, borrower cash, facility principal, interest, contractual rates, Build 92 required capital, or Build 93 restoration targets.
+- Durable RSR/RSA snapshots live on the real Build 55 facility and authority, making isolated v94 reconstruction non-economic and idempotent.
+
+## Persistence discipline
 
 When adding Build N:
 
@@ -217,19 +238,20 @@ Validation claims should say exactly what happened.
 
 ## Current handoff
 
-The current head after Build 93 should leave these facts true:
+The current head after Build 94 should leave these facts true:
 
 - Build 91 remains authoritative for identifying supervised emergency exceptions and their historical Build 90 stage/exception number.
-- Build 92 remains authoritative for deciding which post-cap exceptions require one-for-one real Build 55 authority capital and for maintaining each `SCR#` requirement, hold, shortfall, and `SCA#` top-up/release history.
-- Build 93 does not trigger on a fully funded Build 92 requirement. It begins only when an authority's aggregate current Build 92 `shortfall92` is positive above floating-point dust.
-- The first actual shortfall in an episode creates one authority-level `SRO#` with a restoration-buffer target equal to 50% of the episode's peak Build 92 shortfall.
-- While Build 92 shortfall remains positive, Build 93 does not take free capital for its own buffer. Build 92 keeps first claim.
-- After Build 92 shortfall is cured but positive post-cap required exposure remains, Build 93 moves real free Build 55 authority capital into the restoration buffer until the target is full.
-- If a later Build 92 shortfall appears, Build 93 deploys held restoration capital back into free authority capital. Build 92 then consumes it through its own ordinary reconciliation, preserving the older `SCA#` ledger.
-- If a later shortfall exceeds the prior peak, the restoration target rises to 50% of the new peak and does not fall when the current shortfall later declines.
-- A zero current shortfall is not enough to release the restoration buffer. Release occurs only when all Build 92 required post-cap exposure for that authority reaches zero.
-- Build 93 itself never directly changes monetary base, outstanding credit, reserve-account balances, borrower cash, facility principal, facility interest, contractual rate, Build 91 exception numbering, or Build 92 required capital.
-- Durable `SRO#` and `CRA#` snapshots live on the real Build 55 monetary authority, making isolated v93 reconstruction non-economic and idempotent.
-- `capital_restoration.js` is the final loaded module for Build 93.
+- Build 92 remains authoritative for deciding which post-cap exceptions require one-for-one real Build 55 authority capital and for maintaining each SCR requirement, hold, shortfall, and SCA action history.
+- Build 93 remains authority-level restoration after an actual Build 92 shortfall; its buffer target is 50% of peak Build 92 shortfall and remains live until the underlying post-cap exposure closes.
+- Build 94 is forward-only. A Build 91 registration created before the Build 94 office activation is not surcharged.
+- The exception that originally caused the Build 93 restoration episode is therefore not retroactively charged by Build 94.
+- A later post-cap exception is eligible only when it has a real Build 92 SCR and the same authority already had a live Build 93 SRO when the later registration occurred.
+- Each eligible later exception gets one RSR whose required amount equals 50% of the linked Build 55 facility's current principal.
+- Build 94 loads after Build 93, so Build 92 and Build 93 consume their required real authority capital first; any Build 94 underfunding remains an explicit surcharge shortfall.
+- Partial principal repayment reduces the surcharge proportionally and releases excess held surcharge capital to the real authority.
+- Monetization keeps the surcharge locked behind remaining positive principal; zero-principal closure releases it.
+- Build 94 itself never directly changes monetary base, outstanding credit, reserve-account balances, borrower cash, facility principal, facility interest, contractual rate, Build 91 exception numbering, Build 92 required capital, or Build 93 restoration-buffer state.
+- Durable RSR and RSA snapshots live on both the real Build 55 facility and authority, making isolated v94 reconstruction non-economic and idempotent.
+- `restoration_surcharge.js` is the final loaded module for Build 94.
 
 Future builds should start from these facts rather than reconstructing the financial stack from scratch.
