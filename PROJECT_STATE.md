@@ -1,7 +1,7 @@
 # Nothing — Project State
 
-**Document revision:** 97.0  
-**Current build:** 97  
+**Document revision:** 98.0  
+**Current build:** 98  
 **Updated:** September 6, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -18,7 +18,7 @@ Each build adds whatever seems interesting at the time. Old behavior may become 
 - Browser state is persistent and local to the browser profile/device through `localStorage`.
 - Later modules load after earlier modules and may wrap the existing global `save` and `renderAll` functions.
 - The newest build module must load last unless a later compatibility fix intentionally follows it.
-- Each persistent build owns a versioned state key such as `nothing-state-v97`.
+- Each persistent build owns a versioned state key such as `nothing-state-v98`.
 - Forward migration is additive: later builds may read and update older objects, but should not silently discard historical state just because a newer representation exists.
 - `make it forget` clears the accumulated versioned local state through the current build.
 - Historical records are usually preserved even when their economic effect changes later. A recurring design pattern is that procedural history and current economic state can both remain true.
@@ -35,7 +35,7 @@ Later financial layers also intentionally reuse older state rather than shadowin
 - Build 53 dealers remain actual derivatives counterparties;
 - Build 54 clearinghouses and members remain the actual CCP resources;
 - Build 55 monetary authorities, facilities, reserve accounts, monetary base, and credit remain the public-money balance sheet;
-- Build 63 funds remain the investment-fund cash holders used by Builds 64–97.
+- Build 63 funds remain the investment-fund cash holders used by Builds 64–98.
 
 ## Current causal chain
 
@@ -84,8 +84,9 @@ The late system is not a set of independent features. It is one long chain:
 41. Build 95 turns an actually observed Build 94 surcharge shortfall into a durable supervisory strike; the failed surcharge is grandfathered, while each later Build 94 requirement in the same live Build 93 restoration episode acquires another 50% current-principal capital penalty.
 42. Build 96 turns a current Build 95 recidivism-capital shortfall into a real Build 59 stabilization-board recapitalization request; approved pooled Build 58 reserves become free Build 55 authority capital without rewriting the older supervisory ledgers.
 43. Build 97 turns each actual Build 96 pool-to-authority capital transfer into a principal-only preferred recoupment claim on future genuinely free Build 55 authority capital, junior to Builds 92–95 and bounded by pre-recap capital plus current bad assets.
+44. Build 98 turns each actual Build 97 preferred-recoupment payment into one-for-one restitution of the old Build 58 RDR claim to the reality whose pooled reserve asset bore the Build 96 rescue; the old Build 59 score and Build 58 exchange machinery then govern that restored claim.
 
-## Builds 61–97: current financial stack
+## Builds 61–98: current financial stack
 
 | Build | Layer | Key consequence |
 | ---: | --- | --- |
@@ -126,6 +127,7 @@ The late system is not a set of independent features. It is one long chain:
 | 95 | Surcharge recidivism | A Build 94 surcharge shortfall observed during a live Build 93 restoration episode creates a strike; grandfathered failed surcharges stay unchanged, but later exceptions in that episode receive another 50% capital penalty. |
 | 96 | Supervisory recapitalization | A live Build 95 penalty shortfall can ask the existing Build 58/59 stabilization system to transfer pooled target-currency reserves into real Build 55 authority capital, subject to borrower recusal, weighted voting, deadlock, and chair override. |
 | 97 | Preferred recapitalization recoupment | Each actual Build 96 reserve transfer creates a principal-only claim back to the stabilization pool; collection can use only authority capital left free after Builds 92–95 and above both the pre-recap baseline and current bad assets. |
+| 98 | Reserve restitution | Each real Build 97 preferred payment restores one-for-one Build 58 RDR to the burden reality, creating a fungible liquidity claim on the replenished pool without buying quota or directly changing votes. |
 
 ## Money and finality invariants
 
@@ -241,6 +243,15 @@ These distinctions are intentional and should not be collapsed accidentally:
 - Released Builds 92–95 holds, unused recapitalization capital, and Build 55 interest income can become future sources of preferred repayment only after they are genuinely free.
 - Durable RCP/RRP snapshots live on the linked Build 96 transfer, real Build 55 authority, and Build 58 fund, making isolated v97 reconstruction non-economic and idempotent.
 
+- Build 98 creates exactly one RRA restitution allocation for each positive Build 97 RRP payment and exactly one real Build 58 RDR allocation record for the same amount.
+- The recipient is the Build 97 payment's burden reality: the member whose historically pooled foreign reserve currency was consumed by the linked Build 96 recapitalization.
+- Build 98 raises the recipient's existing Build 58 quota-object `rdr` balance and the old `drawingRightsAllocated58` aggregate one-for-one; it does not create a parallel drawing-right balance.
+- Build 98 does not move the reserve pool or authority capital at allocation time. Build 97 already performed the economic repayment.
+- Build 98 does not directly change Build 58 quota, historical contributed reserves, Build 59 director votes, board thresholds, monetary base, outstanding credit, facility principal/interest, or Builds 91–97 economics.
+- Restored RDR is fully fungible under the existing Build 58 exchange mechanism and can later drain the recovered foreign-reserve currency back out of the pool.
+- The old Build 59 quota-score formula remains authoritative: because it subtracts 0.08 × outstanding RDR, a later ordinary director recalculation can reduce the restitution recipient's vote weight.
+- Durable RRA snapshots live on the source Build 97 payment, recipient Build 58 quota object, Build 58 fund, and actual Build 58 RDR record; isolated v98 reconstruction is non-economic and does not allocate RDR twice.
+
 ## Persistence discipline
 
 When adding Build N:
@@ -273,25 +284,23 @@ Validation claims should say exactly what happened.
 
 ## Current handoff
 
-The current head after Build 97 should leave these facts true:
+The current head after Build 98 should leave these facts true:
 
 - Build 91 remains authoritative for supervised emergency-exception registration and historical Build 90 stage/exception numbering.
-- Build 92 remains authoritative for one-for-one post-cap authority-capital requirements and each SCR/SCA history.
-- Build 93 remains the authority-level restoration layer created only after an actual Build 92 shortfall; its buffer target is 50% of peak Build 92 shortfall and its restoration episode remains live until the underlying post-cap exposure closes.
-- Build 94 remains the forward-only 50% restoration surcharge on later post-cap exceptions issued inside an already-live Build 93 restoration episode.
-- Build 95 remains observational and progressive: an actually observed Build 94 surcharge shortfall creates a strike, existing failed surcharges are grandfathered, and later Build 94 requirements in that live restoration episode receive another 50% current-principal capital penalty.
-- Build 96 remains the multilateral recapitalization layer: a current positive Build 95 shortfall can create a real Build 59 motion and draw real target-currency reserves from the existing Build 58 pool into the real Build 55 authority capital field.
-- Build 96 target-reality recusal, live weighted threshold, majority approval, deadlock, systemic-necessity override costs, partial funding, empty-pool funding shortfall, and recovery-safe awaiting-consumption state remain authoritative.
-- Build 97 begins from actual Build 96 SRT transfers, not SRC requests. Every positive SRT can create exactly one RCP preferred claim for the amount actually transferred.
-- Build 97 preferred claims are principal-only and return value to the same Build 58 currency pool that funded the Build 96 transfer.
-- Builds 92–95 are senior to Build 97. Any current Build 92 shortfall, Build 93 restoration-buffer gap, Build 94 surcharge shortfall, or Build 95 recidivism shortfall blocks preferred collection.
-- Even when supervisory pressure is zero, Build 97 may collect only authority capital above the larger of the linked SRT's pre-recap authority-capital level and current Build 55 bad assets.
-- Build 97 collection reduces the real Build 55 authority capital field and increases the corresponding real Build 58 pool one-for-one.
-- Build 97 does not treat repayment as a new quota subscription: Build 58 quota, historical contributions, Build 59 director weights, and old governance decisions stay unchanged.
-- Released supervisory holds, unused recapitalization capital, and ordinary Build 55 interest income may later become preferred-repayment sources if they are genuinely free above the protected floor.
-- A partially collected RCP remains historically tied to the same SRT and can collect again later; a paid RCP does not erase the original Build 96 rescue.
-- Build 97 never directly changes monetary base, outstanding credit, reserve-account balances, borrower cash, facility principal or interest, contractual rates, Build 91 numbering, Builds 92–95 requirements/holds, or Build 96 SRC/SRT economics.
-- Durable RCP and RRP snapshots live on the linked Build 96 transfer, real Build 55 monetary authority, and Build 58 stabilization fund, making isolated v97 reconstruction non-economic and idempotent.
-- `preferred_recoupment.js` is the final loaded module for Build 97.
+- Builds 92–95 remain the ordered authority-capital supervisory stack: one-for-one capital, restoration buffer, restoration surcharge, and recidivism penalty.
+- Build 96 remains the multilateral recapitalization layer using the real Build 58 reserve pool and Build 59 board, including target-reality recusal, current weighted threshold, deadlock, chair override cost, partial funding, and awaiting-consumption recovery safety.
+- Build 97 remains junior to Builds 92–95 and creates one principal-only RCP preferred claim for each actual positive Build 96 SRT transfer.
+- Build 97 collection may use only genuinely free Build 55 authority capital above both live supervisory pressure and the larger of pre-recap authority capital or current bad assets.
+- A Build 97 RRP payment reduces real Build 55 authority capital and restores the corresponding real Build 58 target-currency pool one-for-one without buying quota.
+- Build 98 begins from actual positive Build 97 RRP payments, not from RCP claims or Build 96 requests/transfers.
+- Every eligible RRP creates exactly one RRA record and one actual Build 58 RDR allocation for exactly the amount repaid.
+- The RDR recipient is the RRP burden reality, which is the member whose historically pooled foreign reserve asset bore the linked Build 96 rescue.
+- Build 98 modifies the existing Build 58 member `rdr` balance and `drawingRights58` ledger rather than creating a synthetic restitution token.
+- Build 98 itself does not move pool reserves or authority capital; the reserve returned in Build 97 remains where Build 97 put it until an older Build 58 mechanism uses it.
+- Restitution RDR is ordinary fungible RDR. The existing Build 58 exchange route can later consume it, drain the correct foreign-currency pool, and increase the recipient's real Build 56 foreign reserves.
+- Build 98 does not directly alter quota, historical contributions, or director votes. The old Build 59 score formula remains authoritative and includes the increased RDR through its existing negative RDR term on the next ordinary recalculation; in the normal full-render lifecycle that older recalculation can occur immediately after Build 98 allocates the RDR.
+- A restored liquidity claim can therefore reduce the creditor's future voting weight without any new Build 98 voting rule.
+- Durable RRA markers live on the source Build 97 payment, recipient Build 58 quota object, Build 58 stabilization fund, and the actual Build 58 RDR allocation record, making isolated v98 reconstruction non-economic and idempotent.
+- `reserve_restitution.js` is the final loaded module for Build 98.
 
 Future builds should start from these facts rather than reconstructing the financial stack from scratch.
