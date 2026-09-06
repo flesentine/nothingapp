@@ -96,6 +96,10 @@ Build 94 never steals capital away from an older supervisory obligation.
 
 If Build 92 or Build 93 has already consumed the available free capital, the Build 94 surcharge truthfully remains underfunded.
 
+Same-cycle releases also preserve that priority.
+
+If one Build 94 requirement releases capital while an older Build 92 shortfall or Build 93 restoration-buffer gap is still open, Build 94 does not immediately recycle that released capital into another Build 94 surcharge. The capital is left free for the next reconciliation, allowing the older layer to take its contractual first claim before Build 94 tries again.
+
 ## Dynamic principal
 
 The surcharge follows current facility principal.
@@ -249,6 +253,18 @@ Result:
 - shortfall = 0.30;
 - free authority capital = 0;
 - status = `surcharge-shortfall`.
+
+### Same-cycle older-layer priority
+
+Fixture:
+- one Build 94 surcharge releases 0.30 after a principal reduction;
+- a different Build 94 surcharge remains underfunded;
+- the same authority still has a positive Build 93 restoration-buffer gap.
+
+Result:
+- the 0.30 release returns to real authority capital;
+- the other Build 94 surcharge does not immediately take it in the same Build 94 pass;
+- the next full reconciliation gives Build 93 first claim before Build 94 retries.
 
 ### Later top-up
 
