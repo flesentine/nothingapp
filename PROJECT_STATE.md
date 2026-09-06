@@ -1,8 +1,8 @@
 # Nothing — Project State
 
-**Document revision:** 95.0  
-**Current build:** 95  
-**Updated:** September 5, 2026
+**Document revision:** 96.0  
+**Current build:** 96  
+**Updated:** September 6, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
 
@@ -18,7 +18,7 @@ Each build adds whatever seems interesting at the time. Old behavior may become 
 - Browser state is persistent and local to the browser profile/device through `localStorage`.
 - Later modules load after earlier modules and may wrap the existing global `save` and `renderAll` functions.
 - The newest build module must load last unless a later compatibility fix intentionally follows it.
-- Each persistent build owns a versioned state key such as `nothing-state-v95`.
+- Each persistent build owns a versioned state key such as `nothing-state-v96`.
 - Forward migration is additive: later builds may read and update older objects, but should not silently discard historical state just because a newer representation exists.
 - `make it forget` clears the accumulated versioned local state through the current build.
 - Historical records are usually preserved even when their economic effect changes later. A recurring design pattern is that procedural history and current economic state can both remain true.
@@ -35,7 +35,7 @@ Later financial layers also intentionally reuse older state rather than shadowin
 - Build 53 dealers remain actual derivatives counterparties;
 - Build 54 clearinghouses and members remain the actual CCP resources;
 - Build 55 monetary authorities, facilities, reserve accounts, monetary base, and credit remain the public-money balance sheet;
-- Build 63 funds remain the investment-fund cash holders used by Builds 64–95.
+- Build 63 funds remain the investment-fund cash holders used by Builds 64–96.
 
 ## Current causal chain
 
@@ -82,8 +82,9 @@ The late system is not a set of independent features. It is one long chain:
 39. Build 93 turns any actual Build 92 supervisory-capital shortfall into a durable restoration order whose buffer target equals 50% of peak uncovered capital, is funded only after Build 92 is current, deploys into later shortfalls, and releases only when the underlying post-cap exposure closes.
 40. Build 94 charges each later post-cap exception issued during a still-live Build 93 restoration episode an additional 50% of current principal in real Build 55 authority capital, with its own shortfall, repayment release, monetization retention, and recovery ledger.
 41. Build 95 turns an actually observed Build 94 surcharge shortfall into a durable supervisory strike; the failed surcharge is grandfathered, while each later Build 94 requirement in the same live Build 93 restoration episode acquires another 50% current-principal capital penalty.
+42. Build 96 turns a current Build 95 recidivism-capital shortfall into a real Build 59 stabilization-board recapitalization request; approved pooled Build 58 reserves become free Build 55 authority capital without rewriting the older supervisory ledgers.
 
-## Builds 61–95: current financial stack
+## Builds 61–96: current financial stack
 
 | Build | Layer | Key consequence |
 | ---: | --- | --- |
@@ -122,6 +123,7 @@ The late system is not a set of independent features. It is one long chain:
 | 93 | Supervisory capital restoration | A real Build 92 shortfall creates an authority-level restoration order; after the Build 92 requirement is cured, 50% of peak shortfall must be rebuilt as a separate buffer that can absorb later shortfalls and stays locked until post-cap exposure closes. |
 | 94 | Restoration exception surcharge | A later post-cap exception issued while an earlier Build 93 restoration episode is still live receives a separate 50% capital surcharge, funded from real Build 55 authority capital after older supervisory layers reconcile. |
 | 95 | Surcharge recidivism | A Build 94 surcharge shortfall observed during a live Build 93 restoration episode creates a strike; grandfathered failed surcharges stay unchanged, but later exceptions in that episode receive another 50% capital penalty. |
+| 96 | Supervisory recapitalization | A live Build 95 penalty shortfall can ask the existing Build 58/59 stabilization system to transfer pooled target-currency reserves into real Build 55 authority capital, subject to borrower recusal, weighted voting, deadlock, and chair override. |
 
 ## Money and finality invariants
 
@@ -218,6 +220,16 @@ These distinctions are intentional and should not be collapsed accidentally:
 - Build 95 itself never changes monetary base, outstanding credit, reserve accounts, borrower cash, facility principal, interest, contractual rates, Build 92 capital, Build 93 restoration state, or Build 94 surcharge state.
 - Durable SBE/RPR/RPA snapshots live on the real Build 55 authority/facility objects, making isolated v95 reconstruction non-economic and idempotent.
 
+- Build 96 creates recapitalization only from a current positive Build 95 penalty shortfall; a fully funded or released Build 95 requirement does not trigger it.
+- Build 96 uses the existing Build 58 target-currency reserve pool and the existing Build 59 weighted board rather than inventing a shadow rescue balance sheet or voting system.
+- The target reality is recused from its own Build 96 recapitalization motion; the live non-target director must cross the existing board threshold or the staff chair must use the costly systemic-necessity override.
+- A Build 96 transfer reduces the real Build 58 pool and raises the real Build 55 authority capital field one-for-one; it does not mint settlement money or reduce monetary base, outstanding credit, facility principal, or older supervisory requirements.
+- Build 96 never directly edits Build 95 held or shortfall values. The next older-layer reconciliation decides whether newly free authority capital actually cures the recidivism penalty.
+- Because recapitalization lands in unrestricted real authority capital, a renewed Build 92, Build 93, or Build 94 claim can consume it before Build 95; Build 96 does not bypass the existing priority chain.
+- Partial pool funding and empty-pool funding shortfalls remain explicit and retryable within the already-approved request.
+- If the Build 95 shortfall disappears before unused approved capital is transferred, Build 96 closes the request without moving unnecessary reserves; any earlier partial transfer remains historically final.
+- Durable SRC/SRT snapshots live on the linked Build 95 requirement, real Build 55 authority, and Build 58 fund, making isolated v96 reconstruction non-economic and idempotent.
+
 ## Persistence discipline
 
 When adding Build N:
@@ -250,23 +262,27 @@ Validation claims should say exactly what happened.
 
 ## Current handoff
 
-The current head after Build 95 should leave these facts true:
+The current head after Build 96 should leave these facts true:
 
-- Build 91 remains authoritative for identifying supervised emergency exceptions and their historical Build 90 stage/exception number.
-- Build 92 remains authoritative for the one-for-one capital requirement on post-cap exceptions and for each SCR/SCA history.
-- Build 93 remains the authority-level restoration layer created only after an actual Build 92 shortfall; its buffer target is 50% of peak Build 92 shortfall and its episode remains live until underlying post-cap exposure closes.
-- Build 94 remains the forward-only 50% restoration surcharge on a later post-cap exception issued while a Build 93 restoration episode is already live.
-- Build 94 now also explicitly refuses to recycle a same-cycle surcharge release into another Build 94 top-up while a Build 92 shortfall or Build 93 restoration-buffer gap still has first claim.
-- Build 95 does not infer historical surcharge failures. It creates a strike only when it actually observes positive Build 94 shortfall during its own runtime.
-- The Build 94 requirements already present when that strike is created are stored as the grandfathered source set and are never penalized again by Build 95.
-- The strike survives a later cure of Build 94 shortfall for as long as the linked Build 93 restoration order remains live.
-- A later Build 94 RSR in that same restoration episode receives one Build 95 RPR whose required amount equals another 50% of the linked Build 55 facility's current principal.
-- A recidivist later exception can therefore carry 100% Build 92 capital, 50% Build 94 surcharge capital, and 50% Build 95 recidivism capital without any older ledger being rewritten.
-- Build 95 tops up only from real free Build 55 authority capital left after Builds 92, 93, and 94 have no remaining first-priority claim.
-- Partial principal repayment reduces the Build 95 penalty proportionally; monetization retains it behind remaining principal; zero-principal closure releases it.
-- Same-cycle Build 95 releases remain free when an older Build 92/93/94 claim exists, so the older layer receives first claim on the next full reconciliation.
-- Build 95 itself never directly changes monetary base, outstanding credit, reserve-account balances, borrower cash, facility principal, facility interest, contractual rate, Build 91 numbering, Build 92 capital state, Build 93 restoration state, or Build 94 surcharge state.
-- Durable SBE, RPR, and RPA snapshots live on the real Build 55 authority/facility objects, making isolated v95 reconstruction non-economic and idempotent.
-- `surcharge_recidivism.js` is the final loaded module for Build 95.
+- Build 91 remains authoritative for supervised emergency-exception registration and historical Build 90 stage/exception numbering.
+- Build 92 remains authoritative for one-for-one post-cap authority-capital requirements and each SCR/SCA history.
+- Build 93 remains the authority-level restoration layer created only after an actual Build 92 shortfall; its buffer target is 50% of peak Build 92 shortfall and its restoration episode remains live until the underlying post-cap exposure closes.
+- Build 94 remains the forward-only 50% restoration surcharge on later post-cap exceptions issued inside an already-live Build 93 restoration episode, including its explicit same-cycle protection for older Build 92/93 claims.
+- Build 95 remains observational and progressive: an actually observed Build 94 surcharge shortfall creates a strike, the already-present Build 94 requirements are grandfathered, and later Build 94 requirements in the same live restoration episode receive another 50% current-principal capital penalty.
+- Build 96 begins only from a current positive Build 95 shortfall and creates one active SRC recapitalization request at a time for that RPR.
+- Every SRC creates a real Build 59 MOT of type `supervisory-recapitalization96`; the target reality is recused and the live weighted board threshold remains authoritative.
+- A default 50/50 board can deadlock because the non-target director has only 50 votes against the normal 60% threshold.
+- The existing staff-chair systemic-necessity override can break that deadlock while increasing old Build 59 chair/override counters and reducing the real Build 58 fund's independence and credibility.
+- A normal majority can also pass if prior quota changes have already given the non-target reality enough current Build 59 voting weight.
+- Approved Build 96 support draws the target reality's own currency from the existing Build 58 pool and adds the same amount to the real Build 55 authority `capital` field.
+- Build 96 does not itself change Build 95 held/shortfall values. Builds 92–95 run first on the next full reconciliation and decide how that real free authority capital is consumed.
+- Recapitalization is therefore not earmarked: a renewed older Build 92, 93, or 94 claim can absorb it before Build 95, possibly leaving another Build 95 shortfall and eventually another Build 96 request.
+- Build 96 never directly changes monetary base, outstanding credit, reserve-account balances, borrower cash, Build 55 facility principal or interest, contractual rates, Build 91 numbering, Build 92 capital state, Build 93 restoration state, Build 94 surcharge state, or Build 95 penalty state.
+- Partial stabilization-pool funding stays `implemented-partial`; an empty target-currency pool stays `funding-shortfall`; both can retry without a second vote while approved amount remains.
+- A full Build 96 pool transfer first becomes `implemented-awaiting-consumption`, keeping the request active across the crash window between economic transfer and the next Build 95 reconciliation; it becomes terminal only after the delivered capital is observably consumed or the Build 95 shortfall is cured.
+- If delivered recapitalization is consumed by older claims while Build 95 still has a residual shortfall, the request becomes `implemented-consumed-with-residual-shortfall`, after which a genuinely new SRC may be created for that residual need.
+- A shortfall cured before voting closes as `cured-before-vote`; a shortfall cured after approval but before any transfer closes as `cured-before-transfer`; a shortfall cured after a partial transfer closes as `implemented-current-shortfall-cured`.
+- Durable SRC and SRT snapshots live on the linked Build 95 requirement, real Build 55 monetary authority, and Build 58 stabilization fund, making isolated v96 reconstruction non-economic and idempotent.
+- `supervisory_recapitalization.js` is the final loaded module for Build 96.
 
 Future builds should start from these facts rather than reconstructing the financial stack from scratch.
