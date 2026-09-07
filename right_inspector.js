@@ -68,7 +68,8 @@ function entityKind(id,raw=''){
 function looksStatus(s){
   s=esc(s).trim();
   if(!s||s.length>72||/[.!?]/.test(s))return false;
-  return /(?:^|[- ·])(active|pending|passed|approved|allocated|paid|complete|completed|rejected|failed|deadlocked|closed|open|operating|observing|awaiting|missing|insufficient|released|buffered|buffer|funding|majority|risk|existing|orphaned|surcharge|restitution|decisive|already|shortfall|monetized|repaid|no-|pool-)(?:$|[- ·])/i.test(s);
+  if(/^(?:no|pool)-[a-z0-9-]+$/i.test(s))return true;
+  return /(?:^|[- ·])(active|pending|passed|approved|allocated|paid|complete|completed|rejected|failed|deadlocked|closed|open|operating|observing|awaiting|missing|insufficient|released|buffered|buffer|funding|majority|risk|existing|orphaned|surcharge|restitution|decisive|already|shortfall|monetized|repaid)(?:$|[- ·])/i.test(s);
 }
 function statusFrom(body,meta){
   const b=esc(body).trim(),m=esc(meta).trim();
@@ -94,8 +95,8 @@ function whyFor(raw,id){
   if(prefix==='PRG'||l.includes('stabilization program'))return'This program is an existing Build 58 rescue relationship. Later governance layers can observe or act through it, but do not replace it.';
   if(prefix==='SURV'||l.includes('surveillance'))return'Build 59 surveillance measures the borrower state used by the old board when deciding how directors prefer to vote on program motions.';
   if(prefix==='RDR'||l.includes('drawing right'))return'This is an ordinary Build 58 liquidity claim on the stabilization pool. It can be held, restored, or exchanged into real foreign reserves.';
+  if(prefix==='ISFB'||prefix==='FB'||l.includes('fund board')||l.includes('stabilization fund board'))return'The Build 59 board is the authoritative governance layer for stabilization motions. Later builds can create opportunities or motions, but the old board still decides the vote.';
   if(prefix==='ISF'||l.includes('stabilization fund'))return'This is the shared reserve institution underneath the later recapitalization, restitution, governance-arbitrage, and conditionality consequences.';
-  if(prefix==='FB'||l.includes('fund board')||l.includes('stabilization fund board'))return'The Build 59 board is the authoritative governance layer for stabilization motions. Later builds can create opportunities or motions, but the old board still decides the vote.';
   if(prefix==='MA'||prefix==='MAA'||prefix==='MAB'||l.includes('monetary authority'))return'This authority is the real balance-sheet institution whose capital, facilities, and supervisory history feed the later financial consequences.';
   if(prefix==='FX'||l.includes('foreign exchange'))return'The FX layer holds the real foreign-reserve balances that connect drawing-right redemption to the governance score.';
   if(l.includes('warrant'))return'This warrant exists because an earlier legal or enforcement consequence authorized action against its target.';
@@ -185,7 +186,7 @@ function renderInspector(k,b,m,buttons=[]){
     const isClose=/^(close|cancel|done)$/i.test(label);
     if(isClose)button.dataset.close='true';
     else if(!primaryAssigned){button.dataset.primary='true';primaryAssigned=true}
-    button.onclick=()=>fn();
+    button.onclick=fn;
     actions.appendChild(button);
   }
   empty.hidden=actions.children.length>0;
