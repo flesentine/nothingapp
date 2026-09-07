@@ -1,10 +1,9 @@
 (()=>{
 const legacyPanel=panel;
 const legacyClosePanel=closePanel;
-const ID_TOKEN=/\b(?:MCP|GAR|GAP|RRA|RRR|RRP|RCP|SRC|SRT|MOT|PRG|SURV|RDR|COND|ISF|FB|DIR|MAA|MAB|MA|FX|TA|INC|LAW|WR|Q)\d+\b/g;
+const ID_TOKEN=/\b(?:(?:MAA|MAB)\d*|(?:MCP|MCR|GAR|GAP|GAD|RRA|RRR|RRP|RCP|RPO|SRC|SRT|MOT|PRG|SURV|RDR|COND|ISFB|ISF|FB|DIR|CRO|RSO|MA|FX|TA|INC|LAW|WR|Q)\d+)\b/g;
 let selectedMarker=null;
 let pendingMarker=null;
-let lastPayload=null;
 
 function inOverview(){
   return document.body.classList.contains('ux-overview');
@@ -30,12 +29,15 @@ function entityKind(id,raw=''){
   const p=(id||'').replace(/\d+$/,'');
   const map={
     MCP:'Conditionality Capture',
+    MCR:'Conditionality Capture Register',
     GAR:'Governance Redemption',
+    GAD:'Governance Arbitrage Desk',
     GAP:'Governance Arbitrage Position',
     RRA:'Reserve Restitution',
     RRR:'Reserve Restitution Register',
     RRP:'Preferred Recoupment Payment',
     RCP:'Preferred Recoupment Claim',
+    RPO:'Preferred Recoupment Office',
     SRC:'Supervisory Recapitalization',
     SRT:'Supervisory Reserve Transfer',
     MOT:'Board Motion',
@@ -44,8 +46,11 @@ function entityKind(id,raw=''){
     RDR:'Rift Drawing Right',
     COND:'Program Condition',
     ISF:'Stabilization Fund',
+    ISFB:'Stabilization Board',
     FB:'Stabilization Board',
     DIR:'Fund Director',
+    CRO:'Capital Restoration Office',
+    RSO:'Restoration Surcharge Office',
     MAA:'Monetary Authority',
     MAB:'Monetary Authority',
     MA:'Monetary Authority',
@@ -63,8 +68,7 @@ function entityKind(id,raw=''){
 function looksStatus(s){
   s=esc(s).trim();
   if(!s||s.length>72||/[.!?]/.test(s))return false;
-  if(/^[A-Z0-9 _·:/-]+$/.test(s))return true;
-  return /^(active|pending|passed|rejected|deadlocked|closed|open|operating|observing|awaiting|missing|insufficient|released|buffer|funding|majority|risk|existing|orphaned|surcharge|capture|restitution|decisive|already|no-|pool-)/i.test(s);
+  return /(?:^|[- ·])(active|pending|passed|approved|allocated|paid|complete|completed|rejected|failed|deadlocked|closed|open|operating|observing|awaiting|missing|insufficient|released|buffered|buffer|funding|majority|risk|existing|orphaned|surcharge|restitution|decisive|already|shortfall|monetized|repaid|no-|pool-)(?:$|[- ·])/i.test(s);
 }
 function statusFrom(body,meta){
   const b=esc(body).trim(),m=esc(meta).trim();
@@ -127,11 +131,12 @@ function clearSelectedMarker(){
 function renderInspector(k,b,m,buttons=[]){
   const root=makeInspector();
   const parsed=parseTitle(k);
+  if(!parsed.id)parsed.id=(esc(b)+' '+esc(m)).match(ID_TOKEN)?.[0]||null;
   const combined=[k,b,m,(buttons||[]).map(x=>x?.[0]).join(' ')].join(' ');
   const status=statusFrom(b,m);
   const bodyIsStatus=looksStatus(b);
   const summary=bodyIsStatus?'':esc(b).trim();
-  const facts=bodyIsStatus?esc(m).trim():esc(m).trim();
+  const facts=esc(m).trim();
   const kind=entityKind(parsed.id,k);
 
   root.querySelector('#uxInspectorKind').textContent=kind;
@@ -189,7 +194,6 @@ function renderInspector(k,b,m,buttons=[]){
   document.body.classList.add('ux-inspecting');
   if(pendingMarker)setSelectedMarker(pendingMarker);
   pendingMarker=null;
-  lastPayload={k,b,m,buttons};
 }
 function closeInspector(){
   const root=document.querySelector('#uxInspector');
@@ -197,7 +201,6 @@ function closeInspector(){
   document.body.classList.remove('ux-inspecting');
   clearSelectedMarker();
   pendingMarker=null;
-  lastPayload=null;
 }
 function syncMode(){
   const legacy=document.querySelector('#panel');
@@ -224,6 +227,8 @@ document.addEventListener('pointerdown',e=>{
   if(!inOverview())return;
   const marker=e.target.closest?.('i[data-label],i[class],#thing,#echo,#rift,#archiveDoor');
   pendingMarker=marker&&!marker.closest?.('#uxInspector,#uxModeBar')?marker:null;
+  const captured=pendingMarker;
+  if(captured)setTimeout(()=>{if(pendingMarker===captured&&!document.querySelector('#uxInspector.open'))pendingMarker=null},180);
 },true);
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&inOverview()&&document.querySelector('#uxInspector.open')){
