@@ -1,7 +1,8 @@
 # Nothing — Project State
 
-**Document revision:** 100.0  
+**Document revision:** 100.1  
 **Current build:** 100  
+**Current UX pass:** 1 — Human Overview  
 **Updated:** September 6, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -303,6 +304,33 @@ Validation claims should say exactly what happened.
 - `PROJECT_STATE.md` — this current architecture/cross-build snapshot.
 - `BUILDxx.md` — authoritative per-build behavior, invariants, and validation notes.
 - `index.html` — visible current-build headline plus canonical CSS/JS load order.
+
+## Current presentation layer
+
+Simulation authority remains frozen at Build 100.
+
+UX 1 adds a read-only presentation layer loaded after `conditionality_capture.js`:
+
+- `human_overview.css`
+- `human_overview.js`
+
+Default mode is **Overview**.
+
+Overview suppresses dense diagnostics and most historical build layers while preserving:
+- the core stage;
+- monetary authorities;
+- FX market;
+- stabilization fund;
+- stabilization board;
+- current Build 100 conditionality-capture office/current consequential state.
+
+The presentation reads live simulation state to populate a compact "What matters now" card.
+
+**God View** removes those presentation filters and exposes the complete 100-build visual system.
+
+The only UX persistence is `nothing-ux-mode`, separate from all `nothing-state-vN` simulation keys.
+
+UX 1 must not mutate simulation economics, governance, serials, histories, crises, or build state.
 
 ## Current handoff
 
