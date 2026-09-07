@@ -51,7 +51,7 @@ A query parameter:
 
 `?god=1`
 
-also opens directly into God View.
+also opens directly into God View. This URL override is transient: it does not overwrite the user's saved Overview/God View preference unless the user explicitly clicks a mode button.
 
 ## Read-only presentation contract
 
@@ -79,7 +79,7 @@ Its other effects are DOM-only:
 
 ## Current-event summary
 
-The Overview card prioritizes current Build 100 state.
+The Overview card prioritizes current Build 100 state by consequence status before creation time, so an older still-pending/deadlocked/rejected capture is not displaced merely by a newer already-resolved capture.
 
 Examples:
 - pending conditionality motion;
@@ -135,6 +135,7 @@ On wide screens:
 
 On narrower screens:
 - the summary card moves to the bottom;
+- the app becomes an explicit 100vh scroll viewport because the original body globally suppresses scrolling;
 - the app gains bottom space so the card does not cover the stage;
 - the stage scales down on small screens.
 
@@ -144,16 +145,17 @@ This is an initial responsive pass, not the final mobile UX.
 
 UX 1 should prove:
 
-1. Overview is the default when no UX preference exists.
-2. God View can restore the complete system without reload.
-3. Switching back to Overview restores the calm presentation.
-4. `?god=1` overrides the default.
-5. Overview card reads live Build 100 state correctly.
-6. Active Reality A/B highlighting follows `S.active`.
-7. Simulation state is unchanged by mode switching.
-8. Original visible-object click handlers remain callable.
-9. Existing Build 100 state and action behavior still pass their exact deterministic harness.
-10. CSS/JS load after Build 100 so presentation cannot alter earlier module authority.
+1. Overview is bootstrapped on the body before the late simulation layers render, minimizing a flash of the complete God View during normal startup.
+2. Overview is the default when no UX preference exists.
+3. God View can restore the complete system without reload.
+4. Switching back to Overview restores the calm presentation.
+5. `?god=1` overrides the initial view without persisting that override.
+6. Overview card reads and priority-orders live Build 100 state correctly.
+7. Active Reality A/B highlighting follows `S.active`.
+8. Simulation state is unchanged by mode switching.
+9. Original visible-object click handlers remain callable.
+10. Existing Build 100 state and action behavior still pass their exact deterministic harness.
+11. CSS/JS load after Build 100 so presentation cannot alter earlier module authority.
 
 ## What UX 1 intentionally does not solve
 
