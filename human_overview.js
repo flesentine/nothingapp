@@ -19,7 +19,22 @@ function livePrograms(){
   return (S.stabilizationPrograms58||[]).filter(p=>!['closed','completed','cancelled','repaid'].includes(p.status)).length;
 }
 function currentCapture(){
-  return latest(S.conditionalityCaptures100);
+  const captures=[...(S.conditionalityCaptures100||[])];
+  if(!captures.length)return null;
+  const priority={
+    'motion-pending':100,
+    'motion-deadlocked':95,
+    'motion-rejected':90,
+    'majority-not-live':80,
+    'existing-tightening-open':75,
+    'missing-monetary-condition':70,
+    'awaiting-surveillance':65,
+    'awaiting-program':60,
+    'risk-below-tightening':55,
+    'capture-passed':40
+  };
+  captures.sort((a,b)=>(priority[b.status]||50)-(priority[a.status]||50)||(b.created||0)-(a.created||0));
+  return captures[0];
 }
 function currentMotion(c){
   return c?.motionId59?(S.fundMotions59||[]).find(m=>m.id===c.motionId59)||null:null;
@@ -77,8 +92,8 @@ function makeUI(){
     god.textContent='God View';
     bar.append(label,overview,god);
     document.body.appendChild(bar);
-    overview.onclick=()=>setMode('overview');
-    god.onclick=()=>setMode('god');
+    overview.onclick=()=>setMode('overview',true);
+    god.onclick=()=>setMode('god',true);
   }
   if(!document.querySelector('#uxOverviewCard')){
     const card=el('aside','uxOverviewCard');
@@ -104,13 +119,17 @@ function refreshOverview(){
   document.querySelector('#uxRealityA')?.classList.toggle('active',S.active==='A');
   document.querySelector('#uxRealityB')?.classList.toggle('active',S.active==='B');
 }
-function setMode(mode){
+function setMode(mode,persist=false){
   mode=mode==='god'?'god':'overview';
   document.body.classList.toggle('ux-overview',mode==='overview');
   document.body.classList.toggle('ux-god',mode==='god');
-  document.querySelector('#uxOverviewMode')?.classList.toggle('active',mode==='overview');
-  document.querySelector('#uxGodMode')?.classList.toggle('active',mode==='god');
-  try{localStorage.setItem(MODE_KEY,mode)}catch{}
+  const overview=document.querySelector('#uxOverviewMode');
+  const god=document.querySelector('#uxGodMode');
+  overview?.classList.toggle('active',mode==='overview');
+  god?.classList.toggle('active',mode==='god');
+  overview?.setAttribute('aria-pressed',String(mode==='overview'));
+  god?.setAttribute('aria-pressed',String(mode==='god'));
+  if(persist)try{localStorage.setItem(MODE_KEY,mode)}catch{}
   refreshOverview();
 }
 function initialMode(){
@@ -125,7 +144,7 @@ renderAll=function(){
 };
 
 makeUI();
-setMode(initialMode());
+setMode(initialMode(),false);
 refreshOverview();
 setInterval(refreshOverview,1600);
 })();
