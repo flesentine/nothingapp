@@ -1,8 +1,8 @@
 # Nothing — Project State
 
-**Document revision:** 100.1  
+**Document revision:** 100.2  
 **Current build:** 100  
-**Current UX pass:** 1 — Human Overview  
+**Current UX pass:** 2 — Selection + Right Inspector  
 **Updated:** September 6, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -309,28 +309,32 @@ Validation claims should say exactly what happened.
 
 Simulation authority remains frozen at Build 100.
 
-UX 1 adds a read-only presentation layer loaded after `conditionality_capture.js`:
+UX 1 remains the default Human Overview:
+- calm progressive-disclosure canvas;
+- major systems/current consequence only;
+- human "What matters now" summary;
+- persistent Overview/God View choice;
+- transient `?god=1` override;
+- full accumulated system retained as God View.
 
-- `human_overview.css`
-- `human_overview.js`
+UX 2 adds a second read-only presentation layer loaded after UX 1:
 
-Default mode is **Overview**.
+- `right_inspector.css`
+- `right_inspector.js`
 
-Overview suppresses dense diagnostics and most historical build layers while preserving:
-- the core stage;
-- monetary authorities;
-- FX market;
-- stabilization fund;
-- stabilization board;
-- current Build 100 conditionality-capture office/current consequential state.
+In Overview:
+- the existing global `panel(title, body, metadata, actions)` contract is routed into one right-side inspector;
+- object ID is secondary to human type/name;
+- existing payload is presented as Status, Summary, Why, Important facts, Related, and What can happen next;
+- original action callback functions are used directly;
+- the selected marker receives only a DOM highlight;
+- closing delegates back to the original `closePanel`, preserving old `S.current` cleanup.
 
-The presentation reads live simulation state to populate a compact "What matters now" card.
+In God View:
+- the exact original bottom panel remains authoritative;
+- UX 2 delegates directly to the original panel function.
 
-**God View** removes those presentation filters and exposes the complete 100-build visual system.
-
-The only UX persistence is `nothing-ux-mode`, separate from all `nothing-state-vN` simulation keys.
-
-UX 1 must not mutate simulation economics, governance, serials, histories, crises, or build state.
+UX 2 does not write simulation state or create Build 101.
 
 ## Current handoff
 
