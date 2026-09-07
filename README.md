@@ -221,3 +221,22 @@ State is stored locally in the browser with `localStorage`. New builds migrate f
 ## Roadmap
 
 No.
+
+
+## Post-Build-100 UX track
+
+The simulation is frozen at Build 100 while the interface is made human-readable.
+
+### UX 1 — Human Overview
+
+The default presentation now uses progressive disclosure instead of rendering all 100 build layers at equal priority.
+
+UX 1:
+- adds a calm Overview mode;
+- keeps only the core stage plus a small set of major monetary/stabilization/governance markers visible;
+- hides diagnostic lines and dense historical marker layers by default;
+- adds a human-readable "What matters now" card;
+- preserves the complete accumulated interface as one-click **God View**;
+- does not mutate simulation state or create Build 101.
+
+See `UX1.md` for the presentation contract and validation targets.
