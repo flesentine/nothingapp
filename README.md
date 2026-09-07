@@ -255,3 +255,18 @@ UX 2:
 - leaves God View on the exact original bottom-panel interaction model.
 
 See `UX2.md` for the inspector contract.
+
+### UX 3 — Focus + Navigation
+
+The inspector can now isolate the subsystem that gives a selected object meaning.
+
+UX 3:
+- adds Focus actions for Stabilization System, Monetary Supervision, and External Economy;
+- reveals related historical layers while fading unrelated systems;
+- adds Overview / subsystem / selected-object breadcrumbs;
+- adds transient Back/Forward focus history;
+- makes Escape hierarchical: close inspector first, leave focus second;
+- clears focus when entering God View;
+- keeps all focus/navigation state outside simulation persistence.
+
+See `UX3.md` for the focus/navigation contract.
