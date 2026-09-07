@@ -74,7 +74,7 @@ The human object type/name is primary.
 
 Short status-like panel bodies are rendered as a compact state pill.
 
-Statuses with current risk or failure semantics receive an attention treatment.
+Statuses with current risk or failure semantics receive an attention treatment. Prefix-style states such as `pool-empty` and `no-rdr` remain status tokens rather than being misread as prose.
 
 Healthy/active/passed states receive an active treatment.
 
@@ -117,7 +117,7 @@ Navigation/focus belongs to UX 3.
 
 The original action array is used directly.
 
-UX 2 creates new visual buttons, but each button calls the exact original callback function supplied by the historical module.
+UX 2 creates new visual buttons and assigns each historical callback directly as the button's `onclick`, matching the original panel contract. It does not wrap the callback, so browser event and `this` semantics are preserved.
 
 No action semantics are reimplemented.
 
@@ -188,7 +188,7 @@ Small screens:
 6. Original action callback identity/behavior is preserved.
 7. `closePanel` still clears the old `S.current` through the original function.
 8. Current Build 100 MCP/MOT panels render readable Type, Status, Why, Important facts, Related, and actions.
-9. A major visible Overview marker receives/removes selection highlight correctly.
+9. A major visible Overview marker receives/removes selection highlight correctly, and a click that never opens a panel cannot leak stale selection into a later inspector.
 10. Escape closes the inspector.
 11. Mobile layout becomes a usable bottom sheet.
 12. UX 1 Overview/God View behavior remains green.
