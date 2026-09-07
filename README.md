@@ -240,3 +240,18 @@ UX 1:
 - does not mutate simulation state or create Build 101.
 
 See `UX1.md` for the presentation contract and validation targets.
+
+### UX 2 — Selection + Right Inspector
+
+Overview now routes the app's existing `panel(title, body, metadata, actions)` contract into one consistent right-side inspector.
+
+UX 2:
+- keeps human name/type primary and object IDs secondary;
+- separates status, summary, Why, important facts, related IDs, and available actions;
+- uses the original historical action callbacks unchanged;
+- highlights the selected Overview marker;
+- supports Escape/close consistently;
+- becomes a bottom sheet on small screens;
+- leaves God View on the exact original bottom-panel interaction model.
+
+See `UX2.md` for the inspector contract.
