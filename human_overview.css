@@ -76,7 +76,7 @@ body.ux-god #uxModeBar{background:rgba(8,10,16,.92)}
 @media(max-width:1080px){
  #uxOverviewCard{top:auto;bottom:18px;right:18px;width:min(360px,calc(100vw - 36px))}
  #uxOverviewLegend{display:none}
- body.ux-overview #app{padding-top:82px;padding-bottom:190px;overflow:auto}
+ body.ux-overview #app{height:100vh;min-height:0;padding-top:82px;padding-bottom:190px;overflow-y:auto;overflow-x:hidden}
 }
 @media(max-width:640px){
  #uxModeBar{left:10px;top:10px}
