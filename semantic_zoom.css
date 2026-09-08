@@ -7,7 +7,7 @@
 body.ux-god #uxSemanticZoom{display:none}
 
 /* Semantic marker hierarchy. UX 4 never changes original marker geometry. */
-body.ux-overview>div[id*="Layer"]>i[data-ux-detail]{transition:opacity .18s ease,filter .18s ease}
+body.ux-overview :is(#monetaryLayer,#fxLayer,#tradeLayer,#stabilizationLayer,#fundGovernanceLayer,#monetaryRemediationLayer90,#monetaryExceptionLayer91,#supervisoryCapitalLayer92,#capitalRestorationLayer93,#restorationSurchargeLayer94,#surchargeRecidivismLayer95,#supervisoryRecapLayer96,#preferredRecoupmentLayer97,#reserveRestitutionLayer98,#governanceArbitrageLayer99,#conditionalityCaptureLayer100)>i[data-ux-detail]{transition:opacity .18s ease,filter .18s ease}
 body.ux-overview[data-ux-zoom="systems"]>div[id*="Layer"]>i[data-ux-detail="institution"],
 body.ux-overview[data-ux-zoom="systems"]>div[id*="Layer"]>i[data-ux-detail="record"]{opacity:0!important;pointer-events:none!important}
 body.ux-overview[data-ux-zoom="systems"]>div[id*="Layer"]>i[data-ux-detail="system"]{opacity:.9!important;pointer-events:auto!important}
