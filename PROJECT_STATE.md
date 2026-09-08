@@ -1,8 +1,8 @@
 # Nothing — Project State
 
-**Document revision:** 100.4  
+**Document revision:** 100.5  
 **Current build:** 100  
-**Current UX pass:** 4 — Semantic Zoom  
+**Current UX pass:** 5 — Recent Changes Timeline  
 **Updated:** September 6, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -315,33 +315,34 @@ UX 2 remains the right-side Overview inspector while God View keeps the original
 
 UX 3 remains subsystem Focus + breadcrumb/back/forward navigation.
 
-UX 4 adds semantic density after UX 3:
+UX 4 remains semantic detail: Systems / Institutions / Records.
 
-- `semantic_zoom.css`
-- `semantic_zoom.js`
+UX 5 adds temporal comprehension after UX 4:
 
-Three transient detail levels exist:
-- Systems;
-- Institutions;
-- Records.
+- `recent_timeline.css`
+- `recent_timeline.js`
 
-Historical geometry is not transformed.
+Recent Changes:
+- scans live top-level `S` arrays for real timestamped records;
+- includes timestamped Office / Register / Desk / Window objects;
+- orders records newest-first;
+- defaults to Important activity and suppresses routine `TA#` trust-audit noise;
+- exposes All activity as an explicit secondary filter;
+- humanizes major Build 58–100 financial/governance record families;
+- shows related IDs from real record fields;
+- provides read-only expanded facts;
+- Locates only currently visible/interactable original markers and executes their original click path;
+- never silently changes subsystem focus or semantic depth.
 
-UX 4 classifies existing layer markers from their original classes into presentation-only `data-ux-detail` tiers.
+UX 5 wraps the existing `renderAll` and `panel` presentation chain and delegates with original `this`/arguments.
 
-Root Overview:
-- begins at Systems;
-- Institutions/Records expose only the current monetary/FX/trade/stabilization and Builds 96–100 financial/governance family.
+Escape order is now:
+- Recent Changes;
+- Inspector;
+- Focus;
+- root Overview.
 
-Focused subsystems:
-- UX 3 chooses the related layers;
-- UX 4 chooses semantic depth inside those layers;
-- entering focus from Systems automatically moves to Institutions;
-- leaving focus or entering God View returns semantic level to Systems.
-
-Newly re-rendered marker nodes are automatically reclassified through a child-list observer.
-
-UX 4 has no simulation/localStorage authority.
+UX 5 has no simulation/localStorage authority.
 
 ## Current handoff
 
