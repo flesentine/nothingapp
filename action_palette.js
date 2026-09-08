@@ -2,8 +2,8 @@
 const priorRenderAll=renderAll;
 const priorPanel=panel;
 const CATEGORY_DEFS=[
-  {id:'stabilization',label:'Stabilization & governance',re:/stabil|fund|board|quota|surveil|conditional|recap|recoup|restitution|replenish|drawing|governance|majority/i},
-  {id:'monetary',label:'Monetary supervision',re:/monetary|facility|lender|capital|collateral|margin|steriliz|refinanc|cash sweep|cross.?default|netting|interest|supervis/i},
+  {id:'stabilization',label:'Stabilization & governance',re:/stabil|board|quota|surveil|conditional|recap|recoup|restitution|replenish|drawing|governance|majority/i},
+  {id:'monetary',label:'Monetary supervision',re:/monetary|facility|lender|capital|collateral|margin|steriliz|refinanc|funding|novation|cash sweep|cross.?default|netting|interest|supervis/i},
   {id:'external',label:'External economy & markets',re:/\bfx\b|foreign|trade|currency|carry|exchange|treaty|debt|claim|repo|title|derivative|clearing|recovery|bond|market/i},
   {id:'civic',label:'Institutions & civic stack',re:/trial|testimony|transcript|redact|leak|consensus|mandate|constitution|judici|ruling|law|warrant|border|citizen|franchise|office|administration|election|quorum|supply|procurement|oversight|standard|insurance/i},
   {id:'system',label:'System',re:/.*/}
