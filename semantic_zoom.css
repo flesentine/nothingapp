@@ -75,7 +75,7 @@ body.ux-overview[data-ux-zoom="records"] :is(#monetaryLayer,#fxLayer,#tradeLayer
 
 
 /* Interaction guard: hidden semantic layers must never leave invisible hit targets. */
-body.ux-overview :is(#monetaryLayer,#fxLayer,#tradeLayer,#stabilizationLayer,#fundGovernanceLayer,#monetaryRemediationLayer90,#monetaryExceptionLayer91,#supervisoryCapitalLayer92,#capitalRestorationLayer93,#restorationSurchargeLayer94,#surchargeRecidivismLayer95,#supervisoryRecapLayer96,#preferredRecoupmentLayer97,#reserveRestitutionLayer98,#governanceArbitrageLayer99,#conditionalityCaptureLayer100)>i[data-ux-detail]{pointer-events:none!important}
+body.ux-overview[data-ux-zoom] :is(#monetaryLayer,#fxLayer,#tradeLayer,#stabilizationLayer,#fundGovernanceLayer,#monetaryRemediationLayer90,#monetaryExceptionLayer91,#supervisoryCapitalLayer92,#capitalRestorationLayer93,#restorationSurchargeLayer94,#surchargeRecidivismLayer95,#supervisoryRecapLayer96,#preferredRecoupmentLayer97,#reserveRestitutionLayer98,#governanceArbitrageLayer99,#conditionalityCaptureLayer100)>i[data-ux-detail]{pointer-events:none!important}
 
 /* Root Systems: only the calm UX 1 roots plus the current Build 100 consequence are interactive. */
 body.ux-overview:not(.ux-focused)[data-ux-zoom="systems"] :is(#monetaryLayer,#fxLayer,#stabilizationLayer,#fundGovernanceLayer)>i[data-ux-detail="system"],
