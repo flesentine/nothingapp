@@ -1,0 +1,78 @@
+#uxSemanticZoom{display:flex;align-items:center;gap:3px;margin-left:4px;padding-left:6px;border-left:1px solid rgba(255,255,255,.09)}
+#uxSemanticZoom .ux-zoom-button{width:26px;height:26px;padding:0;display:grid;place-items:center;border-color:transparent;background:transparent;border-radius:7px;font-size:13px;opacity:.42}
+#uxSemanticZoom .ux-zoom-button:hover:not(:disabled){opacity:1;background:rgba(255,255,255,.055)}
+#uxSemanticZoom .ux-zoom-button:disabled{opacity:.12;cursor:default}
+#uxSemanticZoom .ux-zoom-level{min-width:70px;padding:0 4px;text-align:center;font-size:8px;line-height:1.15;letter-spacing:.08em;text-transform:uppercase;opacity:.58}
+#uxSemanticZoom .ux-zoom-level small{display:block;margin-top:2px;font-size:6px;letter-spacing:.1em;opacity:.42}
+body.ux-god #uxSemanticZoom{display:none}
+
+/* Semantic marker hierarchy. UX 4 never changes original marker geometry. */
+body.ux-overview>div[id*="Layer"]>i[data-ux-detail]{transition:opacity .18s ease,filter .18s ease}
+body.ux-overview[data-ux-zoom="systems"]>div[id*="Layer"]>i[data-ux-detail="institution"],
+body.ux-overview[data-ux-zoom="systems"]>div[id*="Layer"]>i[data-ux-detail="record"]{opacity:0!important;pointer-events:none!important}
+body.ux-overview[data-ux-zoom="systems"]>div[id*="Layer"]>i[data-ux-detail="system"]{opacity:.9!important;pointer-events:auto!important}
+body.ux-overview[data-ux-zoom="systems"] #conditionalityCaptureLayer100 .conditionalityCapture100.motion-pending,
+body.ux-overview[data-ux-zoom="systems"] #conditionalityCaptureLayer100 .conditionalityCapture100.motion-deadlocked,
+body.ux-overview[data-ux-zoom="systems"] #conditionalityCaptureLayer100 .conditionalityCapture100.capture-passed,
+body.ux-overview[data-ux-zoom="systems"]>div[id*="Layer"]>i.ux-selected{opacity:1!important;pointer-events:auto!important}
+
+body.ux-overview[data-ux-zoom="institutions"]>div[id*="Layer"]>i[data-ux-detail="record"]{opacity:0!important;pointer-events:none!important}
+body.ux-overview[data-ux-zoom="institutions"]>div[id*="Layer"]>i[data-ux-detail="system"]{opacity:.9!important;pointer-events:auto!important}
+body.ux-overview[data-ux-zoom="institutions"]>div[id*="Layer"]>i[data-ux-detail="institution"]{opacity:.76!important;pointer-events:auto!important}
+body.ux-overview[data-ux-zoom="institutions"]>div[id*="Layer"]>i.ux-selected{opacity:1!important;pointer-events:auto!important}
+
+body.ux-overview[data-ux-zoom="records"]>div[id*="Layer"]>i[data-ux-detail="system"]{opacity:.92!important;pointer-events:auto!important}
+body.ux-overview[data-ux-zoom="records"]>div[id*="Layer"]>i[data-ux-detail="institution"]{opacity:.8!important;pointer-events:auto!important}
+body.ux-overview[data-ux-zoom="records"]>div[id*="Layer"]>i[data-ux-detail="record"]{opacity:.66!important;pointer-events:auto!important}
+body.ux-overview[data-ux-zoom="records"]>div[id*="Layer"]>i.ux-selected{opacity:1!important;pointer-events:auto!important}
+
+/* Root Overview gains only the current financial/governance family as detail increases. */
+body.ux-overview:not(.ux-focused)[data-ux-zoom="institutions"] #monetaryLayer,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="institutions"] #fxLayer,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="institutions"] #tradeLayer,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="institutions"] #stabilizationLayer,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="institutions"] #fundGovernanceLayer,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="institutions"] #supervisoryRecapLayer96,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="institutions"] #preferredRecoupmentLayer97,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="institutions"] #reserveRestitutionLayer98,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="institutions"] #governanceArbitrageLayer99,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="institutions"] #conditionalityCaptureLayer100,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="records"] #monetaryLayer,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="records"] #fxLayer,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="records"] #tradeLayer,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="records"] #stabilizationLayer,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="records"] #fundGovernanceLayer,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="records"] #supervisoryRecapLayer96,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="records"] #preferredRecoupmentLayer97,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="records"] #reserveRestitutionLayer98,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="records"] #governanceArbitrageLayer99,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="records"] #conditionalityCaptureLayer100{opacity:1!important;pointer-events:none!important}
+
+/* UX 3 reveals the relevant layers; UX 4 decides how deep inside those layers to look. */
+body.ux-overview.ux-focused[data-ux-zoom="systems"]>div[id*="Layer"]>i[data-ux-detail="institution"],
+body.ux-overview.ux-focused[data-ux-zoom="systems"]>div[id*="Layer"]>i[data-ux-detail="record"]{opacity:0!important;pointer-events:none!important}
+body.ux-overview.ux-focused[data-ux-zoom="institutions"]>div[id*="Layer"]>i[data-ux-detail="record"]{opacity:0!important;pointer-events:none!important}
+body.ux-overview.ux-focused[data-ux-zoom="records"]>div[id*="Layer"]>i[data-ux-detail]{pointer-events:auto!important}
+
+/* Labels follow semantic importance instead of all speaking at once. */
+body.ux-overview[data-ux-zoom="systems"]>div[id*="Layer"]>i[data-ux-detail]:after{opacity:0!important}
+body.ux-overview[data-ux-zoom="systems"]>div[id*="Layer"]>i[data-ux-detail="system"]:after,
+body.ux-overview[data-ux-zoom="systems"] #conditionalityCaptureLayer100 .conditionalityCapture100.motion-pending:after,
+body.ux-overview[data-ux-zoom="systems"] #conditionalityCaptureLayer100 .conditionalityCapture100.motion-deadlocked:after,
+body.ux-overview[data-ux-zoom="systems"] #conditionalityCaptureLayer100 .conditionalityCapture100.capture-passed:after,
+body.ux-overview[data-ux-zoom="systems"]>div[id*="Layer"]>i.ux-selected:after{opacity:.5!important}
+
+body.ux-overview[data-ux-zoom="institutions"]>div[id*="Layer"]>i[data-ux-detail]:after{opacity:0!important}
+body.ux-overview[data-ux-zoom="institutions"]>div[id*="Layer"]>i[data-ux-detail="system"]:after{opacity:.48!important}
+body.ux-overview[data-ux-zoom="institutions"]>div[id*="Layer"]>i[data-ux-detail="institution"]:after,
+body.ux-overview[data-ux-zoom="institutions"]>div[id*="Layer"]>i.ux-selected:after{opacity:.34!important}
+
+body.ux-overview[data-ux-zoom="records"]>div[id*="Layer"]>i[data-ux-detail="system"]:after{opacity:.5!important}
+body.ux-overview[data-ux-zoom="records"]>div[id*="Layer"]>i[data-ux-detail="institution"]:after{opacity:.38!important}
+body.ux-overview[data-ux-zoom="records"]>div[id*="Layer"]>i[data-ux-detail="record"]:after{opacity:.24!important}
+body.ux-overview[data-ux-zoom="records"]>div[id*="Layer"]>i.ux-selected:after{opacity:.65!important}
+
+@media(max-width:640px){
+ #uxSemanticZoom .ux-zoom-level{min-width:58px;font-size:7px}
+ #uxSemanticZoom .ux-zoom-button{width:23px;height:25px}
+}
