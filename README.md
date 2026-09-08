@@ -286,3 +286,19 @@ UX 4:
 - adds compact − / + detail controls to the existing Overview/God View bar.
 
 See `UX4.md` for the semantic-zoom contract.
+
+### UX 5 — Recent Changes Timeline
+
+Overview now exposes a real chronological view of accumulated simulation activity.
+
+UX 5:
+- reads timestamped records directly from live `S` state;
+- defaults to meaningful events while suppressing routine trust-audit noise;
+- shows real relative/absolute creation times;
+- humanizes Build 58–100 financial/governance records;
+- surfaces related record IDs as relationship hints;
+- lets visible records Locate through their original marker click path;
+- never auto-changes Focus or Semantic Zoom to find a hidden object;
+- preserves a clear Escape hierarchy with the inspector and focus layers.
+
+See `UX5.md` for the timeline contract.
