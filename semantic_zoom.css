@@ -108,6 +108,22 @@ body.ux-overview.ux-focused[data-ux-focus="external"][data-ux-zoom="institutions
 body.ux-overview.ux-focused[data-ux-focus="external"][data-ux-zoom="institutions"] :is(#tradeLayer,#fxLayer,#stabilizationLayer,#reserveRestitutionLayer98,#governanceArbitrageLayer99)>i[data-ux-detail="institution"],
 body.ux-overview.ux-focused[data-ux-focus="external"][data-ux-zoom="records"] :is(#tradeLayer,#fxLayer,#stabilizationLayer,#reserveRestitutionLayer98,#governanceArbitrageLayer99)>i[data-ux-detail]{pointer-events:auto!important}
 
+
+
+/* Current consequence persists while semantic detail increases. */
+body.ux-overview:not(.ux-focused)[data-ux-zoom="institutions"] #conditionalityCaptureLayer100 .conditionalityCapture100.motion-pending,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="institutions"] #conditionalityCaptureLayer100 .conditionalityCapture100.motion-deadlocked,
+body.ux-overview:not(.ux-focused)[data-ux-zoom="institutions"] #conditionalityCaptureLayer100 .conditionalityCapture100.capture-passed,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"][data-ux-zoom="systems"] #conditionalityCaptureLayer100 .conditionalityCapture100.motion-pending,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"][data-ux-zoom="systems"] #conditionalityCaptureLayer100 .conditionalityCapture100.motion-deadlocked,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"][data-ux-zoom="systems"] #conditionalityCaptureLayer100 .conditionalityCapture100.capture-passed,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"][data-ux-zoom="institutions"] #conditionalityCaptureLayer100 .conditionalityCapture100.motion-pending,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"][data-ux-zoom="institutions"] #conditionalityCaptureLayer100 .conditionalityCapture100.motion-deadlocked,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"][data-ux-zoom="institutions"] #conditionalityCaptureLayer100 .conditionalityCapture100.capture-passed{opacity:1!important;pointer-events:auto!important}
+body.ux-overview[data-ux-zoom="institutions"] #conditionalityCaptureLayer100 .conditionalityCapture100.motion-pending:after,
+body.ux-overview[data-ux-zoom="institutions"] #conditionalityCaptureLayer100 .conditionalityCapture100.motion-deadlocked:after,
+body.ux-overview[data-ux-zoom="institutions"] #conditionalityCaptureLayer100 .conditionalityCapture100.capture-passed:after{opacity:.5!important}
+
 @media(max-width:640px){
  #uxSemanticZoom .ux-zoom-level{min-width:58px;font-size:7px}
  #uxSemanticZoom .ux-zoom-button{width:23px;height:25px}
