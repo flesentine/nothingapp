@@ -65,6 +65,8 @@ Actions are grouped heuristically from their existing button ID/text into:
 
 Grouping is presentation-only.
 
+Classifier precedence is intentionally conservative: generic `funding` / `novation` / collateral-chain controls belong to Monetary Supervision, while stabilization remains keyed by explicit stabilization/board/quota/governance concepts. This avoids treating controls such as funding novation or funding cross-default as stabilization merely because their label contains the letters `fund`.
+
 When a UX 3 Focus is active, the matching category sorts first and is marked **current focus**. The palette does not hide actions outside the focus.
 
 ## Availability
@@ -172,7 +174,7 @@ and delegates to the exact previous functions with `apply(this,args)`.
 ## Pre-PR qualification
 
 Exact current artifacts:
-- `action_palette.js` Git blob: `1bb9e6c30e8b7d9caa5461a2b4809db463f116dc`;
+- `action_palette.js` Git blob: `48bde35934dc20821fbd789d5d1ee17a5f11d234`;
 - `action_palette.css` Git blob: `2f998a4d87efd84eadfb664e43ff6fb6359d7251`.
 
 Code audit:
