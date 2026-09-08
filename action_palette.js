@@ -86,7 +86,7 @@ function makeUI(){
     panelEl.setAttribute('role','dialog');
     panelEl.setAttribute('aria-modal','true');
     panelEl.setAttribute('aria-label','Actions');
-    panelEl.innerHTML='<div class="ux-action-head"><div><div class="ux-action-eyebrow">Original controls, one place</div><div class="ux-action-title">Actions</div></div><button class="ux-action-close" type="button" aria-label="Close actions">×</button></div><div class="ux-action-search-wrap"><span>⌕</span><input id="uxActionSearch" type="search" autocomplete="off" spellcheck="false" placeholder="Search actions…" aria-label="Search actions"></div><div class="ux-action-meta"><span id="uxActionCount"></span><span id="uxActionContext"></span></div><div id="uxActionList"></div><div class="ux-action-foot"><span>Enter an action to run its original control.</span><span>Esc closes · ⌘/Ctrl K toggles</span></div>';
+    panelEl.innerHTML='<div class="ux-action-head"><div><div class="ux-action-eyebrow">Original controls, one place</div><div class="ux-action-title">Actions</div></div><button class="ux-action-close" type="button" aria-label="Close actions">×</button></div><div class="ux-action-search-wrap"><span>⌕</span><input id="uxActionSearch" type="search" autocomplete="off" spellcheck="false" placeholder="Search actions…" aria-label="Search actions"></div><div class="ux-action-meta"><span id="uxActionCount"></span><span id="uxActionContext"></span></div><div id="uxActionList"></div><div class="ux-action-foot"><span>Choose an action to run its original control.</span><span>Esc closes · ⌘/Ctrl K toggles</span></div>';
     document.body.appendChild(panelEl);
     panelEl.querySelector('.ux-action-close').onclick=()=>closePalette();
     const input=panelEl.querySelector('#uxActionSearch');
@@ -214,10 +214,10 @@ panel=function(...args){
 };
 
 document.addEventListener('keydown',event=>{
-  if((event.metaKey||event.ctrlKey)&&!event.altKey&&event.key.toLowerCase()==='k'){
+  if((event.metaKey||event.ctrlKey)&&!event.altKey&&event.key.toLowerCase()==='k'&&inOverview()){
     event.preventDefault();
     event.stopPropagation();
-    if(inOverview())open?closePalette():openPalette();
+    open?closePalette():openPalette();
     return;
   }
   if(event.key==='Escape'&&open){
