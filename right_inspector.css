@@ -1,0 +1,44 @@
+#uxInspector{position:fixed;z-index:235;top:72px;right:20px;bottom:20px;width:min(380px,calc(100vw - 40px));display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.13);border-radius:18px;background:rgba(8,10,16,.94);backdrop-filter:blur(18px);box-shadow:0 24px 70px rgba(0,0,0,.36);opacity:0;transform:translateX(22px);pointer-events:none;transition:opacity .22s ease,transform .22s ease;overflow:hidden}
+#uxInspector.open{opacity:1;transform:translateX(0);pointer-events:auto}
+#uxInspector .ux-inspector-head{padding:16px 17px 13px;border-bottom:1px solid rgba(255,255,255,.08);position:relative}
+#uxInspector .ux-inspector-kicker{display:flex;align-items:center;gap:7px;min-height:17px;font-size:8px;letter-spacing:.12em;text-transform:uppercase;opacity:.4;padding-right:34px}
+#uxInspector .ux-inspector-id{padding:3px 6px;border:1px solid rgba(255,255,255,.12);border-radius:6px;letter-spacing:.08em;opacity:.8}
+#uxInspector .ux-inspector-title{font:600 18px/1.25 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:-.025em;margin-top:8px}
+#uxInspector .ux-inspector-close{position:absolute;right:12px;top:12px;width:30px;height:30px;padding:0;border-radius:9px;border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.03);font-size:16px;line-height:1;opacity:.55}
+#uxInspector .ux-inspector-close:hover{opacity:1;background:rgba(255,255,255,.07)}
+#uxInspector .ux-inspector-scroll{padding:15px 17px 18px;overflow-y:auto;overscroll-behavior:contain}
+#uxInspector .ux-inspector-status{display:inline-flex;align-items:center;gap:6px;margin-bottom:13px;padding:5px 8px;border:1px solid rgba(255,255,255,.1);border-radius:999px;background:rgba(255,255,255,.035);font-size:8px;letter-spacing:.09em;text-transform:uppercase;opacity:.72}
+#uxInspector .ux-inspector-status:before{content:'';width:6px;height:6px;border-radius:50%;background:rgba(182,190,215,.8);box-shadow:0 0 8px rgba(182,190,215,.18)}
+#uxInspector .ux-inspector-status[data-tone="active"]:before{background:rgba(166,233,188,.95);box-shadow:0 0 9px rgba(120,232,161,.28)}
+#uxInspector .ux-inspector-status[data-tone="attention"]:before{background:rgba(255,129,105,.95);box-shadow:0 0 10px rgba(255,100,78,.32)}
+#uxInspector .ux-inspector-section{margin:0 0 16px}
+#uxInspector .ux-inspector-label{font-size:8px;letter-spacing:.13em;text-transform:uppercase;opacity:.32;margin-bottom:6px}
+#uxInspector .ux-inspector-copy{font-size:11px;line-height:1.58;opacity:.78;white-space:pre-wrap;overflow-wrap:anywhere}
+#uxInspector .ux-inspector-why{padding:11px 12px;border:1px solid rgba(154,145,255,.12);border-radius:11px;background:rgba(126,112,255,.045)}
+#uxInspector .ux-inspector-related{display:flex;gap:6px;flex-wrap:wrap}
+#uxInspector .ux-related-chip{padding:4px 7px;border:1px solid rgba(255,255,255,.09);border-radius:7px;font:8px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;opacity:.5;background:rgba(255,255,255,.02)}
+#uxInspector .ux-inspector-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08)}
+#uxInspector .ux-inspector-actions button{font-size:9px;line-height:1.25;padding:8px 10px;border-radius:9px}
+#uxInspector .ux-inspector-actions button[data-primary="true"]{border-color:rgba(165,156,255,.28);background:rgba(127,113,255,.08)}
+#uxInspector .ux-inspector-actions button[data-close="true"]{opacity:.45}
+#uxInspector .ux-inspector-empty{font-size:10px;opacity:.35;padding:2px 0}
+
+body.ux-overview.ux-inspecting #uxOverviewCard{opacity:0;pointer-events:none;transform:translateX(12px)}
+body.ux-overview #panel{display:none!important}
+body.ux-god #uxInspector{opacity:0!important;pointer-events:none!important;transform:translateX(22px)!important}
+body.ux-god.ux-inspecting #uxOverviewCard{opacity:0}
+
+body.ux-overview i.ux-selected{filter:saturate(1.12) brightness(1.28)!important;outline:1px solid rgba(255,255,255,.55);outline-offset:6px;box-shadow:0 0 22px rgba(143,132,255,.26)!important}
+body.ux-overview .ux-selected:after{opacity:.65!important}
+
+@media(min-width:1180px){
+ body.ux-overview.ux-inspecting #uxOverviewLegend{opacity:.18}
+}
+@media(max-width:760px){
+ #uxInspector{top:auto;right:8px;left:8px;bottom:8px;width:auto;max-height:min(72vh,610px);border-radius:17px;transform:translateY(18px)}
+ #uxInspector.open{transform:translateY(0)}
+ body.ux-god #uxInspector{transform:translateY(18px)!important}
+ #uxInspector .ux-inspector-head{padding:14px 15px 11px}
+ #uxInspector .ux-inspector-scroll{padding:13px 15px 16px}
+ body.ux-overview.ux-inspecting #app{padding-bottom:min(76vh,650px)}
+}

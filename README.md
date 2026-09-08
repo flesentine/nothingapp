@@ -149,7 +149,7 @@ Consensus-final history acquired execution. The five Build 42 consensus witnesse
 ### Build 44
 Executed reality acquired software-supply-chain provenance. Every traveler, bailiff, archive, court, and administration replica now has a concrete runtime artifact associated with the Build 36 production version and any Build 43 local patch it is actually running. Reality A and Reality B each maintain persistent primary and independent verifier builders, build recipes, dependency locks, artifact hashes, provenance attestations, replica-to-artifact assignments, and reproducibility checks. Normal artifacts are attested by a currently accepted Build 40 trust root; those provenance attestations are also emitted as trust-audit records, so Build 41 can append them to the transparency log, Build 42 can quorum-finalize them, and Build 43 can eventually execute a history that includes statements about which binaries were trusted to execute history. The user can open provenance, independently rebuild active artifacts, inspect builders and binaries, drift dependencies without changing the declared source ref, quarantine a binary, rotate a builder, or deliberately compromise a build environment. Reproducible builds strengthen builder confidence when independent builders produce the same artifact hash from the same declared source, toolchain, and dependency lock. A compromised or nondeterministic builder can instead produce a different binary while still generating a formally valid provenance statement; if both incompatible artifacts are signed by roots the reality currently accepts, the app records a signed provenance mismatch and can trigger a supply-chain crisis with places such as `two signed binaries one source commit` and `attestation proving the wrong thing faithfully`. Dependency drift can change binary hashes beneath an unchanged runtime/source label, while Build 43 one-replica hotfixes become explicit unprovenanced local artifacts that cannot be reproduced from the clean recipe. Build 44 audits completed state-machine execution rounds and correlates divergent state hashes with the artifacts each replica claims to have executed: different state plus different artifact hashes points toward artifact/runtime divergence, while different state from the same artifact hash is classified as nondeterministic execution. Executing quorum-final history with an artifact whose signing root has since been distrusted also opens a provenance incident without erasing the execution that already occurred. Compromised builders can later substitute a live replica artifact under an unchanged runtime label, proving that source identity, binary identity, signature validity, and actual execution are now four separate facts. Build 44 tracks builders, toolchains, dependency locks, build artifacts, replica assignments, provenance attestations, reproducible and unreproducible builds, dependency drift, local unprovenanced binaries, artifact quarantine and substitution, builder rotation and compromise, signed mismatches, execution/provenance correlation, supply-chain incidents, and provenance crises, leaving the bailiff asking whether a signed binary is the same thing as the source.
 
-## Builds 45–99
+## Builds 45–100
 
 The detailed record for each late build lives in its matching `BUILDxx.md`. This ledger keeps the top-level README current without duplicating those documents.
 
@@ -210,6 +210,7 @@ The detailed record for each late build lives in its matching `BUILDxx.md`. This
 | 97 | Multilateral recapitalization acquired preferred recoupment. |
 | 98 | Preferred recoupment acquired reserve restitution. |
 | 99 | Reserve restitution acquired governance arbitrage. |
+| 100 | Governance arbitrage acquired borrower-recused conditionality capture. |
 
 ## Run it
 
@@ -220,3 +221,84 @@ State is stored locally in the browser with `localStorage`. New builds migrate f
 ## Roadmap
 
 No.
+
+
+## Post-Build-100 UX track
+
+The simulation is frozen at Build 100 while the interface is made human-readable.
+
+### UX 1 — Human Overview
+
+The default presentation now uses progressive disclosure instead of rendering all 100 build layers at equal priority.
+
+UX 1:
+- adds a calm Overview mode;
+- keeps only the core stage plus a small set of major monetary/stabilization/governance markers visible;
+- hides diagnostic lines and dense historical marker layers by default;
+- adds a human-readable "What matters now" card;
+- preserves the complete accumulated interface as one-click **God View**;
+- does not mutate simulation state or create Build 101.
+
+See `UX1.md` for the presentation contract and validation targets.
+
+### UX 2 — Selection + Right Inspector
+
+Overview now routes the app's existing `panel(title, body, metadata, actions)` contract into one consistent right-side inspector.
+
+UX 2:
+- keeps human name/type primary and object IDs secondary;
+- separates status, summary, Why, important facts, related IDs, and available actions;
+- uses the original historical action callbacks unchanged;
+- highlights the selected Overview marker;
+- supports Escape/close consistently;
+- becomes a bottom sheet on small screens;
+- leaves God View on the exact original bottom-panel interaction model.
+
+See `UX2.md` for the inspector contract.
+
+### UX 3 — Focus + Navigation
+
+The inspector can now isolate the subsystem that gives a selected object meaning.
+
+UX 3:
+- adds Focus actions for Stabilization System, Monetary Supervision, and External Economy;
+- reveals related historical layers while fading unrelated systems;
+- adds Overview / subsystem / selected-object breadcrumbs;
+- adds transient Back/Forward focus history;
+- makes Escape hierarchical: close inspector first, leave focus second;
+- clears focus when entering God View;
+- keeps all focus/navigation state outside simulation persistence.
+
+See `UX3.md` for the focus/navigation contract.
+
+### UX 4 — Semantic Zoom
+
+The canvas now changes information density without changing historical geometry.
+
+UX 4:
+- adds three detail levels: Systems, Institutions, Records;
+- starts root Overview at Systems;
+- automatically enters Institutions when a subsystem Focus begins from Systems;
+- lets focused users reveal individual records without exposing unrelated systems;
+- classifies newly re-rendered historical markers from their existing classes;
+- progressively reveals labels according to semantic importance;
+- keeps God View completely outside semantic filtering;
+- adds compact − / + detail controls to the existing Overview/God View bar.
+
+See `UX4.md` for the semantic-zoom contract.
+
+### UX 5 — Recent Changes Timeline
+
+Overview now exposes a real chronological view of accumulated simulation activity.
+
+UX 5:
+- reads timestamped records directly from live `S` state;
+- defaults to meaningful events while suppressing routine trust-audit noise;
+- shows real relative/absolute creation times;
+- humanizes Build 58–100 financial/governance records;
+- surfaces related record IDs as relationship hints;
+- lets visible records Locate through their original marker click path;
+- never auto-changes Focus or Semantic Zoom to find a hidden object;
+- preserves a clear Escape hierarchy with the inspector and focus layers.
+
+See `UX5.md` for the timeline contract.

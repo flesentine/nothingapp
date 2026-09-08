@@ -1,0 +1,60 @@
+#uxTimelineToggle{display:flex;align-items:center;gap:5px;margin-left:4px;padding:7px 9px;border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.025);font-size:9px;opacity:.62}
+#uxTimelineToggle:hover{opacity:1;background:rgba(255,255,255,.055)}
+#uxTimelineToggle.active{opacity:1;border-color:rgba(148,139,255,.24);background:rgba(126,112,255,.07)}
+#uxTimelineToggle .ux-timeline-id{font-size:7px;opacity:.5}
+body.ux-god #uxTimelineToggle{display:none}
+
+#uxTimelinePanel{position:fixed;z-index:234;top:72px;left:20px;bottom:20px;width:min(370px,calc(100vw - 40px));display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(8,10,16,.94);backdrop-filter:blur(18px);box-shadow:0 24px 70px rgba(0,0,0,.34);opacity:0;transform:translateX(-20px);pointer-events:none;transition:opacity .2s ease,transform .2s ease;overflow:hidden}
+#uxTimelinePanel.open{opacity:1;transform:translateX(0);pointer-events:auto}
+#uxTimelinePanel .ux-timeline-head{padding:15px 15px 12px;border-bottom:1px solid rgba(255,255,255,.08)}
+#uxTimelinePanel .ux-timeline-top{display:flex;align-items:center;gap:8px}
+#uxTimelinePanel .ux-timeline-title{font:600 17px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:-.025em;flex:1}
+#uxTimelinePanel .ux-timeline-close{width:30px;height:30px;padding:0;border-radius:9px;border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.03);font-size:16px;opacity:.5}
+#uxTimelinePanel .ux-timeline-close:hover{opacity:1;background:rgba(255,255,255,.07)}
+#uxTimelinePanel .ux-timeline-sub{margin-top:5px;font-size:8px;line-height:1.35;opacity:.34}
+#uxTimelinePanel .ux-timeline-filters{display:flex;gap:5px;margin-top:10px}
+#uxTimelinePanel .ux-timeline-filter{padding:5px 8px;border-radius:8px;border-color:rgba(255,255,255,.07);background:transparent;font-size:8px;opacity:.42}
+#uxTimelinePanel .ux-timeline-filter.active{opacity:.9;background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.12)}
+#uxTimelineList{position:relative;flex:1;overflow-y:auto;overscroll-behavior:contain;padding:11px 12px 18px}
+#uxTimelineList:before{content:'';position:absolute;left:24px;top:12px;bottom:18px;width:1px;background:linear-gradient(rgba(160,153,255,.22),rgba(255,255,255,.04))}
+.ux-timeline-row{position:relative;display:block;width:100%;margin:0 0 4px;border-radius:10px;background:transparent;color:inherit}
+.ux-timeline-row:hover{background:rgba(255,255,255,.035)}
+.ux-timeline-row.selected{background:rgba(126,112,255,.055)}
+.ux-timeline-row-toggle{position:relative;display:block;width:100%;padding:8px 8px 8px 29px;border:0;border-radius:10px;background:transparent;text-align:left;color:inherit;cursor:pointer;font:inherit}
+.ux-timeline-row-toggle:focus-visible{outline:1px solid rgba(175,168,255,.55);outline-offset:1px}
+.ux-timeline-dot{position:absolute;left:8px;top:16px;width:8px;height:8px;border-radius:50%;border:1px solid rgba(190,194,222,.45);background:#0b0d14;box-shadow:0 0 0 3px rgba(8,10,16,.94)}
+.ux-timeline-row[data-tone="attention"] .ux-timeline-dot{border-color:rgba(255,124,100,.85);box-shadow:0 0 8px rgba(255,95,72,.22),0 0 0 3px rgba(8,10,16,.94)}
+.ux-timeline-row[data-tone="active"] .ux-timeline-dot{border-color:rgba(154,230,180,.8);box-shadow:0 0 7px rgba(113,226,153,.17),0 0 0 3px rgba(8,10,16,.94)}
+.ux-timeline-main{display:flex;align-items:baseline;gap:7px;min-width:0}
+.ux-timeline-id{font:600 9px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;opacity:.82;white-space:nowrap}
+.ux-timeline-kind{font-size:8px;opacity:.34;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ux-timeline-time{margin-left:auto;font-size:7px;opacity:.25;white-space:nowrap}
+.ux-timeline-summary{margin-top:4px;font-size:9px;line-height:1.4;opacity:.62;overflow-wrap:anywhere}
+.ux-timeline-related{margin-top:5px;font-size:7px;line-height:1.35;opacity:.28}
+.ux-timeline-build{display:inline-block;margin-right:5px;padding:2px 4px;border:1px solid rgba(255,255,255,.07);border-radius:5px;font-size:6px;letter-spacing:.08em;text-transform:uppercase;opacity:.55}
+.ux-timeline-detail{display:none;margin:0 8px 8px 29px;padding:9px 10px;border:1px solid rgba(255,255,255,.07);border-radius:9px;background:rgba(255,255,255,.018)}
+.ux-timeline-row.selected .ux-timeline-detail{display:block}
+.ux-timeline-facts{font-size:8px;line-height:1.5;opacity:.48;white-space:pre-wrap;overflow-wrap:anywhere}
+.ux-timeline-actions{display:flex;gap:6px;margin-top:8px;align-items:center}
+.ux-timeline-locate{padding:5px 8px;border-radius:7px;border-color:rgba(153,144,255,.18);background:rgba(126,112,255,.055);font-size:8px;opacity:.78}
+.ux-timeline-locate:disabled{opacity:.25;cursor:default}
+.ux-timeline-location-note{font-size:7px;opacity:.28}
+.ux-timeline-empty{padding:18px 14px;font-size:9px;line-height:1.5;opacity:.35}
+.ux-timeline-more{padding:8px 10px;text-align:center;font-size:7px;opacity:.24}
+
+body.ux-overview.ux-timeline-open #uxOverviewLegend{opacity:.08}
+body.ux-overview.ux-timeline-open #uxOverviewCard{opacity:.18;pointer-events:none}
+body.ux-god #uxTimelinePanel{opacity:0!important;pointer-events:none!important;transform:translateX(-20px)!important}
+i.ux-timeline-pulse{outline:1px solid rgba(255,255,255,.8)!important;outline-offset:9px!important;filter:saturate(1.2) brightness(1.4)!important;box-shadow:0 0 34px rgba(146,135,255,.46)!important}
+
+@media(max-width:900px){
+ #uxTimelinePanel{top:auto;left:8px;right:8px;bottom:8px;width:auto;max-height:min(68vh,620px);transform:translateY(18px)}
+ #uxTimelinePanel.open{transform:translateY(0)}
+ body.ux-god #uxTimelinePanel{transform:translateY(18px)!important}
+ body.ux-overview.ux-timeline-open #app{padding-bottom:min(72vh,660px)}
+}
+@media(max-width:640px){
+ #uxTimelineToggle{padding:6px 7px;font-size:8px}
+ #uxTimelineToggle .ux-timeline-id{display:none}
+ #uxTimelinePanel .ux-timeline-title{font-size:15px}
+}
