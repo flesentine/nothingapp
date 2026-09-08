@@ -86,6 +86,8 @@ function makeUI(){
     panelEl.setAttribute('role','dialog');
     panelEl.setAttribute('aria-modal','true');
     panelEl.setAttribute('aria-label','Actions');
+    panelEl.setAttribute('aria-hidden','true');
+    panelEl.inert=true;
     panelEl.innerHTML='<div class="ux-action-head"><div><div class="ux-action-eyebrow">Original controls, one place</div><div class="ux-action-title">Actions</div></div><button class="ux-action-close" type="button" aria-label="Close actions">×</button></div><div class="ux-action-search-wrap"><span>⌕</span><input id="uxActionSearch" type="search" autocomplete="off" spellcheck="false" placeholder="Search actions…" aria-label="Search actions"></div><div class="ux-action-meta"><span id="uxActionCount"></span><span id="uxActionContext"></span></div><div id="uxActionList"></div><div class="ux-action-foot"><span>Choose an action to run its original control.</span><span>Esc closes · ⌘/Ctrl K toggles</span></div>';
     document.body.appendChild(panelEl);
     panelEl.querySelector('.ux-action-close').onclick=()=>closePalette();
@@ -111,6 +113,8 @@ function openPalette(){
   pendingDanger=null;
   document.body.classList.add('ux-action-open');
   const {toggle,panel}=makeUI();
+  panel.inert=false;
+  panel.setAttribute('aria-hidden','false');
   toggle?.classList.add('active');
   toggle?.setAttribute('aria-expanded','true');
   const input=panel.querySelector('#uxActionSearch');
@@ -118,14 +122,21 @@ function openPalette(){
   render();
   queueMicrotask(()=>input.focus());
 }
-function closePalette(){
+function closePalette(restoreFocus=true){
   if(!open&&!document.body.classList.contains('ux-action-open'))return;
+  const panel=document.querySelector('#uxActionPalette');
+  const hadPaletteFocus=!!document.activeElement?.closest?.('#uxActionPalette');
   open=false;
   pendingDanger=null;
   document.body.classList.remove('ux-action-open');
   const toggle=document.querySelector('#uxActionToggle');
   toggle?.classList.remove('active');
   toggle?.setAttribute('aria-expanded','false');
+  if(panel){
+    panel.setAttribute('aria-hidden','true');
+    panel.inert=true;
+  }
+  if(restoreFocus&&hadPaletteFocus&&inOverview())queueMicrotask(()=>toggle?.focus());
 }
 function actionButton(a){
   const button=document.createElement('button');
@@ -148,7 +159,7 @@ function actionButton(a){
       document.querySelector('[data-ux-action-key="'+CSS.escape(a.key)+'"]')?.focus();
       return;
     }
-    closePalette();
+    closePalette(false);
     a.source.click();
   };
   button.dataset.uxActionKey=a.key;
@@ -209,7 +220,7 @@ renderAll=function(...args){
   return out;
 };
 panel=function(...args){
-  if(open)closePalette();
+  if(open)closePalette(false);
   return priorPanel.apply(this,args);
 };
 
@@ -228,7 +239,7 @@ document.addEventListener('keydown',event=>{
 },true);
 
 new MutationObserver(()=>{
-  if(!inOverview()||document.body.classList.contains('ux-timeline-open'))closePalette();
+  if(!inOverview()||document.body.classList.contains('ux-timeline-open'))closePalette(false);
   else scheduleRefresh();
 }).observe(document.body,{attributes:true,attributeFilter:['class','data-ux-focus','data-ux-zoom']});
 
