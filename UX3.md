@@ -152,6 +152,8 @@ Entering God View:
 - hides the focus navigation UI;
 - preserves the legacy God View panel behavior from UX 2.
 
+That cleanup is idempotent. The body-class observer only removes `ux-focused` when the class is actually present, preventing a mutation-observer feedback loop while God View is active.
+
 Returning to Overview starts at the root Overview level rather than silently restoring hidden focus state.
 
 ## Read-only authority boundary
@@ -189,7 +191,7 @@ and delegates directly.
 10. Home returns to Overview.
 11. First Escape closes inspector only.
 12. Second Escape exits focus.
-13. God View clears focus and preserves the exact UX 2 legacy-panel path.
+13. God View clears focus, remains responsive across repeated body-class observer turns, and preserves the exact UX 2 legacy-panel path.
 14. Returning from God View starts at Overview.
 15. Double-click focus shortcut does not bypass original object interaction.
 16. Mobile navigation remains inside the viewport.
