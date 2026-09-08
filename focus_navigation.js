@@ -179,8 +179,8 @@ function syncInspector(){
 function syncMode(){
   if(!inOverview()){
     focusKey=null;
-    document.body.classList.remove('ux-focused');
-    delete document.body.dataset.uxFocus;
+    if(document.body.classList.contains('ux-focused'))document.body.classList.remove('ux-focused');
+    if(document.body.dataset.uxFocus)delete document.body.dataset.uxFocus;
     currentSelection={id:null,kind:null,title:null,focus:null};
     history=[null];
     historyIndex=0;
