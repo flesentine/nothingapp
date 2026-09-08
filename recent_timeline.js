@@ -33,12 +33,21 @@ function prefix(id){
   return m?.[1]||'';
 }
 function timestamp(r){
-  const n=Number(r?.created??r?.started??0);
-  return Number.isFinite(n)&&n>0?n:0;
+  const candidates=[r?.decided,r?.resolved,r?.lastReview,r?.acknowledged,r?.created,r?.started]
+    .map(Number).filter(n=>Number.isFinite(n)&&n>0);
+  return candidates.length?Math.max(...candidates):0;
 }
 function buildFromSource(source){
   const m=String(source||'').match(/(\d{2,3})(?!.*\d)/);
   return m?Number(m[1]):null;
+}
+function buildFor(record,source){
+  if(record?.sourceBuild100||record?.conditionalityCapture100||record?.sourceCapture100)return 100;
+  if(record?.sourceBuild99||record?.governanceArbitrage99)return 99;
+  if(record?.sourceBuild98==='reserve-restitution'||record?.reserveRestitution98)return 98;
+  if(record?.sourceBuild97||record?.preferredRecoupment97)return 97;
+  if(record?.supervisoryRecap96||record?.sourceBuild96)return 96;
+  return buildFromSource(source);
 }
 function sourceLabel(source){
   return String(source||'')
@@ -118,21 +127,20 @@ function isImportant(e){
   return /(stabilization|fund|monetary|fx|trade|supervisory|capital|restoration|surcharge|recoup|restitution|arbitrage|conditionality)/i.test(e.source);
 }
 function collect(){
-  const out=[],seen=new Set();
+  const byId=new Map();
   const add=(record,source)=>{
     if(!record||typeof record!=='object'||typeof record.id!=='string')return;
     const ts=timestamp(record);
     if(!ts)return;
-    const key=record.id+'|'+ts+'|'+source;
-    if(seen.has(key))return;
-    seen.add(key);
+    const key=record.id+'|'+source;
     const p=prefix(record.id);
-    const e={key,id:record.id,prefix:p,record,source,ts,build:buildFromSource(source)};
+    const e={key,id:record.id,prefix:p,record,source,ts,build:buildFor(record,source)};
     e.type=typeFor(e.id,record,source);
     e.summary=summaryFor(e);
     e.related=relatedIds(record,e.id);
     e.important=isImportant(e);
-    out.push(e);
+    const existing=byId.get(e.id);
+    if(!existing||e.ts>existing.ts)byId.set(e.id,e);
   };
   for(const [source,value] of Object.entries(S||{})){
     if(Array.isArray(value)){
@@ -141,7 +149,7 @@ function collect(){
       add(value,source);
     }
   }
-  return out.sort((a,b)=>b.ts-a.ts||b.id.localeCompare(a.id));
+  return [...byId.values()].sort((a,b)=>b.ts-a.ts||b.id.localeCompare(a.id));
 }
 function relativeTime(ts){
   const d=Math.max(0,Date.now()-ts);
