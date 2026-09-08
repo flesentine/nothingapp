@@ -232,6 +232,21 @@ document.addEventListener('keydown',event=>{
     open?closePalette():openPalette();
     return;
   }
+  if(event.key==='Tab'&&open){
+    const panel=document.querySelector('#uxActionPalette');
+    const focusable=[...(panel?.querySelectorAll('button:not(:disabled),input:not(:disabled),[href],[tabindex]:not([tabindex="-1"])')||[])]
+      .filter(el=>!el.hidden);
+    if(focusable.length){
+      const first=focusable[0],last=focusable[focusable.length-1],active=document.activeElement;
+      if(event.shiftKey&&(active===first||!panel.contains(active))){
+        event.preventDefault();
+        last.focus();
+      }else if(!event.shiftKey&&(active===last||!panel.contains(active))){
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  }
   if(event.key==='Escape'&&open){
     event.preventDefault();
     event.stopImmediatePropagation();
