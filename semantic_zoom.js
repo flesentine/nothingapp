@@ -115,7 +115,14 @@ wasFocused=isFocused()&&inOverview();
 
 new MutationObserver(records=>{
   const added=[];
-  for(const record of records)added.push(...record.addedNodes);
+  for(const record of records){
+    for(const node of record.addedNodes){
+      if(!(node instanceof Element))continue;
+      const directMarker=node.tagName==='I'&&node.parentElement?.parentElement===document.body&&node.parentElement?.id.includes('Layer');
+      const layerTree=node.parentElement===document.body&&node.id?.includes('Layer');
+      if(directMarker||layerTree)added.push(node);
+    }
+  }
   if(added.length)scheduleClassify(added);
 }).observe(document.body,{subtree:true,childList:true});
 
