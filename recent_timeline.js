@@ -99,7 +99,7 @@ function relatedIds(record,id){
     if(/^[A-Z][A-Z0-9]{1,7}\d+$/.test(v)&&!out.includes(v))out.push(v);
   };
   for(const [k,v] of Object.entries(record||{})){
-    if(k==='id')continue;
+    if(k==='id'||!/(id|source|motion|program|claim|transfer|recap|position|restitution|condition|debt|facility|authority|board)/i.test(k))continue;
     if(typeof v==='string')add(v);
     else if(Array.isArray(v))for(const x of v)add(x);
     if(out.length>=8)break;
