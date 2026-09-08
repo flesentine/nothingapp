@@ -1,0 +1,95 @@
+#uxFocusNav{position:fixed;z-index:228;top:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;max-width:min(650px,calc(100vw - 360px));min-height:38px;padding:5px 7px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(8,10,16,.78);backdrop-filter:blur(14px);box-shadow:0 12px 38px rgba(0,0,0,.18);opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+#uxFocusNav.visible{opacity:1;pointer-events:auto}
+#uxFocusNav .ux-nav-icon{width:28px;height:28px;padding:0;display:grid;place-items:center;border-color:transparent;background:transparent;font-size:13px;opacity:.42}
+#uxFocusNav .ux-nav-icon:hover:not(:disabled){opacity:1;background:rgba(255,255,255,.055)}
+#uxFocusNav .ux-nav-icon:disabled{opacity:.14;cursor:default}
+#uxFocusNav .ux-crumbs{display:flex;align-items:center;gap:5px;min-width:0;overflow:hidden;white-space:nowrap}
+#uxFocusNav .ux-crumb{border:0;background:transparent;padding:5px 6px;font:9px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;opacity:.42;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#uxFocusNav button.ux-crumb:hover{opacity:.9;background:rgba(255,255,255,.045)}
+#uxFocusNav .ux-crumb.current{opacity:.9}
+#uxFocusNav .ux-sep{font-size:9px;opacity:.16}
+
+#uxInspectorFocus{margin-top:10px;padding:6px 9px;border-radius:8px;border-color:rgba(152,142,255,.2);background:rgba(126,112,255,.06);font-size:8px;letter-spacing:.06em}
+#uxInspectorFocus[disabled]{opacity:.36;cursor:default}
+
+#uxFocusHint{position:fixed;z-index:216;left:50%;bottom:20px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(255,255,255,.075);border-radius:10px;background:rgba(8,10,16,.68);backdrop-filter:blur(10px);font-size:8px;opacity:0;pointer-events:none;transition:opacity .2s ease}
+#uxFocusHint b{font-weight:500;opacity:.82}
+#uxFocusHint span{opacity:.38}
+body.ux-overview.ux-focused #uxFocusHint{opacity:1}
+
+body.ux-overview.ux-focused #uxOverviewCard{opacity:0;pointer-events:none;transform:translateX(12px)}
+body.ux-overview.ux-focused #uxOverviewLegend{opacity:.1}
+body.ux-overview.ux-focused #thing,
+body.ux-overview.ux-focused #echo,
+body.ux-overview.ux-focused #rift,
+body.ux-overview.ux-focused #archiveDoor{opacity:.18!important}
+body.ux-overview.ux-focused>div[id*="Layer"]{opacity:0!important;pointer-events:none!important}
+body.ux-overview.ux-focused>div[id*="Layer"]>i{opacity:0!important;pointer-events:none!important}
+
+/* Stabilization: Builds 58/59 and the 96→100 consequence chain. */
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #monetaryLayer,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #fxLayer,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #stabilizationLayer,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #fundGovernanceLayer,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #supervisoryRecapLayer96,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #preferredRecoupmentLayer97,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #reserveRestitutionLayer98,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #governanceArbitrageLayer99,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #conditionalityCaptureLayer100{opacity:1!important;pointer-events:none!important}
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #monetaryLayer>i,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #fxLayer>i,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #stabilizationLayer>i,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #fundGovernanceLayer>i,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #supervisoryRecapLayer96>i,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #preferredRecoupmentLayer97>i,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #reserveRestitutionLayer98>i,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #governanceArbitrageLayer99>i,
+body.ux-overview.ux-focused[data-ux-focus="stabilization"] #conditionalityCaptureLayer100>i{opacity:.82!important;pointer-events:auto!important}
+
+/* Monetary supervision: Build 55 authority through Builds 90–96. */
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #monetaryLayer,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #monetaryRemediationLayer90,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #monetaryExceptionLayer91,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #supervisoryCapitalLayer92,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #capitalRestorationLayer93,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #restorationSurchargeLayer94,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #surchargeRecidivismLayer95,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #supervisoryRecapLayer96,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #stabilizationLayer{opacity:1!important;pointer-events:none!important}
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #monetaryLayer>i,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #monetaryRemediationLayer90>i,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #monetaryExceptionLayer91>i,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #supervisoryCapitalLayer92>i,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #capitalRestorationLayer93>i,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #restorationSurchargeLayer94>i,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #surchargeRecidivismLayer95>i,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #supervisoryRecapLayer96>i,
+body.ux-overview.ux-focused[data-ux-focus="supervision"] #stabilizationLayer>i{opacity:.82!important;pointer-events:auto!important}
+
+/* External economy: trade, FX, reserves and their restitution consequences. */
+body.ux-overview.ux-focused[data-ux-focus="external"] #tradeLayer,
+body.ux-overview.ux-focused[data-ux-focus="external"] #fxLayer,
+body.ux-overview.ux-focused[data-ux-focus="external"] #stabilizationLayer,
+body.ux-overview.ux-focused[data-ux-focus="external"] #reserveRestitutionLayer98,
+body.ux-overview.ux-focused[data-ux-focus="external"] #governanceArbitrageLayer99{opacity:1!important;pointer-events:none!important}
+body.ux-overview.ux-focused[data-ux-focus="external"] #tradeLayer>i,
+body.ux-overview.ux-focused[data-ux-focus="external"] #fxLayer>i,
+body.ux-overview.ux-focused[data-ux-focus="external"] #stabilizationLayer>i,
+body.ux-overview.ux-focused[data-ux-focus="external"] #reserveRestitutionLayer98>i,
+body.ux-overview.ux-focused[data-ux-focus="external"] #governanceArbitrageLayer99>i{opacity:.82!important;pointer-events:auto!important}
+
+body.ux-overview.ux-focused>div[id*="Layer"]>i.ux-selected{opacity:1!important;filter:saturate(1.15) brightness(1.28)!important}
+body.ux-god #uxFocusNav,
+body.ux-god #uxFocusHint{opacity:0!important;pointer-events:none!important}
+
+@media(max-width:1180px){
+ #uxFocusNav{top:60px;max-width:calc(100vw - 36px)}
+ body.ux-overview.ux-focused #app{padding-top:116px}
+}
+@media(max-width:760px){
+ #uxFocusNav{top:52px;width:calc(100vw - 20px);max-width:none}
+ #uxFocusNav .ux-nav-icon{width:26px;height:26px}
+ #uxFocusNav .ux-crumb{font-size:8px}
+ #uxFocusHint{bottom:auto;top:96px;max-width:calc(100vw - 24px)}
+ body.ux-overview.ux-focused #app{padding-top:132px}
+}

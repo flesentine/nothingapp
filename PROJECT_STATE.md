@@ -1,8 +1,8 @@
 # Nothing — Project State
 
-**Document revision:** 100.2  
+**Document revision:** 100.3  
 **Current build:** 100  
-**Current UX pass:** 2 — Selection + Right Inspector  
+**Current UX pass:** 3 — Focus + Navigation  
 **Updated:** September 6, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -309,32 +309,37 @@ Validation claims should say exactly what happened.
 
 Simulation authority remains frozen at Build 100.
 
-UX 1 remains the default Human Overview:
-- calm progressive-disclosure canvas;
-- major systems/current consequence only;
-- human "What matters now" summary;
-- persistent Overview/God View choice;
-- transient `?god=1` override;
-- full accumulated system retained as God View.
+UX 1 remains the Human Overview and God View switch.
 
-UX 2 adds a second read-only presentation layer loaded after UX 1:
+UX 2 remains the right-side Overview inspector while God View keeps the legacy bottom panel.
 
-- `right_inspector.css`
-- `right_inspector.js`
+UX 3 adds a third read-only presentation layer loaded after UX 2:
 
-In Overview:
-- the existing global `panel(title, body, metadata, actions)` contract is routed into one right-side inspector;
-- object ID is secondary to human type/name;
-- existing payload is presented as Status, Summary, Why, Important facts, Related, and What can happen next;
-- original action callback functions are used directly;
-- the selected marker receives only a DOM highlight;
-- closing delegates back to the original `closePanel`, preserving old `S.current` cleanup.
+- `focus_navigation.css`
+- `focus_navigation.js`
 
-In God View:
-- the exact original bottom panel remains authoritative;
-- UX 2 delegates directly to the original panel function.
+UX 3 can infer and isolate:
+- Stabilization System;
+- Monetary Supervision;
+- External Economy.
 
-UX 2 does not write simulation state or create Build 101.
+A focus:
+- reveals the related original historical layers;
+- leaves unrelated build layers suppressed;
+- keeps original DOM nodes and click handlers authoritative;
+- adds a transient breadcrumb/history path;
+- never writes simulation or localStorage state.
+
+Breadcrumbs can read:
+`Overview › Stabilization System › MCP1`
+
+Back/Forward navigate focus history.
+
+Escape is hierarchical:
+- inspector open → UX 2 closes inspector;
+- focused with no inspector → UX 3 returns to Overview.
+
+Entering God View clears transient focus/history and leaves the UX 2 legacy-panel path unchanged.
 
 ## Current handoff
 
