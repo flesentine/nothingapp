@@ -252,11 +252,9 @@ function renderRow(e){
   const row=document.createElement('div');
   row.className='ux-timeline-row'+(selectedKey===e.key?' selected':'');
   row.dataset.tone=tone(e);
-  row.setAttribute('role','button');
-  row.tabIndex=0;
   const related=e.related.length?'↳ '+e.related.join(' · '):'';
   const build=e.build?'<span class="ux-timeline-build">Build '+e.build+'</span>':'';
-  row.innerHTML='<span class="ux-timeline-dot"></span><div class="ux-timeline-main"><span class="ux-timeline-id"></span><span class="ux-timeline-kind"></span><span class="ux-timeline-time"></span></div><div class="ux-timeline-summary"></div><div class="ux-timeline-related"></div><div class="ux-timeline-detail"><div class="ux-timeline-facts"></div><div class="ux-timeline-actions"><button class="ux-timeline-locate">Locate</button><span class="ux-timeline-location-note"></span></div></div>';
+  row.innerHTML='<button class="ux-timeline-row-toggle" type="button" aria-expanded="'+String(selectedKey===e.key)+'"><span class="ux-timeline-dot"></span><span class="ux-timeline-main"><span class="ux-timeline-id"></span><span class="ux-timeline-kind"></span><span class="ux-timeline-time"></span></span><span class="ux-timeline-summary"></span><span class="ux-timeline-related"></span></button><div class="ux-timeline-detail"><div class="ux-timeline-facts"></div><div class="ux-timeline-actions"><button class="ux-timeline-locate" type="button">Locate</button><span class="ux-timeline-location-note"></span></div></div>';
   row.querySelector('.ux-timeline-id').textContent=e.id;
   row.querySelector('.ux-timeline-kind').textContent=e.type;
   row.querySelector('.ux-timeline-time').textContent=relativeTime(e.ts);
@@ -268,13 +266,12 @@ function renderRow(e){
   const marker=markerFor(e.id),visible=markerVisible(marker),loc=row.querySelector('.ux-timeline-locate'),note=row.querySelector('.ux-timeline-location-note');
   loc.disabled=!visible;
   note.textContent=visible?'opens the original object':'hidden at the current view/detail level';
-  loc.onclick=ev=>{ev.stopPropagation();locate(e)};
-  const toggle=()=>{
+  loc.onclick=()=>locate(e);
+  const toggleButton=row.querySelector('.ux-timeline-row-toggle');
+  toggleButton.onclick=()=>{
     selectedKey=selectedKey===e.key?null:e.key;
     refresh();
   };
-  row.onclick=toggle;
-  row.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();toggle()}};
   return row;
 }
 function latestImportantId(){
