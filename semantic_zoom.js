@@ -115,12 +115,9 @@ wasFocused=isFocused()&&inOverview();
 
 new MutationObserver(records=>{
   const added=[];
-  let bodyModeChanged=false;
-  for(const record of records){
-    if(record.type==='childList')added.push(...record.addedNodes);
-    if(record.type==='attributes'&&record.target===document.body)bodyModeChanged=true;
-  }
+  for(const record of records)added.push(...record.addedNodes);
   if(added.length)scheduleClassify(added);
-  if(bodyModeChanged)syncMode();
-}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','data-ux-focus']});
+}).observe(document.body,{subtree:true,childList:true});
+
+new MutationObserver(syncMode).observe(document.body,{attributes:true,attributeFilter:['class','data-ux-focus']});
 })();
