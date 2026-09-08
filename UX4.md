@@ -98,11 +98,13 @@ Many historical modules clear and recreate marker nodes during their own render/
 
 UX 4 therefore observes DOM child additions and classifies newly inserted markers.
 
-The observer watches child-list changes, not the presentation attributes UX 4 writes.
+The marker observer watches child-list changes, not presentation attributes UX 4 writes.
 
-That avoids a self-triggering attribute loop.
+It ignores unrelated UI additions and schedules reclassification only when a historical `*Layer` or a direct marker inside one is added.
 
-A lightweight queued full classification pass also runs after additions so rebuilt layers settle into the correct tier.
+That avoids a self-triggering attribute loop and prevents inspector/navigation DOM churn from causing needless full marker scans.
+
+A lightweight queued full classification pass then lets rebuilt layers settle into the correct tier.
 
 ## Root Overview
 
@@ -171,6 +173,19 @@ Keyboard shortcuts:
 
 The shortcuts are disabled while typing into form controls and ignore modified key combinations.
 
+
+## Hit-testing safety
+
+Semantic visibility and interaction must agree.
+
+Older UX 1/UX 3 CSS contains ID-specific `!important` visibility rules, so UX 4 uses ID-specific `:is(...)` selectors rather than relying on generic layer selectors.
+
+Every semantic marker is then covered by a default no-hit guard.
+
+Explicit root/focus allowlists re-enable pointer events only for markers inside the layer family that is actually visible at the current semantic level.
+
+This prevents opacity-zero historical layers from leaving invisible clickable children over the canvas.
+
 ## Labels
 
 Label visibility follows semantic importance.
@@ -234,7 +249,7 @@ Returning to Overview starts at Systems.
 12. Leaving Focus returns to Systems.
 13. God View resets semantic level to Systems and hides the detail control.
 14. System/Institution/Record label opacity follows the semantic tier.
-15. Selected/current consequential markers remain visible even at Systems.
+15. Selected/current consequential markers remain visible even at Systems. The active Build 100 capture also remains pinned through Institutions so increasing detail never makes the current important event disappear.
 16. Original marker click handlers remain authoritative.
 17. Keyboard detail shortcuts do not fire inside form controls.
 18. Mobile mode-bar controls remain usable.
