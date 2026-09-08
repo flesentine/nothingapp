@@ -17,9 +17,11 @@ body.ux-god #uxTimelineToggle{display:none}
 #uxTimelinePanel .ux-timeline-filter.active{opacity:.9;background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.12)}
 #uxTimelineList{position:relative;flex:1;overflow-y:auto;overscroll-behavior:contain;padding:11px 12px 18px}
 #uxTimelineList:before{content:'';position:absolute;left:24px;top:12px;bottom:18px;width:1px;background:linear-gradient(rgba(160,153,255,.22),rgba(255,255,255,.04))}
-.ux-timeline-row{position:relative;display:block;width:100%;padding:8px 8px 8px 29px;margin:0 0 4px;border:0;border-radius:10px;background:transparent;text-align:left;color:inherit;cursor:pointer}
+.ux-timeline-row{position:relative;display:block;width:100%;margin:0 0 4px;border-radius:10px;background:transparent;color:inherit}
 .ux-timeline-row:hover{background:rgba(255,255,255,.035)}
 .ux-timeline-row.selected{background:rgba(126,112,255,.055)}
+.ux-timeline-row-toggle{position:relative;display:block;width:100%;padding:8px 8px 8px 29px;border:0;border-radius:10px;background:transparent;text-align:left;color:inherit;cursor:pointer;font:inherit}
+.ux-timeline-row-toggle:focus-visible{outline:1px solid rgba(175,168,255,.55);outline-offset:1px}
 .ux-timeline-dot{position:absolute;left:8px;top:16px;width:8px;height:8px;border-radius:50%;border:1px solid rgba(190,194,222,.45);background:#0b0d14;box-shadow:0 0 0 3px rgba(8,10,16,.94)}
 .ux-timeline-row[data-tone="attention"] .ux-timeline-dot{border-color:rgba(255,124,100,.85);box-shadow:0 0 8px rgba(255,95,72,.22),0 0 0 3px rgba(8,10,16,.94)}
 .ux-timeline-row[data-tone="active"] .ux-timeline-dot{border-color:rgba(154,230,180,.8);box-shadow:0 0 7px rgba(113,226,153,.17),0 0 0 3px rgba(8,10,16,.94)}
@@ -30,7 +32,7 @@ body.ux-god #uxTimelineToggle{display:none}
 .ux-timeline-summary{margin-top:4px;font-size:9px;line-height:1.4;opacity:.62;overflow-wrap:anywhere}
 .ux-timeline-related{margin-top:5px;font-size:7px;line-height:1.35;opacity:.28}
 .ux-timeline-build{display:inline-block;margin-right:5px;padding:2px 4px;border:1px solid rgba(255,255,255,.07);border-radius:5px;font-size:6px;letter-spacing:.08em;text-transform:uppercase;opacity:.55}
-.ux-timeline-detail{display:none;margin-top:8px;padding:9px 10px;border:1px solid rgba(255,255,255,.07);border-radius:9px;background:rgba(255,255,255,.018)}
+.ux-timeline-detail{display:none;margin:0 8px 8px 29px;padding:9px 10px;border:1px solid rgba(255,255,255,.07);border-radius:9px;background:rgba(255,255,255,.018)}
 .ux-timeline-row.selected .ux-timeline-detail{display:block}
 .ux-timeline-facts{font-size:8px;line-height:1.5;opacity:.48;white-space:pre-wrap;overflow-wrap:anywhere}
 .ux-timeline-actions{display:flex;gap:6px;margin-top:8px;align-items:center}
