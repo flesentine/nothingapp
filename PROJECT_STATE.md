@@ -1,8 +1,8 @@
 # Nothing — Project State
 
-**Document revision:** 100.3  
+**Document revision:** 100.4  
 **Current build:** 100  
-**Current UX pass:** 3 — Focus + Navigation  
+**Current UX pass:** 4 — Semantic Zoom  
 **Updated:** September 6, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
@@ -309,37 +309,39 @@ Validation claims should say exactly what happened.
 
 Simulation authority remains frozen at Build 100.
 
-UX 1 remains the Human Overview and God View switch.
+UX 1 remains the Human Overview / God View entry.
 
-UX 2 remains the right-side Overview inspector while God View keeps the legacy bottom panel.
+UX 2 remains the right-side Overview inspector while God View keeps the original bottom panel.
 
-UX 3 adds a third read-only presentation layer loaded after UX 2:
+UX 3 remains subsystem Focus + breadcrumb/back/forward navigation.
 
-- `focus_navigation.css`
-- `focus_navigation.js`
+UX 4 adds semantic density after UX 3:
 
-UX 3 can infer and isolate:
-- Stabilization System;
-- Monetary Supervision;
-- External Economy.
+- `semantic_zoom.css`
+- `semantic_zoom.js`
 
-A focus:
-- reveals the related original historical layers;
-- leaves unrelated build layers suppressed;
-- keeps original DOM nodes and click handlers authoritative;
-- adds a transient breadcrumb/history path;
-- never writes simulation or localStorage state.
+Three transient detail levels exist:
+- Systems;
+- Institutions;
+- Records.
 
-Breadcrumbs can read:
-`Overview › Stabilization System › MCP1`
+Historical geometry is not transformed.
 
-Back/Forward navigate focus history.
+UX 4 classifies existing layer markers from their original classes into presentation-only `data-ux-detail` tiers.
 
-Escape is hierarchical:
-- inspector open → UX 2 closes inspector;
-- focused with no inspector → UX 3 returns to Overview.
+Root Overview:
+- begins at Systems;
+- Institutions/Records expose only the current monetary/FX/trade/stabilization and Builds 96–100 financial/governance family.
 
-Entering God View clears transient focus/history and leaves the UX 2 legacy-panel path unchanged.
+Focused subsystems:
+- UX 3 chooses the related layers;
+- UX 4 chooses semantic depth inside those layers;
+- entering focus from Systems automatically moves to Institutions;
+- leaving focus or entering God View returns semantic level to Systems.
+
+Newly re-rendered marker nodes are automatically reclassified through a child-list observer.
+
+UX 4 has no simulation/localStorage authority.
 
 ## Current handoff
 

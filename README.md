@@ -270,3 +270,19 @@ UX 3:
 - keeps all focus/navigation state outside simulation persistence.
 
 See `UX3.md` for the focus/navigation contract.
+
+### UX 4 — Semantic Zoom
+
+The canvas now changes information density without changing historical geometry.
+
+UX 4:
+- adds three detail levels: Systems, Institutions, Records;
+- starts root Overview at Systems;
+- automatically enters Institutions when a subsystem Focus begins from Systems;
+- lets focused users reveal individual records without exposing unrelated systems;
+- classifies newly re-rendered historical markers from their existing classes;
+- progressively reveals labels according to semantic importance;
+- keeps God View completely outside semantic filtering;
+- adds compact − / + detail controls to the existing Overview/God View bar.
+
+See `UX4.md` for the semantic-zoom contract.
