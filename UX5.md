@@ -18,13 +18,25 @@ The timeline scans the live top-level `S` object for timestamped records.
 
 Eligible array records must have:
 - a string `id`;
-- a numeric `created` or `started` timestamp.
+- at least one explicit lifecycle timestamp.
+
+Activity time uses the newest real timestamp among:
+- `decided`;
+- `resolved`;
+- `lastReview`;
+- `acknowledged`;
+- `created`;
+- `started`.
+
+That lets a real motion decision or incident resolution move back to the top of Recent Changes without inventing a synthetic second event.
 
 Top-level institutional objects are included when their state key is an Office / Register / Desk / Window and they have an ID + timestamp.
 
 Records are sorted newest first.
 
 Existing `Date.now()` timestamps from Builds 55–100 remain authoritative.
+
+Timeline IDs are deduplicated globally. If the same authoritative record is visible through more than one top-level state collection, UX 5 keeps the copy with the newest explicit activity timestamp.
 
 ## Important vs All activity
 
@@ -65,6 +77,18 @@ Examples:
 - `INC#` — incident title / severity / status.
 
 Unknown records fall back conservatively to their name/title/label/status.
+
+## Build provenance
+
+The authoritative array is not always the build that created a record.
+
+Later builds intentionally reuse earlier institutions. Examples:
+- Build 100 creates a real `MOT#` in the Build 59 motion array;
+- Build 98 can create a real `RDR#` in the Build 58 drawing-right array.
+
+UX 5 first reads explicit source markers on the record (`sourceBuild100`, `sourceCapture100`, `supervisoryRecap96`, `sourceBuild98`, etc.) and only falls back to the state collection suffix when no later-build provenance exists.
+
+This prevents misleading timeline badges such as labeling a Build 100 conditionality motion as “Build 59.”
 
 ## Time display
 
