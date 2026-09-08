@@ -3,6 +3,7 @@ const priorRenderAll=renderAll;
 const priorPanel=panel;
 const MAX_IMPORTANT=30;
 const MAX_ALL=80;
+const BADGE_REFRESH_MS=10000;
 const TYPE_MAP={
   ISF:'Stabilization Fund',ISFB:'Stabilization Board',DIR:'Fund Director',
   PRG:'Stabilization Program',COND:'Program Condition',REV:'Program Review',RST:'Debt Restructuring',RDR:'Drawing Right',
@@ -21,6 +22,7 @@ let open=false;
 let showAll=false;
 let selectedKey=null;
 let refreshQueued=false;
+let badgeUpdatedAt=0;
 
 function inOverview(){
   return document.body.classList.contains('ux-overview');
@@ -33,8 +35,11 @@ function prefix(id){
   return m?.[1]||'';
 }
 function timestamp(r){
-  const candidates=[r?.decided,r?.resolved,r?.lastReview,r?.acknowledged,r?.created,r?.started]
-    .map(Number).filter(n=>Number.isFinite(n)&&n>0);
+  const candidates=[
+    r?.decided,r?.resolved,r?.lastReview,r?.acknowledged,
+    r?.completed96,r?.paid97,r?.majorityRestoredAt99,r?.motionCreated100,
+    r?.created,r?.started
+  ].map(Number).filter(n=>Number.isFinite(n)&&n>0);
   return candidates.length?Math.max(...candidates):0;
 }
 function buildFromSource(source){
@@ -176,7 +181,10 @@ function markerFor(id){
 function markerVisible(marker){
   if(!marker)return false;
   const s=getComputedStyle(marker),p=marker.parentElement?getComputedStyle(marker.parentElement):null;
-  return s.display!=='none'&&s.visibility!=='hidden'&&parseFloat(s.opacity||'1')>.05&&s.pointerEvents!=='none'&&(!p||parseFloat(p.opacity||'1')>.05);
+  const r=marker.getBoundingClientRect();
+  return s.display!=='none'&&s.visibility!=='hidden'&&parseFloat(s.opacity||'1')>.05&&s.pointerEvents!=='none'
+    &&r.width>0&&r.height>0
+    &&(!p||(p.display!=='none'&&p.visibility!=='hidden'&&parseFloat(p.opacity||'1')>.05&&p.pointerEvents!=='none'));
 }
 function makeUI(){
   let toggle=document.querySelector('#uxTimelineToggle');
@@ -205,7 +213,7 @@ function makeUI(){
       b.onclick=()=>{
         showAll=b.dataset.filter==='all';
         selectedKey=null;
-        refresh();
+        refresh(false);
       };
     }
   }
@@ -220,7 +228,7 @@ function openTimeline(){
   panel.classList.add('open');
   toggle?.classList.add('active');
   toggle?.setAttribute('aria-expanded','true');
-  refresh();
+  refresh(false);
 }
 function closeTimeline(){
   if(!open&&!document.body.classList.contains('ux-timeline-open'))return;
@@ -269,15 +277,45 @@ function renderRow(e){
   row.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();toggle()}};
   return row;
 }
-function refresh(){
+function latestImportantId(){
+  let best=null,bestTs=0;
+  const consider=(record,source)=>{
+    if(!record||typeof record!=='object'||typeof record.id!=='string')return;
+    const ts=timestamp(record);
+    if(!ts||ts<bestTs)return;
+    const e={id:record.id,prefix:prefix(record.id),record,source};
+    if(!isImportant(e))return;
+    if(ts>bestTs||!best){best=record.id;bestTs=ts}
+  };
+  for(const [source,value] of Object.entries(S||{})){
+    if(Array.isArray(value)){
+      for(const record of value)consider(record,source);
+    }else if(value&&typeof value==='object'&&typeof value.id==='string'&&/(Office|Register|Desk|Window)/i.test(source)){
+      consider(value,source);
+    }
+  }
+  return best||'';
+}
+function refreshBadge(toggle,force=false){
+  const now=Date.now();
+  if(!force&&now-badgeUpdatedAt<BADGE_REFRESH_MS)return;
+  badgeUpdatedAt=now;
+  const idEl=toggle?.querySelector('.ux-timeline-id');
+  if(idEl)idEl.textContent=latestImportantId();
+}
+function refresh(preserveScroll=true){
   const {toggle,panel}=makeUI();
+  if(!open){
+    refreshBadge(toggle);
+    return;
+  }
+  if(!inOverview()){closeTimeline();return}
   const events=collect();
   const important=events.filter(e=>e.important);
   const latest=important[0]||events[0]||null;
   const idEl=toggle?.querySelector('.ux-timeline-id');
   if(idEl)idEl.textContent=latest?latest.id:'';
-  if(!open)return;
-  if(!inOverview()){closeTimeline();return}
+  badgeUpdatedAt=Date.now();
   panel.classList.add('open');
   const focus=document.body.dataset.uxFocus;
   const sub=panel.querySelector('#uxTimelineSub');
@@ -286,6 +324,7 @@ function refresh(){
   const chosen=showAll?events:important;
   const limit=showAll?MAX_ALL:MAX_IMPORTANT;
   const list=panel.querySelector('#uxTimelineList');
+  const scrollTop=preserveScroll?list.scrollTop:0;
   list.innerHTML='';
   if(!chosen.length){
     const empty=document.createElement('div');empty.className='ux-timeline-empty';empty.textContent='No timestamped activity is available yet.';list.appendChild(empty);return;
@@ -294,6 +333,7 @@ function refresh(){
   if(chosen.length>limit){
     const more=document.createElement('div');more.className='ux-timeline-more';more.textContent=(chosen.length-limit)+' older records not shown';list.appendChild(more);
   }
+  if(preserveScroll)list.scrollTop=scrollTop;
 }
 function scheduleRefresh(){
   if(refreshQueued)return;
@@ -324,7 +364,10 @@ new MutationObserver(()=>{
   else scheduleRefresh();
 }).observe(document.body,{attributes:true,attributeFilter:['class','data-ux-focus','data-ux-zoom']});
 
-makeUI();
-refresh();
-setInterval(()=>{if(open)refresh()},2500);
+const initialUI=makeUI();
+refreshBadge(initialUI.toggle,true);
+setInterval(()=>{
+  if(open)refresh(true);
+  else refreshBadge(document.querySelector('#uxTimelineToggle'));
+},2500);
 })();
