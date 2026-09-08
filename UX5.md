@@ -125,11 +125,21 @@ Selecting a timeline row expands a small detail block with:
 
 This detail is read-only.
 
+## Interaction structure
+
+A timeline record is a plain row container with a dedicated native expand/collapse button.
+
+`Locate` is a separate sibling button inside the expanded detail area rather than an interactive control nested inside another button/`role=button` surface.
+
+This preserves normal keyboard Enter/Space semantics and clean focus behavior.
+
 ## Locate
 
 If the original marker for a timeline record is currently visible and interactive at the active Overview / Focus / Semantic Zoom level:
 
 **Locate** dispatches a normal click on that original marker.
+
+Visibility requires the marker itself to be rendered, nonzero-size, nontransparent, and pointer-interactive, plus a visible/nontransparent parent layer. The parent layer's own `pointer-events:none` is intentionally allowed because the semantic layers use that pattern while re-enabling individual child markers.
 
 That means:
 - the original module's click handler runs;
@@ -187,7 +197,9 @@ After original rendering completes:
 - timeline refresh is queued;
 - no simulation state is mutated.
 
-While the timeline is open, a lightweight 2.5-second refresh updates relative time/status/location availability.
+While the timeline is open, a 2.5-second refresh updates relative time/status/location availability and preserves the reader's current scroll position.
+
+When Recent Changes is closed, full collection/sorting is skipped. Only the small latest-important badge is refreshed, throttled to at most once every 10 seconds. Ordinary `renderAll()` calls inside that freshness window do not rescan the accumulated timeline state.
 
 UX 5 also refreshes on body mode/focus/semantic-level changes.
 
@@ -245,8 +257,9 @@ and delegates to the exact previous functions with `apply(this,args)`.
 13. opening an object panel closes timeline cleanly.
 14. Escape closes timeline without also exiting active Focus.
 15. next Escape with no panel exits Focus normally.
-16. renderAll refresh preserves original return behavior.
+16. renderAll refresh preserves original return behavior and does not trigger full closed-timeline rescans inside the badge freshness window.
 17. repeated live-record creation does not duplicate timeline entries.
 18. God View closes/hides timeline.
-19. mobile timeline becomes a bounded bottom sheet.
-20. console/page errors remain zero.
+19. row expand/collapse uses a native button and Locate is a separate sibling action.
+20. mobile timeline becomes a bounded bottom sheet.
+21. console/page errors remain zero.
