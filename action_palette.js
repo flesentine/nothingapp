@@ -126,6 +126,7 @@ function closePalette(restoreFocus=true){
   if(!open&&!document.body.classList.contains('ux-action-open'))return;
   const panel=document.querySelector('#uxActionPalette');
   const hadPaletteFocus=!!document.activeElement?.closest?.('#uxActionPalette');
+  if(hadPaletteFocus)document.activeElement.blur();
   open=false;
   pendingDanger=null;
   document.body.classList.remove('ux-action-open');
