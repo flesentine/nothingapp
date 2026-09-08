@@ -48,8 +48,8 @@ body.ux-god #uxActionBackdrop{opacity:0!important;pointer-events:none!important}
 @media(max-width:700px){
  #uxActionToggle{padding:6px 7px;font-size:8px}
  #uxActionToggle .ux-action-key{display:none}
- #uxActionPalette{top:auto;left:8px;right:8px;bottom:8px;width:auto;max-height:min(76vh,680px);transform:translateY(8px) scale(1)}
- body.ux-action-open #uxActionPalette{transform:translateY(0) scale(1)}
+ #uxActionPalette{top:auto;left:8px;right:8px;bottom:8px;width:auto;max-height:min(76vh,680px);transform:none;transition:opacity .18s ease}
+ body.ux-action-open #uxActionPalette{transform:none}
  .ux-action-grid{grid-template-columns:1fr}
  .ux-action-source{max-width:90px}
  .ux-action-foot{display:none}
