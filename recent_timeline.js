@@ -170,13 +170,26 @@ function tone(e){
   if(/active|passed|allocated|paid|restored|redeemed|operating|complete|released/.test(s))return'active';
   return'neutral';
 }
-function markerFor(id){
-  for(const marker of document.querySelectorAll('body>div[id*="Layer"]>i')){
+function markerFor(entry){
+  const id=typeof entry==='string'?entry:entry?.id;
+  const record=typeof entry==='object'&&entry?entry.record:null;
+  if(!id)return null;
+  const markers=[...document.querySelectorAll('body>div[id*="Layer"]>i')];
+  for(const marker of markers){
+    const bound=String(marker.dataset.uxTimelineRecordId||'').trim();
     const label=String(marker.dataset.label||'').trim();
     const text=String(marker.textContent||'').trim();
-    if(label===id||label.startsWith(id+' ')||label.startsWith(id+' ·')||text===id)return marker;
+    if(bound===id||label===id||label.startsWith(id+' ')||label.startsWith(id+' ·')||text===id)return marker;
   }
-  return null;
+  const x=Number(record?.x),y=Number(record?.y);
+  if(!Number.isFinite(x)||!Number.isFinite(y))return null;
+  const spatial=markers.filter(marker=>{
+    const left=parseFloat(marker.style.left),top=parseFloat(marker.style.top);
+    return Number.isFinite(left)&&Number.isFinite(top)&&Math.abs(left-x)<1e-6&&Math.abs(top-y)<1e-6;
+  });
+  if(spatial.length!==1)return null;
+  spatial[0].dataset.uxTimelineRecordId=id;
+  return spatial[0];
 }
 function markerVisible(marker){
   if(!marker)return false;
@@ -241,7 +254,7 @@ function closeTimeline(){
   toggle?.setAttribute('aria-expanded','false');
 }
 function locate(e){
-  const marker=markerFor(e.id);
+  const marker=markerFor(e);
   if(!markerVisible(marker))return;
   closeTimeline();
   marker.classList.add('ux-timeline-pulse');
@@ -263,7 +276,7 @@ function renderRow(e){
   rel.innerHTML=build;
   if(related)rel.append(document.createTextNode(related));
   row.querySelector('.ux-timeline-facts').textContent=factsFor(e);
-  const marker=markerFor(e.id),visible=markerVisible(marker),loc=row.querySelector('.ux-timeline-locate'),note=row.querySelector('.ux-timeline-location-note');
+  const marker=markerFor(e),visible=markerVisible(marker),loc=row.querySelector('.ux-timeline-locate'),note=row.querySelector('.ux-timeline-location-note');
   loc.disabled=!visible;
   note.textContent=visible?'opens the original object':'hidden at the current view/detail level';
   loc.onclick=()=>locate(e);
