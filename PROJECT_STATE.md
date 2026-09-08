@@ -1,9 +1,9 @@
 # Nothing — Project State
 
-**Document revision:** 100.5  
+**Document revision:** 100.6  
 **Current build:** 100  
-**Current UX pass:** 5 — Recent Changes Timeline  
-**Updated:** September 6, 2026
+**Current UX pass:** 6 — Action Palette  
+**Updated:** September 8, 2026
 
 This is the consolidated current-state document for the repository. The individual `BUILDxx.md` files remain the authoritative narrative for each build; this document records the architecture and cross-build dependencies that future changes should preserve unless a later build intentionally breaks them.
 
@@ -343,6 +343,28 @@ Escape order is now:
 - root Overview.
 
 UX 5 has no simulation/localStorage authority.
+
+UX 6 adds procedural comprehension after UX 5:
+
+- `action_palette.css`
+- `action_palette.js`
+
+Actions:
+- discovers the original direct-child controls under `#app > .controls`;
+- mirrors them only as transient proxy buttons in Overview;
+- searches original labels, IDs, and presentation categories;
+- groups actions into stabilization/governance, monetary supervision, external economy/markets, institutions/civic stack, and system;
+- sorts the active UX 3 Focus category first without filtering the rest;
+- preserves disabled source controls as disabled proxies;
+- dispatches the original source button's native click path so historical modules remain authoritative;
+- requires a second proxy click before dispatching the destructive `make it forget` source control;
+- is mutually exclusive with Recent Changes and the Inspector;
+- closes on Escape before Focus navigation;
+- is hidden/closed in God View.
+
+UX 6 wraps the existing `renderAll` and `panel` presentation chain and delegates with original `this`/arguments.
+
+UX 6 has no direct simulation/localStorage authority.
 
 ## Current handoff
 

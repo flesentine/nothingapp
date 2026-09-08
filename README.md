@@ -302,3 +302,21 @@ UX 5:
 - preserves a clear Escape hierarchy with the inspector and focus layers.
 
 See `UX5.md` for the timeline contract.
+
+### UX 6 — Action Palette
+
+Overview now replaces the hidden historical button wall with one searchable Actions surface.
+
+UX 6:
+- discovers the real existing `#app > .controls > button` controls at runtime;
+- groups them into human-sized presentation categories;
+- searches by action label, original button ID, or category;
+- moves the current Focus category first without hiding other actions;
+- dispatches the original button click path instead of reimplementing simulation behavior;
+- preserves disabled source controls as disabled proxies;
+- requires a second deliberate click before the destructive `make it forget` proxy runs;
+- opens from the mode bar or Command/Ctrl-K;
+- closes cleanly against Recent Changes, Inspector, Escape, and God View;
+- adds no simulation or localStorage authority of its own.
+
+See `UX6.md` for the action-palette contract.
