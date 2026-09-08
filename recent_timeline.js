@@ -184,7 +184,7 @@ function markerVisible(marker){
   const r=marker.getBoundingClientRect();
   return s.display!=='none'&&s.visibility!=='hidden'&&parseFloat(s.opacity||'1')>.05&&s.pointerEvents!=='none'
     &&r.width>0&&r.height>0
-    &&(!p||(p.display!=='none'&&p.visibility!=='hidden'&&parseFloat(p.opacity||'1')>.05&&p.pointerEvents!=='none'));
+    &&(!p||(p.display!=='none'&&p.visibility!=='hidden'&&parseFloat(p.opacity||'1')>.05));
 }
 function makeUI(){
   let toggle=document.querySelector('#uxTimelineToggle');
@@ -336,6 +336,7 @@ function refresh(preserveScroll=true){
   if(preserveScroll)list.scrollTop=scrollTop;
 }
 function scheduleRefresh(){
+  if(!open&&Date.now()-badgeUpdatedAt<BADGE_REFRESH_MS)return;
   if(refreshQueued)return;
   refreshQueued=true;
   queueMicrotask(()=>{refreshQueued=false;refresh()});
