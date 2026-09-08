@@ -87,6 +87,17 @@ Because the action is destructive, its proxy requires a second deliberate click:
 
 The second click dispatches the original button.
 
+## Keyboard and modal focus
+
+Actions is a true modal presentation surface while open.
+
+- the closed palette is `aria-hidden=true` and `inert`, so its search/actions cannot remain in the tab order;
+- opening removes `inert`, clears `aria-hidden`, and focuses search;
+- Tab and Shift-Tab are trapped inside the open palette;
+- Escape closes Actions before lower Focus navigation receives the key;
+- a user-initiated close restores focus to the Actions toggle when focus was inside the palette;
+- a source-action or original-panel handoff first blurs palette focus, closes without restoring the toggle, then lets the original UI path own focus.
+
 ## Surface hierarchy
 
 Opening Actions:
@@ -156,3 +167,49 @@ and delegates to the exact previous functions with `apply(this,args)`.
 15. Added/disabled original controls refresh while the palette is open.
 16. Mobile palette remains inside the viewport.
 17. Console/page errors remain zero.
+
+
+## Pre-PR qualification
+
+Exact current artifacts:
+- `action_palette.js` Git blob: `1bb9e6c30e8b7d9caa5461a2b4809db463f116dc`;
+- `action_palette.css` Git blob: `2f998a4d87efd84eadfb664e43ff6fb6359d7251`.
+
+Code audit:
+- JavaScript syntax: PASS;
+- direct `S.*` assignments: 0;
+- `nothing-state-vN` references/writes: 0;
+- `localStorage.setItem` writes: 0;
+- source execution remains one native `source.click()` path;
+- `renderAll` and `panel` delegate with `apply(this,args)`;
+- closed `renderAll()` scheduling returns before action collection.
+
+Fresh Chromium qualification executed the exact hash-verified JS/CSS above in a production-shaped UX 1–5 DOM/control fixture.
+
+Verified:
+- closed dialog is hidden + inert;
+- opening closes Recent and Inspector exactly once;
+- search receives focus;
+- hidden source buttons are excluded;
+- disabled source controls remain disabled;
+- active Monetary Supervision Focus category sorts first;
+- search filters labels/IDs/categories;
+- a normal proxy dispatches the original source exactly once;
+- destructive reset dispatches zero source clicks on first selection and exactly one after confirmation;
+- Ctrl/Cmd-K is intercepted in Overview and left untouched in God View;
+- Escape closes Actions only and restores toggle focus;
+- repeated Tab / Shift-Tab remains inside the modal;
+- programmatic/original-panel handoff closes without leaving hidden palette focus;
+- 100 closed-palette `renderAll()` calls perform zero source-control scans and preserve the wrapped return value;
+- newly added source controls appear while open;
+- source disabled-state changes propagate while open;
+- God View closes/hides Actions;
+- 390×844 mobile palette stays inside the viewport;
+- desktop→mobile responsive transition no longer introduces horizontal overflow;
+- console errors: 0;
+- page errors: 0.
+
+Environment qualification:
+- repository network/file navigation is blocked from the local Chromium sandbox;
+- therefore this is not represented as a live branch URL run;
+- the UX 6 JS and CSS were fetched from GitHub, independently Git-blob-hash verified, then executed unchanged in Chromium against the production-shaped fixture.
