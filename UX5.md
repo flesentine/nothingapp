@@ -104,13 +104,13 @@ The underlying record timestamp is never rewritten.
 
 ## Relationships
 
-For each record, UX 5 scans first-level record fields for related accumulated IDs.
+For each record, UX 5 scans first-level fields that semantically represent links (IDs, sources, motions, programs, claims, transfers, recapitalizations, positions, restitutions, conditions, debts, facilities, authorities, or boards) for related accumulated IDs.
 
 Examples may include:
 - `MCP1 ↳ GAR1 · PRG1 · SURV1 · MOT11`;
 - `RRA1 ↳ RRP1 · RCP1 · SRT1 · SRC1`.
 
-This is a relationship hint, not yet a causal graph.
+This is a relationship hint, not yet a causal graph. Severity codes such as `SEV1` and other uppercase-number labels are not treated as object relationships merely because they resemble an ID.
 
 A dedicated causal explorer can build on this in a later UX pass.
 
